@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 
 export default defineConfig({
+    root: 'src',
     build: {
         lib: {
             entry: 'src/index.ts', // 라이브러리의 진입점
