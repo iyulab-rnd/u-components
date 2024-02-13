@@ -4,14 +4,12 @@ import { customElement, property, query } from "lit/decorators.js";
 import './assets/themes/light.css';
 import './assets/themes/dark.css';
 
-import './dialogs';
-import './buttons';
-import './tooltips';
+import './index';
 
 @customElement('u-app')
 export class App extends LitElement {
 
-  @query("u-dialog")
+  @query("u-alert")
   dialog!: any;
 
   render() {
@@ -22,12 +20,9 @@ export class App extends LitElement {
 
       <u-button>Button</u-button>
       
-      <u-dialog label="hello">
-        <div>
-          <h1>Dialog Content</h1>
-          <p>Dialog content goes here</p>
-        </div>
-      </u-dialog>
+      <u-alert>
+        This is a primary alert with a <a href="#">link</a>.
+      </u-alert>
       <u-button @click=${() => this.showDialog()}>Show Dialog</u-button>
     `;
   }

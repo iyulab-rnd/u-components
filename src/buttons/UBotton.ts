@@ -5,10 +5,18 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import '@shoelace-style/shoelace/dist/components/button/button.js';
 import SlButton from '@shoelace-style/shoelace/dist/components/button/button.js';
 
+import type { 
+  CommandModel, 
+  UButtonTheme, 
+  UButtonSize, 
+  UButtonType, 
+  UButtonLink 
+} from './UBottonModel';
+
 import '../tooltips';
-import '../Icons';
 import type { UTooltipPosition } from '../tooltips/UTooltipModel';
-import type { CommandModel, UButtonTheme, UButtonSize, UButtonType, UButtonLink } from './UBottonModel';
+
+import '../icons';
 
 @customElement('u-button')
 export class UButton extends LitElement {
@@ -58,6 +66,14 @@ export class UButton extends LitElement {
   @property()
   commandParam?: any = undefined;
   
+  async firstUpdated(changedProperties: any) {
+    super.firstUpdated(changedProperties);
+
+    if (changedProperties.has('command') && this.command) {
+      const command = this.command;
+    }
+  }
+
   render() {
     if (this.tooltip) {
       return html`
@@ -102,10 +118,17 @@ export class UButton extends LitElement {
         target=${ifDefined(target)}
         download=${ifDefined(download)}
         @click=${() => this.handleButtonClick()}
-      ><sl-icon slot="prefix" name="gear"></sl-icon>
-      ${this.text ?? html`
-        <slot></slot>
-      `}</sl-button>
+      >
+      ${this.renderChildren()}
+      </sl-button>
+    `;
+  }
+
+  renderChildren() {
+    return html`
+      <slot name="prefix"></slot>
+      <slot name="suffix"></slot>
+      ${this.text ?? html`<slot></slot>`}
     `;
   }
 

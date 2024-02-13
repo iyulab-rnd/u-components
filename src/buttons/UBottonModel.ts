@@ -1,8 +1,3 @@
-export interface CommandModel {
-  execute(parameter?: any): void;
-  canExecute(parameter?: any): boolean;
-}
-
 export type UButtonType = 'button' | 'link' | 'dropdown';
 export type UButtonTheme = 'default' | 'primary' | 'success' | 'neutral' | 'warning' | 'danger' | 'text';
 export type UButtonSize = 'small' | 'medium' | 'large';
@@ -13,22 +8,25 @@ export interface UButtonLink {
   download?: string;
 }
 
-// import { observable } from "mobx";
+export interface CommandModel {
+  execute(parameter?: any): void;
+  canExecute(parameter?: any): boolean;
+}
 
-// export class RelayCommand implements CommandModel {
+export class RelayCommand implements CommandModel {
   
-//   @observable content: any = null;
-//   execute: (parameter?: any) => void;
-//   canExecute: (parameter?: any) => boolean;
+  content: any = null;
+  execute: (parameter?: any) => void;
+  canExecute: (parameter?: any) => boolean;
 
-//   constructor(x: {
-//     content: any, 
-//     execute: (parameter?: any) => void, 
-//     canExecute?: (parameter?: any) => boolean
-//   }) {
-//     this.content = x.content;
-//     this.execute = x.execute;
-//     this.canExecute = x.canExecute || (() => true);
-//   }
+  constructor(x: {
+    content: any, 
+    execute: (parameter?: any) => void, 
+    canExecute?: (parameter?: any) => boolean
+  }) {
+    this.content = x.content;
+    this.execute = x.execute;
+    this.canExecute = x.canExecute || (() => true);
+  }
 
-// }
+}

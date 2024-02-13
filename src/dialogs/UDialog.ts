@@ -19,6 +19,7 @@ interface UDialogButton {
 }
 
 interface UDialogOptions {
+  type?: 'blank' | 'content' | 'input' | 'message';
   label?: string;
   buttons?: UDialogButton[];
 }
@@ -73,7 +74,9 @@ export class UDialog extends LitElement {
     `;
   }
   
-  async showAsync() : Promise<UDialogResult> {
+  async showAsync(options?: UDialogOptions) : Promise<UDialogResult> {
+    await this.updateComplete;
+    options = options ?? { type: 'blank' };
     this.dialog.show();
 
     return new Promise<UDialogResult>((resolve, reject) => {
