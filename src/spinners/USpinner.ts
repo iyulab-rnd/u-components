@@ -24,8 +24,9 @@ export class USpinner extends LitElement implements USpinnerModel {
   @property({ type: String })
   trackColor?: string;
 
-  protected updated(changedProperties: any) {
+  protected async updated(changedProperties: any) {
     super.updated(changedProperties);
+    await this.updateComplete;
 
     if (changedProperties.has('size') && this.size) {
       this.spinner.style.fontSize = `${this.size}px`;

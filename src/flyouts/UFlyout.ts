@@ -1,7 +1,9 @@
 import { LitElement } from "lit";
 
-// 위치하고 싶은 기준
-// 공간이 충분하지 않을 경우 자동 위치 조정
+/**
+ * 위치하고 싶은 기준
+ * 공간이 충분하지 않을 경우 자동 위치 조정
+ */
 export type UFlyoutPosition = (
   "TopLeft" | 
   "TopCenter" |
@@ -18,6 +20,9 @@ export type UFlyoutPosition = (
   "Auto"
 )
 
+/**
+ * UFlyout 클래스는 플라이아웃(flyout) 컴포넌트의 추상 클래스입니다.
+ */
 export abstract class UFlyout extends LitElement {
   private open:boolean = false;
   private target?: HTMLElement;

@@ -24,8 +24,9 @@ export class UDivider extends LitElement implements UDividerModel {
   @property({ type: String })
   orientation: 'vertical' | 'horizontal' = 'horizontal';
 
-  protected updated(changedProperties: any) {
+  protected async updated(changedProperties: any) {
     super.updated(changedProperties);
+    await this.updateComplete;
 
     if (changedProperties.has('color') && this.color) {
       this.divider.style.setProperty('--color', this.color);

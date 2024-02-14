@@ -1,1 +1,1 @@
-export * from './UCards';
+export * from './UCard';

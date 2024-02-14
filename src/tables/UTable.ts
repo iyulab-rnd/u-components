@@ -1,14 +1,25 @@
 import { LitElement, TemplateResult, html, unsafeCSS } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 
-import { createComponent } from "@lit/react";
-import React from "react";
-
 import { TableTooltip } from "./TableTooltip";
 import { TableSearchMenu } from "./TableSearchMenu";
 import { TableSortMenu } from "./TableSortMenu";
 import { TableFilterMenu } from "./TableFilterMenu";
 
+import type { 
+  UTableModel,
+  TableOption,
+  ButtonDefinition, 
+  ColumnDefinition, 
+  SearchOption,
+  SearchColumn,
+  BasicColumn,
+  BadgeColumn,
+  ImgColumn, 
+} from "./UTableModel";
+import { UTableIcons } from "./UTableModel";
+
+// @ts-ignore
 import styles from "./UTable.scss?inline";
 
 /*
@@ -18,9 +29,8 @@ search: 검색 이벤트(필터, 정렬)
 filter: 필터 이벤트(검색, 범위, 선택)
 sort: 정렬 이벤트(오름차순, 내림차순)
 */
-
-@customElement("table-element")
-export class TableElement extends LitElement {
+@customElement("u-table")
+export class UTable extends LitElement implements UTableModel {
   static styles = unsafeCSS(styles);
 
   private tooltip = new TableTooltip();
@@ -142,26 +152,26 @@ export class TableElement extends LitElement {
     if (this.columns.length === 0) throw new Error('columns는 필수 속성입니다');
 
     return html`
-            <div class="container">
-                <div class="menu">
-                    ${this.renderTableMenu()}
-                </div>
-                <table class="table">
-                    <thead class="header">
-                        <tr class="header-row">
-                            ${this.renderHeader(this.columns)}
-                            ${this.renderLoadingSpinner()}
-                        </tr>
-                    </thead>
-                    <tbody class="body">
-                        ${this.renderBody(this.data)}
-                    </tbody>
-                </table>
-                <div class="footer">
-                    ${this.option?.usePaging ? this.renderPageNation() : null}
-                </div>
-            </div>
-        `;
+      <div class="container">
+        <div class="menu">
+          ${this.renderTableMenu()}
+        </div>
+        <table class="table">
+          <thead class="header">
+            <tr class="header-row">
+              ${this.renderHeader(this.columns)}
+              ${this.renderLoadingSpinner()}
+            </tr>
+          </thead>
+          <tbody class="body">
+            ${this.renderBody(this.data)}
+          </tbody>
+        </table>
+        <div class="footer">
+          ${this.option?.usePaging ? this.renderPageNation() : null}
+        </div>
+      </div>
+    `;
   }
 
   // 데이터 로드
@@ -186,22 +196,22 @@ export class TableElement extends LitElement {
   // 로딩 스피너 렌더링
   private renderLoadingSpinner() {
     return html`
-            <div class="loading-container ${this.loading ? 'active' : ''}">
-                <div class="spinner"></div>
-            </div>
-        `;
+      <div class="loading-container ${this.loading ? 'active' : ''}">
+        <div class="spinner"></div>
+      </div>
+    `;
   }
 
   // 테이블 메뉴 렌더링(선택된 아이템 수, 필터리스트, 새로고침, 삭제, 추가)
   private renderTableMenu() {
     return html`
-            <div class="item-count">
-                [ ${this.selectedItems.length} / ${this.data.length} ] Selected
-            </div>
-            <div class="table-buttons">
-                ${this.renderTableButtons()}
-            </div>
-        `;
+      <div class="item-count">
+        [ ${this.selectedItems.length} / ${this.data.length} ] Selected
+      </div>
+      <div class="table-buttons">
+        ${this.renderTableButtons()}
+      </div>
+    `;
   }
 
   // 테이블 메뉴버튼 렌더링
@@ -209,28 +219,28 @@ export class TableElement extends LitElement {
     const buttons: TemplateResult[] = [];
     if (this.search.columns.length > 0) {
       buttons.push(this.renderButton(
-        search,
-        (e) => this.searchMenu.showSearchAsync(e, this.columns, this.search),
+        UTableIcons.search,
+        (e: any) => this.searchMenu.showSearchAsync(e, this.columns, this.search),
         "Search List"
       ));
     }
     if (this.option?.load) {
       buttons.push(this.renderButton(
-        refresh,
+        UTableIcons.refresh,
         () => this.loadDataAsync(),
         "Refresh"
       ));
     }
     if (this.option?.delete) {
       buttons.push(this.renderButton(
-        trash,
+        UTableIcons.trash,
         () => this.deleteDataAsync(this.selectedItems),
         `Delete(${this.selectedItems.length})`
       ));
     }
     if (this.option?.create) {
       buttons.push(this.renderButton(
-        plus,
+        UTableIcons.plus,
         () => this.option?.create?.(),
         "Create New"
       ));
@@ -258,20 +268,20 @@ export class TableElement extends LitElement {
 
     if (this.option?.useCheckbox) {
       header.push(html`
-                <th class="header-content">
-                    <input class="header-checkbox" type="checkbox"
-                        @change=${this.handleHeaderCheckbox} />
-                </th>
-            `);
+        <th class="header-content">
+          <input class="header-checkbox" type="checkbox"
+              @change=${this.handleHeaderCheckbox} />
+        </th>
+      `);
       initialIndex += 1;
     }
 
     if (this.option?.useCount) {
       header.push(html`
-                <th class="header-content">
-                    <div class="header-number">No.</div>
-                </th>
-            `);
+        <th class="header-content">
+          <div class="header-number">No.</div>
+        </th>
+      `);
       initialIndex += 1;
     }
 
@@ -284,20 +294,20 @@ export class TableElement extends LitElement {
       const adjustIndex = index + initialIndex;
 
       header.push(html`
-                <th class="header-content" style="width: ${width}">
-                    <div class="header-flex">
-                        ${column.useSort ? this.renderSortMenu(column.name) : null}
-                        <div class="header-title" style="text-align: ${column.headAlign ?? 'left'}">
-                            ${column.title}
-                        </div>
-                        ${column.useFilter ? this.renderFilterMenu(column) : null}
-                    </div>
-                    ${index < columns.length - 1 ? html`
-                        <div class="width-control" 
-                            @mousedown=${(e) => this.handleAdjustWidth(e, adjustIndex)}>
-                        </div>` : null}
-                </th>
-            `)
+        <th class="header-content" style="width: ${width}">
+          <div class="header-flex">
+            ${column.useSort ? this.renderSortMenu(column.name) : null}
+            <div class="header-title" style="text-align: ${column.headAlign ?? 'left'}">
+              ${column.title}
+            </div>
+            ${column.useFilter ? this.renderFilterMenu(column) : null}
+          </div>
+          ${index < columns.length - 1 ? html`
+              <div class="width-control" 
+                  @mousedown=${(e:any) => this.handleAdjustWidth(e, adjustIndex)}>
+              </div>` : null}
+        </th>
+      `)
     });
 
     if (this.buttons.length > 0 && this.buttons.find(b => b.type === 'item') ||
@@ -314,11 +324,11 @@ export class TableElement extends LitElement {
     const order = target?.orderby;
 
     return html`
-            <svg class="sort-menu ${order === 'asc' ? 'trans' : ''}" viewBox="0 0 24 24"
-                @click=${(e) => this.sortMenu.showSortAsync(e, target)}>
-                <path d=${order ? desc : sort}></path>
-            </svg>
-        `;
+      <svg class="sort-menu ${order === 'asc' ? 'trans' : ''}" viewBox="0 0 24 24"
+          @click=${(e: any) => this.sortMenu.showSortAsync(e, target)}>
+        <path d=${order ? UTableIcons.desc : UTableIcons.sort}></path>
+      </svg>
+    `;
   }
 
   // 테이블 헤더 필터 메뉴 렌더링
@@ -330,11 +340,11 @@ export class TableElement extends LitElement {
       (target?.type === 'dateRange' && (target?.dateFrom !== undefined || target?.dateTo !== undefined));
 
     return html`
-            <svg class="filter-menu ${selected ? 'selected' : ''}" viewBox="0 -960 960 960"
-                @click=${(e) => this.filterMenu.showFilterAsync(e, column, target)}>
-                <path d=${filter}></path>
-            </svg>
-        `
+      <svg class="filter-menu ${selected ? 'selected' : ''}" viewBox="0 -960 960 960"
+          @click=${(e:any) => this.filterMenu.showFilterAsync(e, column, target)}>
+        <path d=${UTableIcons.filter}></path>
+      </svg>
+    `
   }
 
   // 테이블 바디 아이템 렌더링
@@ -346,58 +356,58 @@ export class TableElement extends LitElement {
       if (this.option?.update || this.option?.delete || this.buttons.length > 0) colspan += 1;
 
       return html`
-                <tr class="body-row">
-                    <td class="body-none" colspan=${colspan}>
-                        <div class="not-found">
-                            <svg class="icon" viewBox="0 -960 960 960">
-                                <path d=${notFound}></path>
-                            </svg>
-                            <span>Not Found Data</span>
-                        </div>
-                    </td>
-                </tr>
-            `;
+        <tr class="body-row">
+          <td class="body-none" colspan=${colspan}>
+            <div class="not-found">
+              <svg class="icon" viewBox="0 -960 960 960">
+                <path d=${UTableIcons.notFound}></path>
+              </svg>
+              <span>Not Found Data</span>
+            </div>
+          </td>
+        </tr>
+      `;
     } else {
       return data.map((item: any, index: number) => {
         const selected = this.selectedItems.includes(item);
         return html`
-                <tr class="body-row ${selected ? 'select' : ''}">
-                    ${this.option?.useCheckbox ? html`
-                        <td class="body-content">
-                            <input class="body-checkbox" type="checkbox" 
-                                .checked=${this.selectedItems.includes(item)}
-                                @change=${(e) => this.handleBodyCheckbox(e, item)} />
-                        </td>
-                    ` : null}
-                    ${this.option?.useCount ? html`
-                        <td class="body-content">
-                            <div class="body-number">
-                                ${this.total ? this.total - (index + 1) : this.data.length - index}
-                            </div>
-                        </td>
-                    ` : null}
-                    ${this.columns.map(column => html`
-                        <td class="body-content">
-                            <div style="display:flex; justify-content:${column.bodyAlign ?? 'left'}">
-                                ${this.renderBodyItem(column, item)}
-                            </div>
-                        </td>
-                    `)}
-                    ${(this.buttons.length > 0 && this.buttons.find(b => b.type === 'item') ||
-            this.option?.update || this.option?.delete) ? html`
-                        <td class="body-content">
-                            <div class="button-cell">
-                                ${this.renderButtonCell(item)}
-                            </div>
-                        </td>
-                    ` : null}
-                    ${index < data.length ? html`
-                        <div class="height-control" 
-                            @mousedown=${(e) => this.handleAdjustHeight(e, index)}>
-                        </div>
-                    ` : null}
-                </tr>
-            `});
+          <tr class="body-row ${selected ? 'select' : ''}">
+            ${this.option?.useCheckbox ? html`
+              <td class="body-content">
+                  <input class="body-checkbox" type="checkbox" 
+                    .checked=${this.selectedItems.includes(item)}
+                    @change=${(e:any) => this.handleBodyCheckbox(e, item)} />
+              </td>
+            ` : null}
+            ${this.option?.useCount ? html`
+              <td class="body-content">
+                <div class="body-number">
+                  ${this.total ? this.total - (index + 1) : this.data.length - index}
+                </div>
+              </td>
+            ` : null}
+            ${this.columns.map(column => html`
+              <td class="body-content">
+                <div style="display:flex; justify-content:${column.bodyAlign ?? 'left'}">
+                  ${this.renderBodyItem(column, item)}
+                </div>
+              </td>
+            `)}
+            ${(this.buttons.length > 0 && this.buttons.find(b => b.type === 'item') ||
+              this.option?.update || this.option?.delete) ? html`
+                <td class="body-content">
+                  <div class="button-cell">
+                    ${this.renderButtonCell(item)}
+                  </div>
+                </td>
+            ` : null}
+            ${index < data.length ? html`
+              <div class="height-control" 
+                @mousedown=${(e:any) => this.handleAdjustHeight(e, index)}>
+              </div>
+            ` : null}
+          </tr>
+        `});
     }
   }
 
@@ -421,41 +431,41 @@ export class TableElement extends LitElement {
 
     const content = column.render ? column.render(item) : value;
     return html`
-            <span class="basic-cell ${column.action ? 'action' : ''}"
-                @click=${column.action ? () => column.action?.(item) : undefined}
-                @mouseenter=${column.tooltip
-        ? (e) => this.tooltip.hoverData(e, item, column.tooltip)
+      <span class="basic-cell ${column.action ? 'action' : ''}"
+        @click=${column.action ? () => column.action?.(item) : undefined}
+        @mouseenter=${column.tooltip
+        ? (e:any) => this.tooltip.hoverData(e, item, column.tooltip)
         : undefined}>
-                ${content}
-            </span>
-        `;
+        ${content}
+      </span>
+    `;
   }
 
   // 테이블 바디 배지 셀 렌더링
   private renderBadgeCell(column: BadgeColumn, item: any) {
     const { text, color } = column.render(item);
     return html`
-            <div class="badge-cell" style="background-color:${color}"
-                @click=${column.action ? () => column.action?.(item) : undefined}
-                @mouseenter=${column.tooltip
-        ? (e) => this.tooltip.hoverData(e, item, column.tooltip)
-        : undefined}>
-                ${text}
-            </div>
-        `;
+        <div class="badge-cell" style="background-color:${color}"
+          @click=${column.action ? () => column.action?.(item) : undefined}
+          @mouseenter=${column.tooltip
+          ? (e:any) => this.tooltip.hoverData(e, item, column.tooltip)
+          : undefined}>
+          ${text}
+        </div>
+    `;
   }
 
   // 테이블 바디 이미지 셀 렌더링
   private renderImgCell(column: ImgColumn, item: any) {
     const { src, width, height } = column.render(item);
     return html`
-            <img class="img-cell" src=${src}
-                width=${width ? `${width}px` : "30px"} height=${height ? `${height}px` : "30px"}
-                @click=${column.action ? () => column.action?.(item) : undefined}
-                @mouseenter=${column.tooltip
-        ? (e) => this.tooltip.hoverData(e, item, column.tooltip)
+      <img class="img-cell" src=${src}
+        width=${width ? `${width}px` : "30px"} height=${height ? `${height}px` : "30px"}
+        @click=${column.action ? () => column.action?.(item) : undefined}
+        @mouseenter=${column.tooltip
+        ? (e:any) => this.tooltip.hoverData(e, item, column.tooltip)
         : undefined}>
-        `;
+    `;
   }
 
   // 테이블 아이템 버튼 렌더링
@@ -463,7 +473,7 @@ export class TableElement extends LitElement {
     const buttons = [] as TemplateResult[];
     if (this.option?.update) {
       buttons.push(this.renderButton(
-        edit,
+        UTableIcons.edit,
         () => this.option?.update?.(item),
         "UPDATE",
         "#007FFF",
@@ -471,7 +481,7 @@ export class TableElement extends LitElement {
     }
     if (this.option?.delete) {
       buttons.push(this.renderButton(
-        trash,
+        UTableIcons.trash,
         () => this.deleteDataAsync([item]),
         "DELETE",
         "#FF0000"
@@ -495,14 +505,14 @@ export class TableElement extends LitElement {
   // 버튼 렌더링
   private renderButton(icon: string, handler: any, tooltip: string, color?: string, viewBox?: string) {
     return html`
-            <svg class="button"
-                viewBox=${viewBox ?? "0 -960 960 960"}
-                fill=${color ?? "var(--primary-text)"}
-                @click=${handler}
-                @mouseenter=${(e) => this.tooltip.hoverButton(e, tooltip)}>
-                <path d=${icon}></path>
-            </svg>
-        `;
+      <svg class="button"
+        viewBox=${viewBox ?? "0 -960 960 960"}
+        fill=${color ?? "var(--primary-text)"}
+        @click=${handler}
+        @mouseenter=${(e:any) => this.tooltip.hoverButton(e, tooltip)}>
+        <path d=${icon}></path>
+      </svg>
+    `;
   }
 
   // 페이지네이션 렌더링(작업중)
@@ -513,45 +523,45 @@ export class TableElement extends LitElement {
     const currentPage = Math.ceil((this.search.offset + 1) / this.search.limit);
 
     return html`
-            <div class="pagination">
-                <div class="per-page">
-                    <span class="text">Rows per page</span>
-                    <div class="page-info">
-                        <input class="page-input" min="1" type="number"
-                            @change=${this.handleChangePerPage}
-                            .value=${itemsPerPage.toString()} />
-                        <div class="button"
-                            @click=${this.loadDataAsync}>
-                            &#x276F;</div>
-                    </div>
-                </div>
-                <div class="navigate-page">
-                    <svg class="first-page" viewBox="0 -960 960 960"
-                        @click=${() => this.handlePageLoadClick('first')}>
-                        <path d=${firstPage}></path>
-                    </svg>
-                    <svg class="before-page" viewBox="0 -960 960 960"
-                        @click=${() => this.handlePageLoadClick('before')}>
-                        <path d=${beforePage}></path>
-                    </svg>
-                    <div class="page-info">
-                        <input class="page-input" min="1" type="number"
-                            @change=${this.handleChangePage}
-                            .value=${currentPage.toString()} />
-                        <span class="button">&#x276F;</span>
-                    </div>
-                    <span class="text">of ${this.total ? totalPages : '??'}</span>
-                    <svg class="next-page" viewBox="0 -960 960 960"
-                        @click=${() => this.handlePageLoadClick('next')}>
-                        <path d=${nextPage}></path>
-                    </svg>
-                    <svg class="last-page" viewBox="0 -960 960 960"
-                        @click=${() => this.handlePageLoadClick('last')}>
-                        <path d=${lastPage}></path>
-                    </svg>
-                </div>
-            </div>
-        `;
+      <div class="pagination">
+        <div class="per-page">
+          <span class="text">Rows per page</span>
+          <div class="page-info">
+            <input class="page-input" min="1" type="number"
+              @change=${this.handleChangePerPage}
+              .value=${itemsPerPage.toString()} />
+            <div class="button"
+              @click=${this.loadDataAsync}>
+              &#x276F;</div>
+          </div>
+        </div>
+        <div class="navigate-page">
+          <svg class="first-page" viewBox="0 -960 960 960"
+            @click=${() => this.handlePageLoadClick('first')}>
+            <path d=${UTableIcons.firstPage}></path>
+          </svg>
+          <svg class="before-page" viewBox="0 -960 960 960"
+            @click=${() => this.handlePageLoadClick('before')}>
+            <path d=${UTableIcons.beforePage}></path>
+          </svg>
+          <div class="page-info">
+            <input class="page-input" min="1" type="number"
+              @change=${this.handleChangePage}
+              .value=${currentPage.toString()} />
+            <span class="button">&#x276F;</span>
+          </div>
+          <span class="text">of ${this.total ? totalPages : '??'}</span>
+          <svg class="next-page" viewBox="0 -960 960 960"
+            @click=${() => this.handlePageLoadClick('next')}>
+            <path d=${UTableIcons.nextPage}></path>
+          </svg>
+          <svg class="last-page" viewBox="0 -960 960 960"
+            @click=${() => this.handlePageLoadClick('last')}>
+            <path d=${UTableIcons.lastPage}></path>
+          </svg>
+        </div>
+      </div>
+    `;
   }
 
   // 페이지당 아이템 수 변경 처리
@@ -770,9 +780,3 @@ export class TableElement extends LitElement {
     document.addEventListener('mouseup', handleMouseUp);
   }
 }
-
-export const TableComponent = createComponent({
-  tagName: 'table-element',
-  elementClass: TableElement,
-  react: React,
-});

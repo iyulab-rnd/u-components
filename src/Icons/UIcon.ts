@@ -24,13 +24,13 @@ export class UIcon extends LitElement implements UIconModel {
   @property({ type: String })
   color?: string;
 
-  protected updated(changedProperties: any) {
+  protected async updated(changedProperties: any) {
     super.updated(changedProperties);
+    await this.updateComplete;
 
     if (changedProperties.has('color') && this.color) {
       this.icon.style.color = this.color;
     }
-
     if (changedProperties.has('size') && this.size) {
       this.icon.style.fontSize = `${this.size}px`;
     }
@@ -44,4 +44,5 @@ export class UIcon extends LitElement implements UIconModel {
       ></sl-icon>
     `;
   }
+  
 }

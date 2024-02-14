@@ -3,7 +3,10 @@ import { customElement, property } from "lit/decorators.js";
 
 import { UFlyout, UFlyoutPosition } from "../flyouts";
 
-import type { ColumnDefinition, SearchColumn } from "./TableElement";
+import type { 
+  ColumnDefinition, 
+  SearchColumn 
+} from "./UTableModel";
 
 @customElement("table-filter-menu")
 export class TableFilterMenu extends UFlyout {
@@ -18,16 +21,16 @@ export class TableFilterMenu extends UFlyout {
 
   render() {
     return html`
-            <div class="container">
-                <div class="body">
-                    ${this.renderBody()}
-                </div>
-                <div class="footer">
-                    <span class="cancle" @click=${this.hideClickAsync}>Cancle</span>
-                    <span class="apply" @click=${this.handleSetFilter}>Apply</span>
-                </div>
-            </div>
-        `;
+      <div class="container">
+        <div class="body">
+          ${this.renderBody()}
+        </div>
+        <div class="footer">
+          <span class="cancle" @click=${this.hideClickAsync}>Cancle</span>
+          <span class="apply" @click=${this.handleSetFilter}>Apply</span>
+        </div>
+      </div>
+    `;
   }
 
   public async showFilterAsync(event: MouseEvent, column: ColumnDefinition, search?: SearchColumn) {
@@ -48,57 +51,57 @@ export class TableFilterMenu extends UFlyout {
 
     if (this.search.type === 'text') {
       return html`
-                <input class="value" type="text" .value=${this.search.value ?? ''}
-                    placeholder="Search Field"
-                    @change=${this.handleChangeValue}/>
-            `;
+        <input class="value" type="text" .value=${this.search.value ?? ''}
+          placeholder="Search Field"
+          @change=${this.handleChangeValue}/>
+      `;
     } else if (this.search.type === 'numberRange') {
       return html`
-                <div class="range">
-                    <div class="range-value">
-                        <span>From</span>
-                        <input type="number" .value=${this.search.numberFrom?.toString() ?? ''}
-                            @change=${(e) => this.handleChangeRange(e, 'from')} />
-                    </div>
-                    <div class="range-value">
-                        <span>To</span>
-                        <input type="number" .value=${this.search.numberTo?.toString() ?? ''}
-                            @change=${(e) => this.handleChangeRange(e, 'to')}/>
-                    </div>
-                </div>
-            `;
+        <div class="range">
+          <div class="range-value">
+            <span>From</span>
+            <input type="number" .value=${this.search.numberFrom?.toString() ?? ''}
+              @change=${(e:any) => this.handleChangeRange(e, 'from')} />
+          </div>
+          <div class="range-value">
+            <span>To</span>
+          <input type="number" .value=${this.search.numberTo?.toString() ?? ''}
+              @change=${(e:any) => this.handleChangeRange(e, 'to')}/>
+          </div>
+        </div>
+      `;
     } else if (this.search.type === 'dateRange') {
       return html`
-                <div class="range">
-                    <div class="range-value">
-                        <span>From</span>
-                        <input type="datetime-local" .value=${this.search.dateFrom
-          ? this.formatDate(this.search.dateFrom) : ''}
-                            @change=${(e) => this.handleChangeRange(e, 'from')} />
-                    </div>
-                    <div class="range-value">
-                        <span>To</span>
-                        <input type="datetime-local" .value=${this.search.dateTo
-          ? this.formatDate(this.search.dateTo) : ''}
-                            @change=${(e) => this.handleChangeRange(e, 'to')}/>
-                    </div>
-                </div>
-            `;
+        <div class="range">
+          <div class="range-value">
+            <span>From</span>
+            <input type="datetime-local" .value=${this.search.dateFrom
+              ? this.formatDate(this.search.dateFrom) : ''}
+              @change=${(e:any) => this.handleChangeRange(e, 'from')} />
+          </div>
+          <div class="range-value">
+            <span>To</span>
+            <input type="datetime-local" .value=${this.search.dateTo
+              ? this.formatDate(this.search.dateTo) : ''}
+              @change=${(e:any) => this.handleChangeRange(e, 'to')}/>
+          </div>
+        </div>
+      `;
     } else if (this.search.type === 'select') {
       const selectList = this.search.list;
       return html`
-                <div class="list">
-                    ${this.selectList?.map((item) => {
-        const checked = selectList.includes(item);
-        return html`
-                            <span class="item ${checked ? 'selected' : ''}"
-                                @click=${this.handleSelectedItem}>
-                                ${item}
-                            </span>
-                        `;
-      })}
-                </div>
+        <div class="list">
+          ${this.selectList?.map((item) => {
+            const checked = selectList.includes(item);
+            return html`
+              <span class="item ${checked ? 'selected' : ''}"
+                @click=${this.handleSelectedItem}>
+                ${item}
+              </span>
             `;
+          })}
+        </div>
+      `;
     } else {
       new Error('Something went wrong!, Check firstupdated method to initialize search object');
       return null;
@@ -165,130 +168,130 @@ export class TableFilterMenu extends UFlyout {
   }
 
   static styles = css`
-        .container {
-            width: 250px;
-            margin-top: 10px;
-            display: flex;
-            flex-direction: column;
-            background-color: var(--surface-card);
-            border: 1px solid var(--ui-outline);
-            overflow: hidden;
+    .container {
+      width: 250px;
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      background-color: var(--surface-card);
+      border: 1px solid var(--ui-outline);
+      overflow: hidden;
+    }
+
+    .body {
+      max-height: 200px;
+      padding: 10px;
+      overflow: hidden;
+      overflow-y: auto;
+      font-size: 14px;
+
+      &::-webkit-scrollbar {
+        width: 16px;
+      }
+        
+      &::-webkit-scrollbar-thumb {
+        height: 56px;
+        border-radius: 8px;
+        border: 4px solid transparent;
+        background-clip: content-box;
+        background-color: hsl(0,0%,37%)
+      }
+        
+      &::-webkit-scrollbar-thumb:hover {
+        background-color: hsl(0,0%,67%)
+      }
+
+      .range {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+
+        .range-value {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
         }
 
-        .body {
-            max-height: 200px;
-            padding: 10px;
-            overflow: hidden;
-            overflow-y: auto;
-            font-size: 14px;
-
-            &::-webkit-scrollbar {
-                width: 16px;
-            }
-              
-            &::-webkit-scrollbar-thumb {
-                height: 56px;
-                border-radius: 8px;
-                border: 4px solid transparent;
-                background-clip: content-box;
-                background-color: hsl(0,0%,37%)
-            }
-              
-            &::-webkit-scrollbar-thumb:hover {
-                background-color: hsl(0,0%,67%)
-            }
-
-            .range {
-                display: flex;
-                flex-direction: column;
-                gap: 5px;
-
-                .range-value {
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: space-between;
-                    align-items: center;
-                }
-
-                .range-value span {
-                    font-weight: 600;
-                }
-
-                .range-value input {
-                    width: 180px;
-                    height: 20px;
-                    padding: 5px;
-                    border: 1px solid #ccc;
-                    border-radius: 3px;
-                    outline: none;
-                    transition: border-color 0.3s ease;
-
-                    &:focus {
-                        border-color: #007BFF;
-                        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-                    }
-                }
-            }
-
-            .list {
-                display: flex;
-                flex-flow: row wrap;
-                gap: 5px;
-
-                .item {
-                    text-align: center;
-                    padding: 5px;
-                    border: 1px solid #ccc;
-                    border-radius: 15px;
-                    cursor: pointer;
-
-                    &.selected {
-                        background-color: #0078d4;
-                        color: #fff;
-                    }
-                }
-            }
-
-            .value {
-                width: -webkit-fill-available;
-                height: 20px;
-                padding: 5px;
-                border: 1px solid #ccc;
-                border-radius: 3px;
-                outline: none;
-                transition: border-color 0.3s ease;
-
-                &:focus {
-                    border-color: #007BFF;
-                    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-                }
-            }
+        .range-value span {
+          font-weight: 600;
         }
 
-        .footer {
-            text-align: right;
-            padding: 10px;
-            padding-top: 0;
-            font-size: 16px;
+        .range-value input {
+          width: 180px;
+          height: 20px;
+          padding: 5px;
+          border: 1px solid #ccc;
+          border-radius: 3px;
+          outline: none;
+          transition: border-color 0.3s ease;
 
-            .cancle {
-                color: dimgray;
-                cursor: pointer;
-                margin-right: 10px;
-
-                &:hover {
-                    opacity: 0.6;
-                }
-            }
-
-            .apply {
-                color: #0078d4;
-                cursor: pointer;
-
-                &:hover {
-                    opacity: 0.6;
-                }
-            }
+          &:focus {
+            border-color: #007BFF;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+          }
         }
-    `;
+      }
+
+      .list {
+        display: flex;
+        flex-flow: row wrap;
+        gap: 5px;
+
+        .item {
+          text-align: center;
+          padding: 5px;
+          border: 1px solid #ccc;
+          border-radius: 15px;
+          cursor: pointer;
+
+          &.selected {
+            background-color: #0078d4;
+            color: #fff;
+          }
+        }
+      }
+
+      .value {
+        width: -webkit-fill-available;
+        height: 20px;
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        outline: none;
+        transition: border-color 0.3s ease;
+
+        &:focus {
+          border-color: #007BFF;
+          box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+      }
+    }
+
+    .footer {
+      text-align: right;
+      padding: 10px;
+      padding-top: 0;
+      font-size: 16px;
+
+      .cancle {
+        color: dimgray;
+        cursor: pointer;
+        margin-right: 10px;
+
+        &:hover {
+          opacity: 0.6;
+        }
+      }
+
+      .apply {
+        color: #0078d4;
+        cursor: pointer;
+
+        &:hover {
+          opacity: 0.6;
+        }
+      }
+    }
+  `;
 }

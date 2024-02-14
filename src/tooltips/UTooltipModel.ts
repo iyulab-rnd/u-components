@@ -1,4 +1,4 @@
-import { LitElement } from "lit";
+import type { LitElement, TemplateResult } from "lit";
 
 /**
  * UTooltipPosition 타입은 툴팁의 위치를 정의합니다.
@@ -14,7 +14,7 @@ export interface UTooltipModel {
    * @type {string | HTMLElement | LitElement}
    * @default undefined
    */
-  content?: string | HTMLElement | LitElement;
+  content?: string | HTMLElement | LitElement | TemplateResult;
 
   /**
    * 툴팁의 위치입니다.

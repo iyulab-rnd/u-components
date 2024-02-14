@@ -2,7 +2,7 @@ export * from './alerts';
 export * from './buttons';
 export * from './cards';
 export * from './forms';
-export * from './dialogs';
+export * from './modals';
 export * from './dividers';
 export * from './flyouts';
 export * from './forms';

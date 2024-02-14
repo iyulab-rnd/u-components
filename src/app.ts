@@ -9,26 +9,26 @@ import './index';
 @customElement('u-app')
 export class App extends LitElement {
 
-  @query("u-alert")
+  @query("u-drawer")
   dialog!: any;
 
   render() {
     return html`
-      <u-tooltip content="how about">
-        <button @click=${() => this.toggleTheme()}>theme</button>
-      </u-tooltip>
-
-      <u-button>Button</u-button>
-      
-      <u-alert>
-        This is a primary alert with a <a href="#">link</a>.
-      </u-alert>
-      <u-button @click=${() => this.showDialog()}>Show Dialog</u-button>
+      <u-button-group>
+        <u-button @click=${this.toggleTheme}>Theme</u-button>
+        <u-button @click=${() => this.showDialog()}>Show Dialog</u-button>
+      </u-button-group>
+      <u-input
+        type="checkbox"
+        required
+      ></u-input>
     `;
   }
 
-  showDialog() {
-    this.dialog.showAsync();
+  async showDialog() {
+    this.dialog.label = 'This is a dialog';
+    const result = await this.dialog.showAsync();
+    console.log(result);
   }
 
   toggleTheme() {
@@ -40,6 +40,5 @@ export class App extends LitElement {
       width: 100%;
       height: 100%;
     }
-  `
-
+  `;
 }

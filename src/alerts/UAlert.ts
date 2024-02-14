@@ -1,4 +1,4 @@
-import { LitElement, html } from "lit";
+import { LitElement, TemplateResult, html } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 
 import "@shoelace-style/shoelace/dist/components/alert/alert.js";
@@ -7,11 +7,12 @@ import SlAlert from "@shoelace-style/shoelace/dist/components/alert/alert.js";
 import '../icons';
 
 export type AlertType = "primary" | "neutral" | "success" | "warning" | "danger";
+export type AlertContent = string | HTMLElement | LitElement | TemplateResult ;
 
 @customElement('u-alert')
 export class UAlert extends LitElement {
   
-  @query('sl-alert') 
+  @query('sl-alert')
   alert!: SlAlert;
 
   @property({ type: String }) 
@@ -20,9 +21,10 @@ export class UAlert extends LitElement {
   @property({ type: Number })
   duration: number = 3000;
 
-  @property({ type: String })
-  text?: string;
+  @property({ attribute: false })
+  content?: AlertContent;
 
+  // TODO: toast사용시 <slot>이 렌더링 되지 않음, show/hide로 변경 필요
   render() {
     return html`
       <sl-alert 
@@ -30,12 +32,12 @@ export class UAlert extends LitElement {
         .duration=${this.duration}
         closable>
         ${this.renderIcon()}
-        ${this.text ?? html`<slot></slot>`}
+        ${this.content}
       </sl-alert>
     `;
   }
 
-  renderIcon() {
+  private renderIcon() {
     const type = {
       primary: "info-circle",
       neutral: "gear",
@@ -52,11 +54,17 @@ export class UAlert extends LitElement {
     `;
   }
 
-  public async showAsync() {
-    if(!document.body.contains(this)) {
-      document.body.appendChild(this);  
+  public async showAsync(type: AlertType, content: AlertContent, duration: number = 3000) {
+    try {
+      document.body.appendChild(this);
+      this.type = type;
+      this.content = content;
+      this.duration = duration;
+      await this.updateComplete;
+      await this.alert.toast();
+    } finally {
+      document.body.removeChild(this);
     }
-    await this.alert.toast();
   }
 
 }

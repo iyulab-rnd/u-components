@@ -26,7 +26,7 @@ export class TableTooltip extends UFlyout {
   // 버튼 호버링시
   async hoverButton(event: MouseEvent, display: string) {
     // 툴팁 설정
-    this.position = Position.TopCenter;
+    this.position = 'TopCenter';
     this.keepHover = false;
 
     // 툴팁 내용 설정
@@ -42,7 +42,7 @@ export class TableTooltip extends UFlyout {
     if (!tooltip) return;
 
     // 툴팁 설정
-    this.position = Position.BottomCenter;
+    this.position = 'BottomCenter';
     this.keepHover = true;
 
     // 툴팁 내용 설정

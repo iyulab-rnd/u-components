@@ -3,7 +3,11 @@ import { customElement, property } from "lit/decorators.js";
 
 import { UFlyout, UFlyoutPosition } from "../flyouts";
 
-import { SearchOption, ColumnDefinition, SearchColumn } from "./TableElement";
+import type { 
+  SearchOption, 
+  ColumnDefinition, 
+  SearchColumn 
+} from "./UTableModel";
 
 const arrowUp = "M440-160v-487L216-423l-56-57 320-320 320 320-56 57-224-224v487h-80Z";
 const arrowDown = "M440-800v487L216-537l-56 57 320 320 320-320-56-57-224 224v-487h-80Z";
@@ -70,16 +74,16 @@ export class TableSearchMenu extends UFlyout {
       return html`${this.search.columns.map((column) => {
         const columnTitle = this.columns?.find((c) => c.name === column.name)?.title ?? column.name;
         return html`
-            <div class="search-item">
-              <div class="title">${columnTitle}</div>
-              <div class="filterby">
-                ${this.renderFilterItem(column)}
-              </div>
-              <div class="orderby">
-                ${this.renderOrderBy(column)}
-              </div>
+          <div class="search-item">
+            <div class="title">${columnTitle}</div>
+            <div class="filterby">
+              ${this.renderFilterItem(column)}
             </div>
-          `;
+            <div class="orderby">
+              ${this.renderOrderBy(column)}
+            </div>
+          </div>
+        `;
         })}
       `;
     }
@@ -87,37 +91,37 @@ export class TableSearchMenu extends UFlyout {
 
   // 필터 아이템 렌더링
   private renderFilterItem(column: SearchColumn) {
-      if(column.type === 'text') {
-          return html`
-              <input type="text" .value=${column.value ?? ''} placeholder="Search Field"
-                  @change=${(e) => this.handleChangeValue(e, column)}/>`
-      } else if(column.type === 'numberRange') {
-          return html`
-              <input type="number" @change=${(e) => this.handleChangeRange(e, 'from', column)}
-                  .value=${column.numberFrom?.toString() ?? ''} />
-              <span>~</span>
-              <input type="number" @change=${(e) => this.handleChangeRange(e, 'to', column)}
-                  .value=${column.numberTo?.toString() ?? ''} />`
-      } else if(column.type === 'dateRange') {
-          return html`
-              <input type="datetime-local" @change=${(e) => this.handleChangeRange(e, 'from', column)}
-                  .value=${column.dateFrom ? this.formatDate(column.dateFrom) : ''} />
-              <span>~</span>
-              <input type="datetime-local" @change=${(e) => this.handleChangeRange(e, 'to', column)}
-                  .value=${column.dateTo ? this.formatDate(column.dateTo) : ''} />`
-      } else if(column.type === 'select') {
-          const list = this.columns?.find((c) => c.name === column.name)?.selectList ?? [];
-          return html`${list.map((item) => {
-              const selected = column.list.find((i) => i === item);
-              return html`
-                  <span class="item ${selected ? 'selected': ''}"
-                      @click=${(e) => this.handleSelectedItem(e, column)}>
-                      ${item}
-                  </span>`;
-          })}`
-      } else {
-          return null;
-      }
+    if(column.type === 'text') {
+      return html`
+        <input type="text" .value=${column.value ?? ''} placeholder="Search Field"
+            @change=${(e:any) => this.handleChangeValue(e, column)}/>`
+    } else if(column.type === 'numberRange') {
+      return html`
+        <input type="number" @change=${(e:any) => this.handleChangeRange(e, 'from', column)}
+            .value=${column.numberFrom?.toString() ?? ''} />
+        <span>~</span>
+        <input type="number" @change=${(e:any) => this.handleChangeRange(e, 'to', column)}
+            .value=${column.numberTo?.toString() ?? ''} />`
+    } else if(column.type === 'dateRange') {
+      return html`
+        <input type="datetime-local" @change=${(e:any) => this.handleChangeRange(e, 'from', column)}
+            .value=${column.dateFrom ? this.formatDate(column.dateFrom) : ''} />
+        <span>~</span>
+        <input type="datetime-local" @change=${(e:any) => this.handleChangeRange(e, 'to', column)}
+            .value=${column.dateTo ? this.formatDate(column.dateTo) : ''} />`
+    } else if(column.type === 'select') {
+      const list = this.columns?.find((c) => c.name === column.name)?.selectList ?? [];
+      return html`${list.map((item) => {
+        const selected = column.list.find((i) => i === item);
+        return html`
+          <span class="item ${selected ? 'selected': ''}"
+            @click=${(e:any) => this.handleSelectedItem(e, column)}>
+            ${item}
+          </span>`;
+      })}`
+    } else {
+      return null;
+    }
   }
 
   // 정렬 아이템 렌더링

@@ -32,7 +32,6 @@ export class EntityMetadata {
     }
   }
   
-  
   getProperties(key?: string) {
     if (key == null) {
       return this.properties;

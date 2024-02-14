@@ -1,54 +1,28 @@
-// const propertyKeyName = "propertyMeta";
-// const propertyMetaKey = Symbol(propertyKeyName);
-const objectName = "Object";
-const __propertyMeta: {
-  [key: string]: any;
-} = {
-};
+import 'reflect-metadata';
 
-// @ts-expect-error 설명: propertyMeta 충돌 문제로 은닉형식으로 사용
-document.__propertyMeta__ = __propertyMeta;
+const key = Symbol('propertyMeta');
+type constructor = new (...args: any[]) => any;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export interface PropertyMetaData<_ = unknown, TypeHint = unknown> {
+export interface PropertyMetaData {
+  type?: string;
   required?: boolean;
   label?: string;
   hint?: string;
   format?: string;  // button | checkbox | color | date | datetime | email | file | hidden | image | month | number | password | radio | range | reset | search | submit | tel | text | time | url | week 
-  type?: TypeHint;
   minLength?: number;
   maxLength?: number;
   regex?: RegExp;
 }
 
-export function propertyMeta<T = unknown, TypeHint = unknown>(metadata: PropertyMetaData<T, TypeHint>) {
-  return (target: object, propertyKey: string | symbol) => {
-
-    const key = target.constructor.name;
-    if (__propertyMeta[key] === undefined) {
-      __propertyMeta[key] = {};
-    }
-    __propertyMeta[key][propertyKey] = metadata;
+export function propertyMeta(metadata: PropertyMetaData) {
+  return (target: any, propertyKey: string) => {
+    Reflect.defineMetadata(key, metadata, target, propertyKey);
   };
 }
 
-export function getPropertyMeta(target: object, propertyKey: string | symbol): PropertyMetaData | undefined {
-
-  const metadata: PropertyMetaData | undefined = undefined;
-  // 2. Reflect 에서 메타데이터를 못가져왔을 경우 __propertyMeta 에서 가져옵니다.
-  if (metadata === undefined) {
-    const key = target.constructor.name;
-    if (__propertyMeta[key] === undefined) {
-      if (target.constructor.name === objectName) {
-        return undefined;
-      } else {
-        return getPropertyMeta(__propertyMeta, propertyKey);
-      }
-    } else {
-      return __propertyMeta[key][propertyKey] as PropertyMetaData;
-    }
-  }
-  return metadata
+export function getPropertyMeta(target: constructor, propertyKey: string): PropertyMetaData {
+  return Reflect.getMetadata(key, target.prototype, propertyKey);
 }
 
 // import "reflect-metadata";

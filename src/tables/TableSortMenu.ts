@@ -2,7 +2,7 @@ import { html, css } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
 import { UFlyout, UFlyoutPosition } from "../flyouts";
-import { SearchColumn } from "./TableElement";
+import type { SearchColumn } from "./UTableModel";
 
 @customElement("table-sort-menu")
 export class TableSortMenu extends UFlyout {

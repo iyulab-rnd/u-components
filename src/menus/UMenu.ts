@@ -29,7 +29,7 @@ export class UMenu extends LitElement {
     `;
   }
 
-  renderItems() {
+  private renderItems() {
     return this.items.map(item => {
       return html`
         <sl-menu-item 

@@ -1,4 +1,4 @@
-import { LitElement, html } from "lit";
+import { LitElement, TemplateResult, html } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
@@ -14,7 +14,7 @@ export class UTooltip extends LitElement implements UTooltipModel {
   tooltip!: SlTooltip;
 
   @property({ type: String })
-  content?: string | HTMLElement | LitElement;
+  content?: string | HTMLElement | LitElement | TemplateResult;
 
   @property({ type: String })
   position: 'top' | 'top-start' | 'top-end' | 'right' | 'right-start' | 'right-end' | 'bottom' | 'bottom-start' | 'bottom-end' | 'left' | 'left-start' | 'left-end' = 'top';
@@ -28,8 +28,9 @@ export class UTooltip extends LitElement implements UTooltipModel {
   @property({ type: Number })
   maxWidth?: number;
 
-  protected update(changedProperties: any) {
+  async update(changedProperties: any) {
     super.update(changedProperties);
+    await this.updateComplete;
 
     if (changedProperties.has('maxWidth')) {
       this.tooltip.style.setProperty('--max-width', `${this.maxWidth}px`);
@@ -47,12 +48,16 @@ export class UTooltip extends LitElement implements UTooltipModel {
         .position=${this.position}
         distance=${ifDefined(this.distance)}
       >
-        <div slot="content">
-          ${this.content ?? html`<slot name="content"></slot>`}
-        </div>
+        ${this.renderContent()}
         <slot></slot>
       </sl-tooltip>
     `;
+  }
+
+  renderContent() {
+    return this.content
+      ? html`<span slot="content">${this.content}</span>`
+      : html`<slot slot="content" name="content"></slot>`;
   }
 
 }
