@@ -1,5 +1,22 @@
 {
     "main": "./dist/index.cjs.js",
     "module": "./dist/index.es.js",
-    "types": "./dist/index.d.ts"
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "require": "./index.cjs.js",
+            "import": "./index.es.js",
+            "types": "./index.d.ts"
+        },
+        "./*": {
+            "require": "./*/index.cjs.js",
+            "import": "./*/index.es.js",
+            "types": "./*/index.d.ts"
+        },
+        "./components/*": {
+            "require": "./components/*/index.cjs.js",
+            "import": "./components/*/index.es.js",
+            "types": "./components/*/index.d.ts"
+        }
+    }
 }

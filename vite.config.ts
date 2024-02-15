@@ -1,30 +1,64 @@
-import { defineConfig } from 'vite';
-import dts from 'vite-plugin-dts';
+import { defineConfig, normalizePath } from 'vite';
+import dts from "vite-plugin-dts";
+import { viteStaticCopy } from 'vite-plugin-static-copy'
+import { resolve } from 'path'
+import glob from "fast-glob";
 
-export default defineConfig({
-  root: 'src',
-  build: {
-    lib: {
-      entry: 'src/index.ts', // 라이브러리의 진입점
-      name: 'MyLibrary', // UMD 빌드에서 사용될 전역 변수의 이름
-      fileName: (format) => `index.${format}.js`,
-      formats: ['cjs', 'es', 'umd'], // 빌드할 포맷
-    },
-    rollupOptions: {
-      // 외부화할 종속성을 지정
-      external: ['react', 'react-dom', 'react-router-dom', 'lit'],
-      output: {
-        // 전역 변수로 사용될 종속성 지정
-        globals: {
-          react: 'React',
-          'react-dom': 'ReactDOM',
-          'react-router-dom': 'ReactRouterDOM',
-          lit: 'Lit'
+const entries = {} as any;
+glob.sync(['src/**/index.ts']).map(path => {
+  // console.log(path);
+  /**
+   * ex)
+   * name: 'base/u-label/index'
+   * path: 'src/components/base/u-label/index.ts'
+   */
+  const name = path.replace('src/', '').replace('.ts', '');
+  entries[name] = resolve(__dirname, path);
+});
+
+export default () => {
+  return defineConfig({
+    build: {
+      minify: false,
+      outDir: 'dist',
+      lib: {
+        entry: {
+          ...entries // index 엔트리 포인트
+        },
+        fileName: (format: string, entry: string): string => {
+          return `${entry}.${format}.js`;
+        },
+        formats: ['es', 'cjs']
+      },
+      rollupOptions: {
+        // 외부 종속성
+        external: [
+          'lit',
+          'lit/decorators.js',
+          'lit/directives/if-defined.js',
+          'mobx'
+        ],
+        // 공통 파일
+        output: {
+          chunkFileNames: 'shared/[name]-[hash].js',
         }
       }
-    }
-  },
-  plugins: [
-    dts()
-  ]
-});
+    },
+    plugins: [
+      // dts 파일 생성
+      dts({
+        include: [ "src/**/*"]
+      }),
+      viteStaticCopy({
+        // 정적 파일 복사(svg, css)
+        targets: [
+          {
+            src: normalizePath(resolve(__dirname, 'src/assets')),
+            dest: normalizePath(resolve(__dirname, 'dist')),
+            overwrite: true
+          }
+        ]
+      }),
+    ]
+  })
+}

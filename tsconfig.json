@@ -32,9 +32,7 @@
         "emitDecoratorMetadata": true,
 
         // 출력 설정
-        "declaration": true,
-        "emitDeclarationOnly": true,
-        "declarationDir": "./types",
+        "noEmit": true,
 
         // 기타 옵션
         "useDefineForClassFields": false,

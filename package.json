@@ -1,45 +1,62 @@
 {
-    "name": "@iyulab/u-components",
-    "description": "iyulab ui components",
-    "version": "0.0.1",
-    "author": {
-        "name": "iyulab",
-        "url": "https://www.iyulab.com"
+  "name": "@iyulab/u-components",
+  "description": "iyulab ui components",
+  "version": "0.0.1",
+  "author": {
+    "name": "iyulab",
+    "url": "https://www.iyulab.com"
+  },
+  "license": "MIT",
+  "type": "module",
+  "main": "./src/index.js",
+  "module": "./src/index.js",
+  "types": "./src/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./src/index.js",
+      "import": "./src/index.js",
+      "types": "./src/index.d.ts"
     },
-    "license": "MIT",
-    "type": "module",
-    "main": "./src/index.js",
-    "module": "./src/index.js",
-    "types": "./src/index.d.ts",
-    "exports": {
-        ".": {
-            "require": "./src/index.js",
-            "import": "./src/index.js",
-            "types": "./src/index.d.ts"
-        },
-        "./*": {
-            "require": "./src/*/index.js",
-            "import": "./src/*/index.js",
-            "types": "./src/*/index.d.ts"
-        }
+    "./*": {
+      "require": "./src/*/index.js",
+      "import": "./src/*/index.js",
+      "types": "./src/*/index.d.ts"
     },
-    "scripts": {
-        "test": "vite -d",
-        "build": "iyulab build -d dist -b vite",
-        "deploy": "iyulab publish"
-    },
-    "devDependencies": {
-        "@iyulab/utils": "^0.0.8",
-        "@shoelace-style/shoelace": "^2.13.1",
-        "@types/node": "^20.11.16",
-        "mobx": "^6.12.0",
-        "lit": "^3.1.2",
-        "postcss": "^8.4.34",
-        "postcss-nesting": "^12.0.2",
-        "sass": "^1.70.0",
-        "sass-loader": "^14.1.0",
-        "typescript": "^5.3.3",
-        "vite": "^5.0.12",
-        "vite-plugin-dts": "^3.7.2"
+    "./components/*": {
+      "require": "./src/components/*/index.js",
+      "import": "./src/components/*/index.js",
+      "types": "./src/components/*/index.d.ts"
     }
+  },
+  "scripts": {
+    "build": "iyulab build -d dist -b vite",
+    "deploy": "iyulab publish",
+    "demo": "storybook dev -p 6006",
+    "build-demo": "storybook build"
+  },
+  "dependencies": {
+    "lit": "^3.1.2",
+    "mobx": "^6.12.0"
+  },
+  "devDependencies": {
+    "@iyulab/utils": "^0.0.8",
+    "@shoelace-style/shoelace": "^2.13.1",
+    "@storybook/addon-essentials": "^7.6.15",
+    "@storybook/addon-links": "^7.6.15",
+    "@storybook/blocks": "^7.6.15",
+    "@storybook/web-components": "^7.6.15",
+    "@storybook/web-components-vite": "^7.6.15",
+    "@types/node": "^20.11.18",
+    "postcss": "^8.4.35",
+    "postcss-nesting": "^12.0.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "sass": "^1.70.0",
+    "sass-loader": "^14.1.0",
+    "storybook": "^7.6.15",
+    "typescript": "^5.3.3",
+    "vite": "^5.1.2",
+    "vite-plugin-dts": "^3.7.2",
+    "vite-plugin-static-copy": "^1.0.1"
+  }
 }
