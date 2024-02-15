@@ -61,20 +61,20 @@ export class UButton extends LitElement {
   tooltipPosition: UTooltipPosition = 'top';
 
   @property({ attribute: false })
-  onClick?: () => void;
+  onClick?: () => Promise<void>;
 
   @property({ type: Object })
   command?: CommandModel;
 
   @property()
-  commandParam?: any = undefined;
+  commandParam?: any;
   
-  async firstUpdated(changedProperties: any) {
-    super.firstUpdated(changedProperties);
+  async updated(changedProperties: any) {
+    super.updated(changedProperties);
+    await this.updateComplete;
 
     if (changedProperties.has('command') && this.command) {
-      const command = this.command;
-      console.log(command);
+      this.disabled = !this.command.canExecute(this.commandParam);
     }
   }
 
@@ -90,7 +90,7 @@ export class UButton extends LitElement {
     }
   }
 
-  renderButtonAndTooltip() {
+  private renderButtonAndTooltip() {
     return html`
       <u-tooltip
         .content=${this.tooltip}
@@ -100,7 +100,7 @@ export class UButton extends LitElement {
     `;
   }
 
-  renderButton() {
+  private renderButton() {
     if(this.type === 'link' && !this.link) {
       throw new Error('Link type button must have a link property set.');
     }
@@ -123,12 +123,12 @@ export class UButton extends LitElement {
         download=${ifDefined(download)}
         @click=${() => this.handleButtonClick()}
       >
-      ${this.renderChildren()}
+        ${this.renderChildren()}
       </sl-button>
     `;
   }
 
-  renderChildren() {
+  private renderChildren() {
     return html`
       <slot name="prefix"></slot>
       <slot name="suffix"></slot>
@@ -137,16 +137,16 @@ export class UButton extends LitElement {
   }
 
   private async handleButtonClick() {
-    this.button.loading = true;
-    
     if (this.command) {
+      this.button.loading = true;
       this.command.execute(this.commandParam);
+      this.button.loading = false;
     }
     if (this.onClick) {
-      this.onClick();
+      this.button.loading = true;
+      await this.onClick();
+      this.button.loading = false;
     }
-
-    this.button.loading = false;
   }
 
   static styles = css`

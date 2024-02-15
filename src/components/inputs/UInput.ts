@@ -23,6 +23,7 @@ import type {
   UInputType,
   UInputSize,
   UInputSelectItem,
+  UInputMeta,
 } from './UInputModel';
 
 @customElement('u-input')
@@ -54,6 +55,7 @@ export class UInput extends LitElement implements UInputModel {
   @property({ type: Boolean }) required: boolean = false;
   @property({ type: String }) pattern?: string;
   @property({ type: String }) invalidMessage?: string;
+  @property({ attribute: false }) meta?: UInputMeta;
 
   protected async updated(changedProperties: any) {
     super.updated(changedProperties);
@@ -64,13 +66,16 @@ export class UInput extends LitElement implements UInputModel {
       this.context && this.path) {
       this.autoBind(this.context, this.path);
     }
+    if (changedProperties.has('meta') && this.meta) {
+      Object.assign(this, this.meta);
+    }
   }
   
   private autoBind(context: any, path: string) {
     const meta = getPropertyMeta(context, path);
     if (!meta) return;
-
-    Object.assign(this, meta);
+    const { name, ...rest } = meta; // eslint-disable-line
+    Object.assign(this, rest);
     /* 
     this.type = meta.type;
     this.size = meta.size;
@@ -93,7 +98,7 @@ export class UInput extends LitElement implements UInputModel {
     this.pattern = meta.pattern;
     this.invalidMessage = meta.invalidMessage;
     */
-    this.value = context[path] = meta.default || context[path];
+    this.value = context[path] = rest.default || context[path];
   }
   
   render() {

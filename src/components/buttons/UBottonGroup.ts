@@ -33,6 +33,7 @@ export class UButtonGroup extends LitElement {
   static styles = css`
     :host {
       display: flex;
+      align-items: center;
     }
   `;
 
