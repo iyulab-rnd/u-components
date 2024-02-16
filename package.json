@@ -32,7 +32,7 @@
     "build": "iyulab build -d dist -b vite",
     "deploy": "iyulab publish",
     "demo": "storybook dev -p 6006",
-    "build-demo": "storybook build"
+    "build-demo": "storybook build -o docs"
   },
   "dependencies": {
     "lit": "^3.1.2",
