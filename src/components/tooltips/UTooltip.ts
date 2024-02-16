@@ -28,14 +28,13 @@ export class UTooltip extends LitElement implements UTooltipModel {
   @property({ type: Number })
   maxWidth?: number;
 
-  async update(changedProperties: any) {
+  protected async update(changedProperties: any) {
     super.update(changedProperties);
     await this.updateComplete;
 
     if (changedProperties.has('maxWidth')) {
       this.tooltip.style.setProperty('--max-width', `${this.maxWidth}px`);
     }
-
     if (changedProperties.has('arrow')) {
       this.tooltip.style.setProperty('--sl-tooltip-arrow-size', `${this.arrow ? '6px' : '0'}`);
     }

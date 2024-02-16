@@ -1,13 +1,15 @@
 import { LitElement, css, html } from "lit";
 import { customElement, query } from "lit/decorators.js";
+import { setBasePath } from '@shoelace-style/shoelace/dist/utilities/base-path.js';
+setBasePath('src');
 
-import './assets/themes/light.css';
-import './assets/themes/dark.css';
+import './src/assets/themes/light.css';
+import './src/assets/themes/dark.css';
 
-import './components/index';
+import './src/components';
 
-@customElement('u-app')
-export class App extends LitElement {
+@customElement('u-app-test')
+export class AppTest extends LitElement {
 
   @query("u-drawer")
   dialog!: any;

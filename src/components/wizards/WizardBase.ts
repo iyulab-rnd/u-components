@@ -7,13 +7,9 @@ import { IWizardStep } from "./WizardStep";
 //import { IResultValue } from "../data";
 
 export abstract class WizardBase extends LitElement {
-  
-  static styles = [
-    // unsafeCSS(baseStyle)
-  ];
 
   // @inject(UIStore) manager!: UIStore;
-  @property({type: Array}) steps: Array<HTMLElement | IWizardStep> = [];
+  @property({ type: Array }) steps: Array<HTMLElement | IWizardStep> = [];
   @state() currentStepIndex: number = 0;
 
   backCommand: RelayCommand;
@@ -102,7 +98,7 @@ export abstract class WizardBase extends LitElement {
         <div class="flex justify-end items-center gap-1">
           <!-- back, next -->
           <u-button .command=${this.backCommand}></u-button>
-          <u-button .command=${this.nextCommand} accent></u-button>
+          <u-button .command=${this.nextCommand}></u-button>
         </div>
       </div>
     `;

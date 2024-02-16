@@ -1,7 +1,7 @@
 {
   "name": "@iyulab/u-components",
   "description": "iyulab ui components",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": {
     "name": "iyulab",
     "url": "https://www.iyulab.com"
@@ -29,6 +29,7 @@
     }
   },
   "scripts": {
+    "test": "vite -d",
     "build": "iyulab build -d dist -b vite",
     "deploy": "iyulab publish",
     "demo": "storybook dev -p 6006",

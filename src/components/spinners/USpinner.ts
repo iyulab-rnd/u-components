@@ -12,8 +12,8 @@ export class USpinner extends LitElement implements USpinnerModel {
   @query('sl-spinner') 
   spinner!: SlSpinner;
 
-  @property({ type: Number })
-  size?: number;
+  @property({ type: String })
+  size?: string;
 
   @property({ type: String })
   width?: string;
@@ -29,10 +29,10 @@ export class USpinner extends LitElement implements USpinnerModel {
     await this.updateComplete;
 
     if (changedProperties.has('size') && this.size) {
-      this.spinner.style.fontSize = `${this.size}px`;
+      this.spinner.style.fontSize = this.size;
     }
     if (changedProperties.has('width') && this.width) {
-      this.spinner.style.setProperty('--track-width', `${this.width}px`);
+      this.spinner.style.setProperty('--track-width', this.width);
     }
     if (changedProperties.has('indicatorColor') && this.indicatorColor) {
       this.spinner.style.setProperty('--indicator-color', this.indicatorColor);

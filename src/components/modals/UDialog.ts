@@ -33,7 +33,7 @@ export class UDialog extends LitElement {
     return html`
       <sl-dialog 
         label=${ifDefined(this.label)}
-        ?noHeader=${this.noHeader}
+        .noHeader=${this.noHeader}
         ?open=${this.open}
       >
         ${this.renderContent()}  
@@ -48,8 +48,8 @@ export class UDialog extends LitElement {
     `;
   }
   
-  public async showAsync(content?: UModalContent) : Promise<any> {
-    this.content = content;
+  public async showAsync(content?: UModalContent) : Promise<UModalResult> {
+    this.content = content ?? this.content;
     await this.updateComplete;
     this.dialog.show();
 

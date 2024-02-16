@@ -24,52 +24,24 @@ import '../icons';
 @customElement('u-button')
 export class UButton extends LitElement {
 
-  @query("sl-button")
-  button!: SlButton;
+  @query("sl-button") button!: SlButton;
 
-  @property({ type: String })
-  type: UButtonType = 'button';
+  @property({ type: String }) type: UButtonType = 'button';
+  @property({ type: String }) theme: UButtonTheme = 'default';
+  @property({ type: Boolean }) outline: boolean = false;
+  @property({ type: String }) text?: string;
+  @property({ type: String }) size: UButtonSize = 'small';
+  @property({ type: Object }) link?: UButtonLink;
+  @property({ type: Boolean }) round: boolean = false;
+  @property({ type: Boolean }) disabled: boolean = false;
+  @property({ type: Boolean }) loading: boolean = false;
+  @property({ type: String }) tooltip?: string;
+  @property({ type: String }) tooltipPosition: UTooltipPosition = 'top';
+  @property({ attribute: false }) onClick?: () => Promise<void>;
+  @property({ type: Object }) command?: CommandModel;
+  @property() commandParam?: any;
 
-  @property({ type: String })
-  theme: UButtonTheme = 'default';
-
-  @property({ type: Boolean })
-  outline: boolean = false;
-
-  @property({ type: String })
-  text?: string;
-
-  @property({ type: String })
-  size: UButtonSize = 'small';
-
-  @property({ type: Object })
-  link?: UButtonLink;
-
-  @property({ type: Boolean })
-  round: boolean = false;
-
-  @property({ type: Boolean })
-  disabled: boolean = false;
-
-  @property({ type: Boolean })
-  loading: boolean = false;
-
-  @property({ type: String })
-  tooltip?: string;
-
-  @property({ type: String })
-  tooltipPosition: UTooltipPosition = 'top';
-
-  @property({ attribute: false })
-  onClick?: () => Promise<void>;
-
-  @property({ type: Object })
-  command?: CommandModel;
-
-  @property()
-  commandParam?: any;
-  
-  async updated(changedProperties: any) {
+  protected async updated(changedProperties: any) {
     super.updated(changedProperties);
     await this.updateComplete;
 

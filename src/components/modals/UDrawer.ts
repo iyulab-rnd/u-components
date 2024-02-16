@@ -42,7 +42,7 @@ export class UDrawer extends LitElement {
       <sl-drawer
         label=${ifDefined(this.label)}
         ?open=${this.open}
-        ?noHeader=${this.noHeader}
+        .noHeader=${this.noHeader}
         ?contained=${this.contained}
         .placement=${this.position}
       >
@@ -59,7 +59,7 @@ export class UDrawer extends LitElement {
   }
 
   public async showAsync(content?: UModalContent) : Promise<UModalResult> {
-    this.content = content;
+    this.content = content ?? this.content;
     await this.updateComplete;
     await this.drawer.show();
 

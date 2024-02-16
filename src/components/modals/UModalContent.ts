@@ -7,6 +7,7 @@ import { property } from "lit/decorators.js";
  * @example
  * import { UModalContent } from '@iyulab/u-components';
  * 
+ * .@customElement('u-modal-content-element')
  * export class UModalContentElement extends UModalContent {
  *  render() {
  *     return html`
@@ -36,12 +37,12 @@ export class UModalContent extends LitElement {
     super.updated(changedProperties);
     await this.updateComplete;
     
-    if (changedProperties.has('confirm') && this.confirmValue) {
+    if (changedProperties.has('confirmValue') && this.confirmValue) {
       this.dispatchEvent(new CustomEvent('confirm', {
         detail: this.confirmValue
       }));
     }
-    if (changedProperties.has('cancel') && this.cancelValue) {
+    if (changedProperties.has('cancelValue') && this.cancelValue) {
       this.dispatchEvent(new CustomEvent('cancel', {
         detail: this.cancelValue
       }));

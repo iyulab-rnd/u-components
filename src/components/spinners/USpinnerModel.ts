@@ -3,9 +3,9 @@
  */
 export interface USpinnerModel {
   /**
-   * The size of the spinner.
+   * The size of the spinner. The value is css syntax.
    */
-  size?: number;
+  size?: string;
   
   /**
    * The width of the spinner.
