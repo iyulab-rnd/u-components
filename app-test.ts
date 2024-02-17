@@ -25,6 +25,18 @@ export class AppTest extends LitElement {
         required
       ></u-input>
       <u-icon name="gear"></u-icon>
+      <u-radio
+        label="Hello"
+        value="1"
+        size="medium"
+        required
+        help="This is a help text"
+        .list=${[
+          { value: '1', display: 'Option 1' },
+          { value: '2', display: 'Option 2' },
+          { value: '3', display: 'Option 3', disabled: true }
+        ]}
+      ></u-radio>
     `;
   }
 

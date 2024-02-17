@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { UInputMeta } from '../components/inputs/UInputModel';
+import { UInputMeta } from '../components/input/UInputModel';
 
 const key = Symbol('propertyMeta');
 type constructor<T = {}> = new (...args: any[]) => T; // eslint-disable-line
@@ -38,10 +38,13 @@ export function getPropertyMeta(target: constructor): PropertyMetaData[] | undef
 export function getPropertyMeta(target: constructor, propertyKey: string): PropertyMetaData | undefined;
 
 export function getPropertyMeta(target: constructor, propertyKey?: string): PropertyMetaData[] | PropertyMetaData | undefined {
-  const metaList: PropertyMetaData[] | undefined = Reflect.getMetadata(key, target.prototype);
-  
-  // propertyKey가 존재하면 해당 속성에 대한 메타데이터를 반환합니다.
-  return propertyKey 
+  try{
+    const metaList: PropertyMetaData[] | undefined = Reflect.getMetadata(key, target.prototype);
+    // propertyKey가 존재하면 해당 속성에 대한 메타데이터를 반환합니다.
+    return propertyKey 
     ? metaList?.find((meta: PropertyMetaData) => meta.name === propertyKey) 
     : metaList;
+  } catch (e) {
+    return undefined;
+  }
 }

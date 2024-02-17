@@ -31,12 +31,14 @@ export default () => {
         formats: ['es', 'cjs']
       },
       rollupOptions: {
-        // 외부 종속성
+        // Shoelace 외부종속성: lit/*, react, @lit/react
+        // 이외 문제 발생가능성: mobx, reflect-metadata
         external: [
-          'lit',
-          'lit/decorators.js',
-          'lit/directives/if-defined.js',
-          'mobx'
+          /^lit*/,
+          'react',
+          '@lit/react',
+          'mobx',
+          'reflect-metadata',
         ],
         // 공통 파일
         output: {
