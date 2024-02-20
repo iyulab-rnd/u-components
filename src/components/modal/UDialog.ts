@@ -29,6 +29,17 @@ export class UDialog extends LitElement {
   @property({ attribute: false })
   content?: UModalContent;
   
+  protected async updated(changedProperties: any) {
+    super.updated(changedProperties);
+    await this.updateComplete;
+
+    if (changedProperties.has('content') && this.content) {
+      this.content.addEventListener('label', (e: any) => {
+        this.label = e.detail;
+      });
+    }
+  }
+    
   render() {
     return html`
       <sl-dialog 
