@@ -1,4 +1,4 @@
-import { css, html, LitElement } from "lit";
+import { css, html, LitElement, unsafeCSS } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { createRef, Ref, ref } from "lit/directives/ref.js";
 
@@ -7,7 +7,7 @@ SlCopyButton.define('sl-copy-button');
 
 import "./MonacoWorker";
 import * as monaco from "monaco-editor";
-import styles from "./monaco-editor.css?raw";
+import styles from "monaco-editor/min/vs/editor/editor.main.css?inline";
 
 export type EditorTheme = "light" | "dark";
 
@@ -15,7 +15,10 @@ export type EditorTheme = "light" | "dark";
 export class MonacoEditor extends LitElement {
   private container: Ref<HTMLElement> = createRef();
   private editor!: monaco.editor.IStandaloneCodeEditor;
-  private observer: MutationObserver = new MutationObserver(this.observeTheme);
+  private observer: MutationObserver = new MutationObserver(() => {
+    const theme = document.documentElement.classList.contains("sl-theme-dark") ? "dark" : "light";
+    if (this.theme !== theme) this.theme = theme;
+  });
 
   @property({ type: String }) label: string = "Editor";
   @property({ type: String }) theme: EditorTheme = "light";
@@ -84,8 +87,9 @@ export class MonacoEditor extends LitElement {
     return html`
       ${this.renderHeader()}
       <div class="editor">
-        <style>${styles}</style>
-        <main style="width:100%; height:100%;" ${ref(this.container)}></main>
+        <main ${ref(this.container)}
+          style="width:100%; height:100%;" 
+        ></main>
       </div>
     `;
   }
@@ -103,18 +107,9 @@ export class MonacoEditor extends LitElement {
     `;
   }
 
-  private observeTheme(mutations: MutationRecord[]) {
-    for (const mutation of mutations) {
-      if (mutation.type === "attributes" && mutation.attributeName === "class") {
-        const theme = document.documentElement.classList.contains("sl-theme-dark") ? "dark" : "light";
-        if (this.theme !== theme) {
-          this.theme = theme;
-        }
-      }
-    }
-  }
-
-  static styles = css`
+  static styles = [
+    unsafeCSS(styles),
+    css`
     :host {
       display: block;
       width: 100%;
@@ -150,6 +145,6 @@ export class MonacoEditor extends LitElement {
       height: calc(100% - 24px);
       overflow: hidden;
     }
-  `;
+  `];
   
 }

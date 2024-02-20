@@ -37,10 +37,12 @@
     // 기타 옵션
     "useDefineForClassFields": false,
     "skipLibCheck": true,
+    "preserveSymlinks": true
   },
   "include": [
     "src/**/*",
     "app-test.ts",
-    "vite.config.ts"
+    "vite.config.ts",
+    "vite-env.d.ts"
   ]
 }
