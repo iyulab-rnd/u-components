@@ -148,6 +148,7 @@ export class UInput extends LitElement implements UInputModel {
         swatches=${presets}
         opacity
         hoist
+        @sl-input=${this.handleInput}
         @sl-change=${this.handleChanged}
       ></sl-color-picker>
     `;
@@ -158,7 +159,7 @@ export class UInput extends LitElement implements UInputModel {
       <sl-select
         class="input"
         size=${this.size}
-        value=${ifDefined(this.value || this.default)}
+        value=${ifDefined(this.value || this.default || '')}
         label=${ifDefined(this.label)}
         placeholder=${ifDefined(this.hint)}
         helpText=${ifDefined(this.help)}
@@ -190,7 +191,7 @@ export class UInput extends LitElement implements UInputModel {
       <sl-textarea
         class="input"
         size=${this.size}
-        value=${ifDefined(this.value || this.default)}
+        value=${ifDefined(this.value || this.default || '')}
         label=${ifDefined(this.label)}
         placeholder=${ifDefined(this.hint)}
         helpText=${ifDefined(this.help)}
@@ -202,6 +203,7 @@ export class UInput extends LitElement implements UInputModel {
         ?disabled=${this.disabled}
         ?readonly=${this.readonly}
         resize="auto"
+        @sl-input=${this.handleInput}
         @sl-change=${this.handleChanged}
       ></sl-textarea>
     `;
@@ -213,7 +215,7 @@ export class UInput extends LitElement implements UInputModel {
         class="input"
         type=${this.type as any}
         size=${this.size}
-        value=${ifDefined(this.value || this.default)}
+        value=${ifDefined(this.value || this.default || '')}
         label=${ifDefined(this.label)}
         placeholder=${ifDefined(this.hint)}
         helpText=${ifDefined(this.help)}
@@ -231,6 +233,7 @@ export class UInput extends LitElement implements UInputModel {
         ?autofocus=${this.autofocus}
         ?password-toggle=${this.type === 'password'}
         autocomplete="off"
+        @sl-input=${this.handleInput}
         @sl-change=${this.handleChanged}
       >
         ${this.icon ? html`<u-icon slot="prefix" name=${this.icon}></u-icon>` : ''}
@@ -238,10 +241,19 @@ export class UInput extends LitElement implements UInputModel {
     `;
   }
 
+  private handleInput(e: Event) {
+    const target = e.target as SlInput | SlColorPicker | SlTextarea;
+    const value = target.value || undefined;
+    // TODO: ifDefined(value) is not working, fix it
+    this.value = value;
+    // input default event is fired already
+  }
+
   private async handleChanged(e: Event) {
     const target = e.target as SlInput | SlCheckbox | SlColorPicker | SlSelect | SlTextarea;
-    const value = target instanceof SlCheckbox ? target.checked : target.value || undefined;
-    if(value) this.value = value;
+    const value = target instanceof SlCheckbox ? target.checked : target.value;
+    // TODO: ifDefined(value) is not working, fix it
+    this.value = value || undefined;
     runInAction(() => {
       if(this.context && this.path) {
         this.context[this.path] = this.convertValue(value);
