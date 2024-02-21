@@ -1,4 +1,4 @@
-import { LitElement, html } from "lit";
+import { LitElement, css, html } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 
 import SlIcon from '@shoelace-style/shoelace/dist/components/icon/icon.component.js';
@@ -45,4 +45,10 @@ export class UIcon extends LitElement implements UIconModel {
     `;
   }
   
+  static styles = css`
+    :host {
+      display: contents;
+    }
+  `
+
 }

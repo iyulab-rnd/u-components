@@ -21,10 +21,10 @@ export class MonacoEditor extends LitElement {
   });
 
   @property({ type: String }) label: string = "Editor";
+  @property({ type: Boolean }) noHeader: boolean = false;
   @property({ type: String }) theme: EditorTheme = "light";
   @property({ type: String }) code: string = "{}";
   @property({ type: String }) language: string = "json";
-  @property({ type: Boolean }) noHeader: boolean = false;
   
   connectedCallback() {
     super.connectedCallback();
@@ -39,8 +39,8 @@ export class MonacoEditor extends LitElement {
     this.observer.disconnect();
   }
 
-  async firstUpdated(_changedProperties: any) {
-    super.firstUpdated(_changedProperties);
+  async firstUpdated(changedProperties: any) {
+    super.firstUpdated(changedProperties);
     await this.updateComplete;
     
     this.editor = monaco.editor.create(this.container.value!, {
@@ -56,9 +56,8 @@ export class MonacoEditor extends LitElement {
     this.editor.onDidChangeModelContent(() => {
       const value = this.editor.getValue();
       try {
-        const json = JSON.parse(value);
         this.dispatchEvent(new CustomEvent("change", { 
-          detail: json
+          detail: value
         }));
       } catch(ex) {
         // console.error(ex);
@@ -66,20 +65,25 @@ export class MonacoEditor extends LitElement {
     });
   }
 
-  async updated(_changedProperties: any) {
-    super.updated(_changedProperties);
+  async updated(changedProperties: any) {
+    super.updated(changedProperties);
     await this.updateComplete;
 
-    if (_changedProperties.has("code")
+    if (changedProperties.has("code")
       && this.code !== this.editor.getValue()
       && !this.editor.hasWidgetFocus()) {
         this.editor.setValue(this.code);
     }
-
-    if (_changedProperties.has("theme") && this.editor) {
+    if (changedProperties.has("theme") && this.editor) {
       this.editor.updateOptions({
         theme: this.theme === "light" ? "vs-light" : "vs-dark",
       });
+    }
+    if (changedProperties.has("language") && this.editor) {
+      monaco.editor.setModelLanguage(this.editor.getModel()!, this.language);
+    }
+    if (changedProperties.has("noHeader")) {
+      this.style.setProperty("--header-height", this.noHeader ? "0px" : "32px");
     }
   }
   
@@ -115,6 +119,7 @@ export class MonacoEditor extends LitElement {
       width: 100%;
       height: 100%;
       overflow: hidden;
+      --header-height: 32px;
     }
 
     .header {
@@ -142,7 +147,7 @@ export class MonacoEditor extends LitElement {
 
     .editor {
       width: 100%;
-      height: calc(100% - 24px);
+      height: calc(100% - var(--header-height));
       overflow: hidden;
     }
   `];

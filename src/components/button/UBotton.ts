@@ -102,9 +102,9 @@ export class UButton extends LitElement {
 
   private renderChildren() {
     return html`
-      <slot name="prefix"></slot>
-      <slot name="suffix"></slot>
+      <slot slot="prefix" name="prefix"></slot>
       ${this.text ?? html`<slot></slot>`}
+      <slot slot="suffix" name="suffix"></slot>
     `;
   }
 
