@@ -7,17 +7,15 @@ export interface UDividerModel {
    */
   color?: string;
   /**
-   * 구분선의 굵기를 지정합니다. 픽셀 단위로 지정합니다.
+   * 구분선의 굵기를 지정합니다.
    */
-  width?: number;
+  width?: string;
   /**
-   * 구분선의 마진을 지정합니다. 픽셀 단위로 지정합니다.
+   * 구분선의 마진을 지정합니다.
    */
-  space?: number;
+  space?: string;
   /**
-   * 구분선의 방향을 지정합니다.
-   * - 'vertical': 수직 방향
-   * - 'horizontal': 수평 방향
+   * 구분선의 방향을 수직으로 지정합니다.
    */
-  orientation: 'vertical' | 'horizontal';
+  vertical: boolean;
 }

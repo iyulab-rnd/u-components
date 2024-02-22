@@ -1,5 +1,5 @@
 import { LitElement, html } from "lit";
-import { customElement, property, query } from "lit/decorators.js";
+import { customElement, property, query, state } from "lit/decorators.js";
 
 import SlAlert from "@shoelace-style/shoelace/dist/components/alert/alert.component.js";
 SlAlert.define('sl-alert');
@@ -15,27 +15,24 @@ import '../icon';
 @customElement('u-alert')
 export class UAlert extends LitElement implements UAlertModel {
   
-  @query('sl-alert')
-  alert!: SlAlert;
+  @query('sl-alert') alert!: SlAlert;
 
-  @property({ type: String }) 
-  type: AlertType = "primary";
+  @state() duration: number = 3000;
+  @state() content?: AlertContent;
 
-  @property({ type: Number })
-  duration: number = 3000;
+  @property({ type: String }) type: AlertType = "primary";
+  @property({ type: Boolean }) open: boolean = false;
+  @property({ type: Boolean }) closable: boolean = true;
 
-  @property({ attribute: false })
-  content?: AlertContent;
-
-  // TODO: toast사용시 <slot>이 렌더링 되지 않음, show/hide로 변경 필요
   render() {
     return html`
-      <sl-alert 
-        .variant=${this.type} 
+      <sl-alert
+        .variant=${this.type}
         .duration=${this.duration}
-        closable>
+        ?open=${this.open}
+        ?closable=${this.closable}>
         ${this.renderIcon()}
-        ${this.content}
+        ${this.content || html`<slot></slot>`}
       </sl-alert>
     `;
   }
@@ -57,7 +54,7 @@ export class UAlert extends LitElement implements UAlertModel {
     `;
   }
 
-  public async showAsync(type: AlertType, content: AlertContent, duration: number = 3000) {
+  public async toastAsync(type: AlertType, content: AlertContent, duration: number = 3000) {
     try {
       document.body.appendChild(this);
       this.type = type;
@@ -68,6 +65,14 @@ export class UAlert extends LitElement implements UAlertModel {
     } finally {
       document.body.removeChild(this);
     }
+  }
+
+  public show () {
+    this.alert.show();
+  }
+
+  public hide () {
+    this.alert.hide();
   }
 
 }

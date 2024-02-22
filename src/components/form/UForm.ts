@@ -124,7 +124,7 @@ export class UForm extends LitElement {
         }));
       }
     } catch(error: any) {
-      this.alert.showAsync("danger", error);
+      this.alert.toastAsync("danger", error);
     } finally {
       this.submit.loading = false;
     }

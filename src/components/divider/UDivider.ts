@@ -1,49 +1,59 @@
-import { LitElement, html } from "lit";
-import { customElement, property, query } from "lit/decorators.js";
-
-import SlDivider from '@shoelace-style/shoelace/dist/components/divider/divider.component.js';
-SlDivider.define('sl-divider');
+import { LitElement, css } from "lit";
+import { customElement, property } from "lit/decorators.js";
 
 import type { UDividerModel } from "./UDividerModel";
 
 @customElement('u-divider')
 export class UDivider extends LitElement implements UDividerModel {
-  
-  @query("sl-divider")
-  divider!: SlDivider;
+
+  @property({ type: Boolean })
+  vertical: boolean = false;
 
   @property({ type: String })
   color?: string;
 
-  @property({ type: Number })
-  width?: number;
-
-  @property({ type: Number })
-  space?: number;
+  @property({ type: String })
+  width?: string;
 
   @property({ type: String })
-  orientation: 'vertical' | 'horizontal' = 'horizontal';
+  spacing?: string;
 
   protected async updated(changedProperties: any) {
     super.updated(changedProperties);
     await this.updateComplete;
 
     if (changedProperties.has('color') && this.color) {
-      this.divider.style.setProperty('--color', this.color);
+      this.style.setProperty('--color', this.color);
     }
     if (changedProperties.has('width') && this.width) {
-      this.divider.style.setProperty('--width', `${this.width}px`);
+      this.style.setProperty('--width', this.width);
     }
-    if (changedProperties.has('space') && this.space) {
-      this.divider.style.setProperty('--spacing', `${this.space}px`);
+    if (changedProperties.has('space') && this.spacing) {
+      this.style.setProperty('--spacing', this.spacing);
     }
   }
 
-  render() {
-    return html`
-      <sl-divider
-        .vertical=${this.orientation === 'vertical'}
-      ></sl-divider>
-    `;
-  }
+  static styles = css`
+    :host {
+      --color: var(--sl-panel-border-color);
+      --width: var(--sl-panel-border-width);
+      --spacing: var(--sl-spacing-medium);
+      box-sizing: border-box;
+    }
+
+    :host([vertical]) {
+      display: inline-block;
+      height: 100%;
+      border-left: solid var(--width) var(--color);
+      margin: 0 var(--spacing);
+    }
+
+    :host(:not([vertical])) {
+      display: block;
+      width: 100%;
+      border-top: solid var(--width) var(--color);
+      margin: var(--spacing) 0;
+    }
+  
+  `;
 }

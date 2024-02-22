@@ -43,4 +43,9 @@ export interface UMenuItem {
    * Indicates whether the menu item is disabled.
    */
   disabled?: boolean;
+
+  /**
+   * The action to be performed when the menu item is clicked.
+   */
+  onAction?: (item: UMenuItem) => void;
 }

@@ -47,7 +47,7 @@ export class UIcon extends LitElement implements UIconModel {
   
   static styles = css`
     :host {
-      display: contents;
+      display: inline-flex;
     }
   `
 

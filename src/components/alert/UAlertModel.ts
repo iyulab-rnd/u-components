@@ -17,9 +17,25 @@ export interface UAlertModel {
    */
   duration: number;
   /**
-   * 알림을 표시합니다.
+   * 알림이 열려 있는지 여부입니다.
+   */
+  open: boolean;
+  /**
+   * 알림창에 닫기 버튼이 표시되는지 여부입니다.
+   */
+  closable: boolean;
+  /**
+   * 알림을 토스트로 표시합니다.
   */
-  showAsync: (type: AlertType, content: AlertContent, duration: number) => Promise<void>;
+  toastAsync: (type: AlertType, content: AlertContent, duration: number) => Promise<void>;
+  /**
+   * 알림을 엽니다.
+   */
+  show: () => void;
+  /**
+   * 알림을 닫습니다.
+   */
+  hide: () => void;
 }
 
 export type AlertType = ( 
