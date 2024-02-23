@@ -54,17 +54,13 @@ export class UAlert extends LitElement implements UAlertModel {
     `;
   }
 
+  // 일회성 토스트
   public async toastAsync(type: AlertType, content: AlertContent, duration: number = 3000) {
-    try {
-      document.body.appendChild(this);
-      this.type = type;
-      this.content = content;
-      this.duration = duration;
-      await this.updateComplete;
-      await this.alert.toast();
-    } finally {
-      document.body.removeChild(this);
-    }
+    this.type = type;
+    this.content = content;
+    this.duration = duration;
+    await this.updateComplete;
+    await this.alert.toast();
   }
 
   public show () {
