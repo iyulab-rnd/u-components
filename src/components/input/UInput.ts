@@ -53,6 +53,7 @@ export class UInput extends LitElement implements UInputModel {
   @property({ attribute: false }) value?: any;
   @property({ attribute: false }) default?: any;
   @property({ type: Boolean }) required: boolean = false;
+  @property({ type: Boolean }) requiredCheck: boolean = false;
   @property({ type: String }) pattern?: string;
   @property({ type: String }) invalidMessage?: string;
   @property({ attribute: false }) meta?: UInputMeta;
@@ -102,6 +103,7 @@ export class UInput extends LitElement implements UInputModel {
     this.selectItems = meta.selectItems;
     this.default = meta.default;
     this.required = meta.required || false;
+    this.requiredCheck = meta.requiredCheck || false;
     this.pattern = meta.pattern;
     this.invalidMessage = meta.invalidMessage;
   }
@@ -128,7 +130,7 @@ export class UInput extends LitElement implements UInputModel {
         size=${this.size}
         ?disabled=${this.disabled}
         ?checked=${this.value || false}
-        ?required=${this.required}
+        ?required=${this.requiredCheck || false}
         @sl-change=${this.handleChanged}
       >${display}</sl-checkbox>
     `;
