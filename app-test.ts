@@ -6,44 +6,46 @@ setBasePath('src');
 import './src/assets/themes/light.css';
 import './src/assets/themes/dark.css';
 
+import { propertyMeta } from "./src/decorators";
 import './src/components';
+
+export class TestContext {
+
+  @propertyMeta({ label: 'Name', required: true })
+  name: string = '';
+
+  @propertyMeta({ type:"email", label: 'Email', required: true })
+  email: string = '';
+
+  @propertyMeta({ type:"password", label: 'Password', required: true })
+  password: string = '';
+
+  @propertyMeta({ type:"password", label: 'Confirm Password', required: true })
+  confirmPassword: string = '';
+}
 
 @customElement('u-app-test')
 export class AppTest extends LitElement {
 
-  @query("u-drawer")
+  @query("u-button")
   dialog!: any;
 
   render() {
     return html`
-      <u-button-group>
-        <u-button @click=${this.toggleTheme}>Theme</u-button>
-        <u-button @click=${() => this.showDialog()}>Show Dialog</u-button>
-      </u-button-group>
-      <u-input
-        type="date"
-        required
-      ></u-input>
-      <u-icon name="gear"></u-icon>
-      <u-radio
-        label="Hello"
-        value="1"
-        size="medium"
-        required
-        help="This is a help text"
-        .list=${[
-          { value: '1', display: 'Option 1' },
-          { value: '2', display: 'Option 2' },
-          { value: '3', display: 'Option 3', disabled: true }
-        ]}
-      ></u-radio>
+      <u-form
+        label="Register"
+        .context=${new TestContext()}
+        .onSubmit=${() => {throw new Error('Not implemented')}}
+      ></u-form>
+      <u-button @click=${this.showDialog}>Trick</u-button>
     `;
   }
 
   async showDialog() {
-    this.dialog.label = 'This is a dialog';
-    const result = await this.dialog.showAsync();
-    console.log(result);
+    this.requestUpdate();
+    // this.dialog.label = 'This is a dialog';
+    // const result = await this.dialog.showAsync();
+    // console.log(result);
   }
 
   toggleTheme() {

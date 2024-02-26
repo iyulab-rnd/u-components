@@ -115,6 +115,7 @@ export class MonacoEditor extends LitElement {
     unsafeCSS(styles),
     css`
     :host {
+      position: relative;
       display: block;
       width: 100%;
       height: 100%;
@@ -123,6 +124,7 @@ export class MonacoEditor extends LitElement {
     }
 
     .header {
+      position: relative;
       display: flex;
       flex-direction: row;
       align-items: center;
@@ -146,6 +148,7 @@ export class MonacoEditor extends LitElement {
     }
 
     .editor {
+      position: absolute;
       width: 100%;
       height: calc(100% - var(--header-height));
       overflow: hidden;

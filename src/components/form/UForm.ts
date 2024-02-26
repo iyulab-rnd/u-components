@@ -1,7 +1,7 @@
 import { LitElement, css, html } from "lit";
 import { customElement, property, queryAll, query, state } from 'lit/decorators.js';
 
-import type { PropertyMetaData } from "../../decorators";
+import { getPropertyMeta, type PropertyMetaData } from "../../decorators";
 import { UInput } from "../input";
 import { UButton } from "../button";
 import { UAlert } from "../alert";
@@ -10,7 +10,6 @@ import "../button";
 
 @customElement('u-form')
 export class UForm extends LitElement {
-  private alert = new UAlert();
 
   @queryAll('u-input') inputs!: NodeListOf<UInput>;
   @query('.submit') submit!: UButton;
@@ -37,6 +36,7 @@ export class UForm extends LitElement {
       } else {
         this.context = {};
       }
+      this.meta = getPropertyMeta(this.context) || this.meta;
     }
     if (changedProperties.has('meta') && this.meta) {
       const keys = this.meta.filter(m => m.name != undefined).map(m => m.name!);
@@ -114,6 +114,7 @@ export class UForm extends LitElement {
   }
 
   private async handleSubmit() {
+    const alert = new UAlert();
     try {
       this.submit.loading = true;
       const isValid = await this.checkValidity();
@@ -124,8 +125,12 @@ export class UForm extends LitElement {
         }));
       }
     } catch(error: any) {
-      this.alert.toastAsync("danger", error);
+      document.body.appendChild(alert);
+      alert.toastAsync("danger", error);
     } finally {
+      if(document.body.contains(alert)) {
+        document.body.removeChild(alert);
+      }
       this.submit.loading = false;
     }
   }

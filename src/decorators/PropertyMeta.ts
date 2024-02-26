@@ -39,7 +39,8 @@ export function getPropertyMeta(target: constructor, propertyKey: string): Prope
 
 export function getPropertyMeta(target: constructor, propertyKey?: string): PropertyMetaData[] | PropertyMetaData | undefined {
   try{
-    const metaList: PropertyMetaData[] | undefined = Reflect.getMetadata(key, target.prototype);
+    target = target.prototype ? target.prototype : target;
+    const metaList: PropertyMetaData[] | undefined = Reflect.getMetadata(key, target);
     // propertyKey가 존재하면 해당 속성에 대한 메타데이터를 반환합니다.
     return propertyKey 
     ? metaList?.find((meta: PropertyMetaData) => meta.name === propertyKey) 
