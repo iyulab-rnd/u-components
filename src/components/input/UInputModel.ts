@@ -25,6 +25,7 @@ export interface UInputMeta {
   selectItems?: UInputSelectItem[];  
   default?: any;
   required?: boolean;
+  requiredCheck?: boolean; // for checkbox, check: true if required
   pattern?: string;
   invalidMessage?: string;
 }
