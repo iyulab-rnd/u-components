@@ -5,28 +5,22 @@ import { ifDefined } from "lit/directives/if-defined.js";
 import SlTooltip from '@shoelace-style/shoelace/dist/components/tooltip/tooltip.component.js';
 SlTooltip.define('sl-tooltip');
 
-import type { UTooltipModel } from "./UTooltipModel";
+import type { 
+  UTooltipModel, 
+  UTooltipPosition 
+} from "./UTooltipModel";
 
 @customElement('u-tooltip')
 export class UTooltip extends LitElement implements UTooltipModel {
 
-  @query("sl-tooltip")
-  tooltip!: SlTooltip;
+  @query("sl-tooltip") tooltip!: SlTooltip;
 
-  @property({ type: String })
-  content?: string | HTMLElement | LitElement | TemplateResult;
-
-  @property({ type: String })
-  position: 'top' | 'top-start' | 'top-end' | 'right' | 'right-start' | 'right-end' | 'bottom' | 'bottom-start' | 'bottom-end' | 'left' | 'left-start' | 'left-end' = 'top';
-
-  @property({ type: Boolean })
-  arrow: boolean = false;
-
-  @property({ type: Number })
-  distance?: number;
-
-  @property({ type: Number })
-  maxWidth?: number;
+  @property({ type: String }) content?: string | HTMLElement | LitElement | TemplateResult;
+  @property({ type: String }) position: UTooltipPosition = 'top';
+  @property({ type: Boolean }) arrow: boolean = false;
+  @property({ type: Number }) distance?: number;
+  @property({ type: Number }) maxWidth?: number;
+  @property({ type: Boolean }) hoist: boolean = false;
 
   protected async update(changedProperties: any) {
     super.update(changedProperties);
@@ -43,7 +37,7 @@ export class UTooltip extends LitElement implements UTooltipModel {
   render() {
     return html`
       <sl-tooltip 
-        ?hoist=${true}  
+        ?hoist=${this.hoist}
         .position=${this.position}
         distance=${ifDefined(this.distance)}
       >
@@ -53,7 +47,7 @@ export class UTooltip extends LitElement implements UTooltipModel {
     `;
   }
 
-  renderContent() {
+  private renderContent() {
     return this.content
       ? html`<span slot="content">${this.content}</span>`
       : html`<slot slot="content" name="content"></slot>`;

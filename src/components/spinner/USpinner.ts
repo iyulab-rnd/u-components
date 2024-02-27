@@ -9,20 +9,12 @@ import type { USpinnerModel } from "./USpinnerModel";
 @customElement('u-spinner')
 export class USpinner extends LitElement implements USpinnerModel {
 
-  @query('sl-spinner') 
-  spinner!: SlSpinner;
+  @query('sl-spinner') spinner!: SlSpinner;
 
-  @property({ type: String })
-  size?: string;
-
-  @property({ type: String })
-  width?: string;
-
-  @property({ type: String })
-  indicatorColor?: string;
-
-  @property({ type: String })
-  trackColor?: string;
+  @property({ type: String }) size?: string;
+  @property({ type: String }) width?: string;
+  @property({ type: String }) indicatorColor?: string;
+  @property({ type: String }) trackColor?: string;
 
   protected async updated(changedProperties: any) {
     super.updated(changedProperties);

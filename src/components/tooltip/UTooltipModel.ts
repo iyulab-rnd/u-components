@@ -44,4 +44,10 @@ export interface UTooltipModel {
    */
   maxWidth?: number;
   
+  /**
+   * 툴팁을 hoist합니다.
+   * @type {boolean}
+   * @default false
+   */
+  hoist: boolean;
 }

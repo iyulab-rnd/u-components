@@ -25,6 +25,7 @@ export class MonacoEditor extends LitElement {
   @property({ type: String }) theme: EditorTheme = "light";
   @property({ type: String }) code: string = "{}";
   @property({ type: String }) language: string = "json";
+  @property({ type: Boolean }) readOnly: boolean = false;
   
   connectedCallback() {
     super.connectedCallback();
@@ -51,6 +52,7 @@ export class MonacoEditor extends LitElement {
       lineNumbersMinChars: 2,
       lineDecorationsWidth: 1,
       value: this.code,
+      readOnly: this.readOnly,
     });
 
     this.editor.onDidChangeModelContent(() => {
