@@ -22,9 +22,9 @@ export interface UIconModel {
   color?: string;
   
   /**
-   * 아이콘의 크기입니다. 픽셀 단위로 지정합니다.
+   * 아이콘의 크기입니다. CSS 크기 값으로 지정합니다.
    * @default undefined
    */
-  size?: number;
+  size?: string;
 
 }

@@ -9,20 +9,12 @@ import type { UIconModel } from "./UIconModel";
 @customElement('u-icon')
 export class UIcon extends LitElement implements UIconModel {
 
-  @query("sl-icon")
-  icon!: SlIcon;
+  @query("sl-icon")icon!: SlIcon;
 
-  @property({ type: String })
-  name?: string;
-
-  @property({ type: String })
-  src?: string;
-
-  @property({ type: Number })
-  size?: number;
-
-  @property({ type: String })
-  color?: string;
+  @property({ type: String }) name?: string;
+  @property({ type: String }) src?: string;
+  @property({ type: String }) size?: string;
+  @property({ type: String }) color?: string;
 
   protected async updated(changedProperties: any) {
     super.updated(changedProperties);
@@ -32,7 +24,7 @@ export class UIcon extends LitElement implements UIconModel {
       this.icon.style.color = this.color;
     }
     if (changedProperties.has('size') && this.size) {
-      this.icon.style.fontSize = `${this.size}px`;
+      this.icon.style.fontSize = this.size;
     }
   }
 

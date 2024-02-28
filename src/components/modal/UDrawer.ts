@@ -1,4 +1,4 @@
-import { LitElement, html } from "lit";
+import { LitElement, css, html } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
@@ -13,29 +13,15 @@ export type DrawerPosition = 'top' | 'end' | 'bottom' | 'start';
 @customElement('u-drawer')
 export class UDrawer extends LitElement {
   
-  @query("sl-drawer")
-  drawer!: SlDrawer;
+  @query("sl-drawer")drawer!: SlDrawer;
 
-  @property({ type: Boolean })
-  open: boolean = false;
-
-  @property({ type: String })
-  label?: string;
-
-  @property({ type: String })
-  position: DrawerPosition = "end";
-
-  @property({ type: Boolean })
-  contained: boolean = false;
-
-  @property({ type: Boolean })
-  noHeader: boolean = false;
-
-  @property({ attribute: false })
-  headerActions?: HTMLElement;
-
-  @property({ attribute: false })
-  content?: UModalContent;
+  @property({ type: Boolean }) open: boolean = false;
+  @property({ type: String }) label?: string;
+  @property({ type: String }) position: DrawerPosition = "end";
+  @property({ type: Boolean }) contained: boolean = false;
+  @property({ type: Boolean }) noHeader: boolean = false;
+  @property({ attribute: false }) headerActions?: HTMLElement;
+  @property({ attribute: false }) content?: UModalContent;
 
   protected async updated(changedProperties: any) {
     super.updated(changedProperties);
@@ -93,5 +79,13 @@ export class UDrawer extends LitElement {
   public async hideAsync() {
     await this.drawer.hide();
   }
+
+  static styles = css`
+    sl-drawer {
+      --header-spacing: var(--sl-spacing-small);
+      --body-spacing: var(--sl-spacing-small);
+      --footer-spacing: var(--sl-spacing-small);
+    }
+  `;
 
 }
