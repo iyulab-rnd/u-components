@@ -164,7 +164,7 @@ export class UInput extends LitElement implements UInputModel {
         value=${ifDefined(this.value || this.default || '')}
         label=${ifDefined(this.label)}
         placeholder=${ifDefined(this.hint)}
-        helpText=${ifDefined(this.help)}
+        help-text=${ifDefined(this.help)}
         ?required=${this.required}
         ?multiple=${this.type === 'multi-select'}
         ?filled=${this.filled}
@@ -196,7 +196,7 @@ export class UInput extends LitElement implements UInputModel {
         value=${ifDefined(this.value || this.default || '')}
         label=${ifDefined(this.label)}
         placeholder=${ifDefined(this.hint)}
-        helpText=${ifDefined(this.help)}
+        help-text=${ifDefined(this.help)}
         minlength=${ifDefined(this.minLength)}
         maxlength=${ifDefined(this.maxLength)}
         ?required=${this.required}
@@ -220,7 +220,7 @@ export class UInput extends LitElement implements UInputModel {
         value=${ifDefined(this.value || this.default || '')}
         label=${ifDefined(this.label)}
         placeholder=${ifDefined(this.hint)}
-        helpText=${ifDefined(this.help)}
+        help-text=${ifDefined(this.help)}
         minlength=${ifDefined(this.minLength)}
         maxlength=${ifDefined(this.maxLength)}
         min=${ifDefined(this.min)}
