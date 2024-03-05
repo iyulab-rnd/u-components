@@ -1,56 +1,99 @@
-import { LitElement, css } from "lit";
+import { LitElement, css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
-/**
- * @example
- * export class MyElement extends UContext {
- *  render() {
-  *  return html`
-  *    <div>Hello</div>
-  *  `;
- *  }
- * }
- */
-@customElement("u-context")
-export class UContext extends LitElement {
-  
-  @property({ type: Boolean, reflect: true }) open = false;
-  // @property({ type: Number }) posX = 0;
-  // @property({ type: Number }) posY = 0;
+import type { UContextModel } from './UContextModel';
 
-  connectedCallback() {
-    super.connectedCallback();
-    document.addEventListener('contextmenu', this.handleContextMenu);
+@customElement("u-context")
+export class UContext extends LitElement implements UContextModel {
+  
+  @property({ type: Array }) bounds: HTMLElement[] = [];
+  @property({ type: Boolean, reflect: true }) open: boolean = false;
+  @property({ type: Boolean }) hideOnClick: boolean = false;
+  @property({ type: Number }) posX?: number;
+  @property({ type: Number }) posY?: number;
+
+  protected async firstUpdated(changedProperties: any) {
+    super.firstUpdated(changedProperties);
+    await this.updateComplete;
+    this.setEvents();
   }
 
   disconnectedCallback() {
-    document.removeEventListener('contextmenu', this.handleContextMenu);
+    this.disposeEvents();
     super.disconnectedCallback();
   }
 
-  private handleContextMenu = (event: MouseEvent) => {
-    event.preventDefault(); // 기본 컨텍스트 메뉴를 방지
-    this.style.top = `${event.clientX}px`;
-    this.style.left = `${event.clientY}px`;
-    this.open = true;
-  };
-
-  protected async showAsync() {
-    document.body.appendChild(this);
-    this.open = true;
-    await this.updateComplete;
+  render() {
+    return html`<slot></slot>`;
   }
 
-  protected async hideAsync(event: MouseEvent) {
-    if(this.open && !this.contains(event.target as Node)) {
-      this.open = false;
-      await this.updateComplete;
+  public toggle() {
+    this.open = !this.open;
+  }
+
+  public show() {
+    this.open = true;
+  }
+
+  public hide = () => {
+    this.open = false;
+  }
+
+  // 컨텍스트 메뉴 표시 이벤트
+  private handleShowContext = (event: MouseEvent) => {
+    event.preventDefault(); // 기본 컨텍스트 메뉴를 방지
+    this.posX = event.clientX;
+    this.posY = event.clientY;
+    this.style.left = `${this.posX}px`;
+    this.style.top = `${this.posY}px`;
+    this.open = true;
+  }
+
+  // 컨텍스트 메뉴 숨김 이벤트(컨텍스트 메뉴 영역 외 클릭시 숨김)
+  private handleHideContext = (event: MouseEvent) => {
+    if (event.composedPath().includes(this)) return;
+    this.open = false;
+  }
+
+  // 이벤트 등록
+  private setEvents() {
+    // 휠 이벤트 발생시 컨텍스트 메뉴 숨김
+    document.addEventListener('wheel', this.hide);
+
+    // 마우스 클릭 이벤트 발생시 컨텍스트 메뉴 숨김
+    if (this.hideOnClick) {
+      document.addEventListener('mousedown', this.hide);
+    } else {
+      document.addEventListener('mousedown', this.handleHideContext);
+    }
+    
+    // 컨텍스트 메뉴가 발동될 엘리먼트에 이벤트 등록
+    if(this.bounds.length === 0) {
+      this.parentElement?.addEventListener('contextmenu', this.handleShowContext);
+    } else {
+      this.bounds.forEach((bound) => {
+        bound.addEventListener('contextmenu', this.handleShowContext);
+      });
     }
   }
 
-  protected async disposeAsync() {
-    this.remove();
-    await this.updateComplete;
+  // 이벤트 해제
+  private disposeEvents() {
+    document.removeEventListener('wheel', this.hide);
+
+    if (this.hideOnClick) {
+      document.removeEventListener('mousedown', this.hide);
+    } else {
+      document.removeEventListener('mousedown', this.handleHideContext);
+    }
+    
+    if(this.bounds.length === 0) {
+      this.parentElement?.removeEventListener('contextmenu', this.handleShowContext);
+    } else {
+      this.bounds.forEach((bound) => {
+        bound.removeEventListener('contextmenu', this.handleShowContext);
+      });
+    }
   }
 
   static styles = css`

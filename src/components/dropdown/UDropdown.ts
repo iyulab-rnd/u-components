@@ -12,23 +12,24 @@ export class UDropdown extends LitElement {
   @property({ type: Boolean }) open: boolean = false;
   @property({ type: String }) placement: DropdownPlacement = 'bottom-start';
   @property({ type: Boolean }) disabled: boolean = false;
-  @property({ type: Number }) distance: number = 0;
+  @property({ type: Number }) distance: number = 5;
   @property({ type: Number }) skidding: number = 0;
+  @property({ type: Boolean }) hoist: boolean = false;
 
   render() {
     return html`
       <sl-dropdown
         ?open=${this.open}
         ?disabled=${this.disabled}
+        ?hoist=${this.hoist}
         placement=${this.placement}
         distance=${this.distance}
         skidding=${this.skidding}
-        hoist
         @sl-show=${() => this.open = true}
         @sl-hide=${() => this.open = false}
       >
         <slot name="trigger" slot="trigger"></slot>
-        <slot @select=${this.onSelect}></slot>
+        <slot @click=${() => this.open = false}></slot>
       </sl-dropdown>
     `;
   }
@@ -36,12 +37,5 @@ export class UDropdown extends LitElement {
   public toggle() {
     this.open = !this.open;
   }
-
-  private async onSelect(event: CustomEvent) {
-    event.stopPropagation();
-    this.dispatchEvent(new CustomEvent('select', { 
-      detail: event.detail
-    }));
-    this.toggle();
-  }
+  
 }
