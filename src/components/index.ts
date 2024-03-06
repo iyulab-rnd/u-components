@@ -12,6 +12,7 @@ export * from './input';
 export * from './menu';
 export * from './menu-item';
 export * from './modal';
+export * from './progress';
 export * from './radio';
 export * from './spinner';
 export * from './splitter';

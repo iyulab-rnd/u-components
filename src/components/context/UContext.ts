@@ -42,8 +42,8 @@ export class UContext extends LitElement implements UContextModel {
   // 컨텍스트 메뉴 표시 이벤트
   private handleShowContext = (event: MouseEvent) => {
     event.preventDefault(); // 기본 컨텍스트 메뉴를 방지
-    this.posX = event.clientX;
-    this.posY = event.clientY;
+    this.posX = event.offsetX;
+    this.posY = event.offsetY;
     this.style.left = `${this.posX}px`;
     this.style.top = `${this.posY}px`;
     this.open = true;
@@ -72,6 +72,7 @@ export class UContext extends LitElement implements UContextModel {
       this.parentElement?.addEventListener('contextmenu', this.handleShowContext);
     } else {
       this.bounds.forEach((bound) => {
+        console.log(bound);
         bound.addEventListener('contextmenu', this.handleShowContext);
       });
     }

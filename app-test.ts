@@ -30,36 +30,31 @@ export class AppTest extends LitElement {
   @query("u-button")
   dialog!: any;
 
+  value = 0;
+
+  connectedCallback() {
+    super.connectedCallback();
+    setInterval(() => {
+      this.value = (this.value + 10);
+      this.requestUpdate();
+    }, 100);
+  }
+
   render() {
     return html`
-      <h3>===== Button Test =====</h3>
-      <u-divider></u-divider>
-      <u-button @click=${this.showDialog}>Render</u-button>
-      <u-button @click=${this.toggleTheme}>Theme</u-button>
-      <u-dropdown>
-        <u-button slot="trigger" caret>Dropdown</u-button>
-        ${this.renderMenu()}
-      </u-dropdown>
-
-      <h3>===== Context Menu Test =====</h3>
-      <u-divider></u-divider>
-      <div class="canvas">
-        <div class="inside">
-          Inside
-          <u-context>
-            ${this.renderMenu()}
-          </u-context>
-        </div>
-      </div>
-
-      <h3>===== Form Test =====</h3>
-      <u-divider></u-divider>
-      <u-form
-        label="Register"
-        .context=${new TestContext()}
-        .onSubmit=${() => {throw new Error('Not implemented')}}
-      ></u-form>
+      ${this.buttonTest()}
+      ${this.progressTest()}
+      <!-- ${this.contextTest()}
+      ${this.formTest()} -->
     `;
+  }
+
+  showDialog() {
+    this.requestUpdate();
+  }
+
+  toggleTheme() {
+    document.documentElement.classList.toggle('sl-theme-dark');
   }
 
   renderMenu() {
@@ -79,15 +74,56 @@ export class AppTest extends LitElement {
     `;
   }
 
-  async showDialog() {
-    this.requestUpdate();
-    // this.dialog.label = 'This is a dialog';
-    // const result = await this.dialog.showAsync();
-    // console.log(result);
+  buttonTest() {
+    return html`
+      <h3>===== Button Test =====</h3>
+      <u-divider></u-divider>
+      <u-button @click=${this.showDialog}>Render</u-button>
+      <u-button @click=${this.toggleTheme}>Theme</u-button>
+      <u-dropdown>
+        <u-button slot="trigger" caret>Dropdown</u-button>
+        ${this.renderMenu()}
+      </u-dropdown>
+    `;
   }
 
-  toggleTheme() {
-    document.documentElement.classList.toggle('sl-theme-dark');
+  contextTest() {
+    return html`
+      <h3>===== Context Menu Test =====</h3>
+      <u-divider></u-divider>
+      <div class="canvas">
+        <div class="inside">
+          Inside
+          <u-context>
+            ${this.renderMenu()}
+          </u-context>
+        </div>
+      </div>
+    `;
+  }
+
+  formTest() {
+    return html`
+      <h3>===== Form Test =====</h3>
+      <u-divider></u-divider>
+      <u-form
+        label="Register"
+        .context=${new TestContext()}
+        .onSubmit=${() => {throw new Error('Not implemented')}}
+      ></u-form>
+    `;
+  }
+
+  progressTest() {
+    return html`
+      <h3>===== Progress Test =====</h3>
+      <u-divider></u-divider>
+      <u-progress label="hello" infinite
+        value=${this.value}>
+        <div>Hello</div>
+        ${this.value} %
+      </u-progress>
+    `;
   }
 
   static styles = css`
