@@ -9,20 +9,22 @@ export class UInputError extends LitElement {
   render() {
     if(!this.error) return nothing;
 
-    return html`<div class="text">${this.error}</div>`;
+    return html`<div class="error">${this.error}</div>`;
   }
 
   static styles = css`
     :host {
       display: inline-block;
+
+      --error-size: calc(var(--input-size, 14px) * 0.85);
     }
 
-    .text {
+    .error {
       color: red;
-      font-size: 12px;
+      font-size: var(--error-size);
       font-weight: 400;
-      line-height: 18px;
-      padding: 0px 5px;
+      line-height: 1.5;
+      padding: 2px 5px;
     }
   `;
 }

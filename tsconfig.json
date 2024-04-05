@@ -5,6 +5,7 @@
     "module": "ESNext",
     "lib": ["ESNext","DOM","DOM.Iterable"],
     "moduleResolution": "Bundler",
+    "types": ["vite/client"],
 
     // 엄격한 타입 체킹
     "strict": true,

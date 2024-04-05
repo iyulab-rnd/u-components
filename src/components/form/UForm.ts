@@ -62,9 +62,7 @@ export class UForm extends LitElement {
     if (this.noHeader || !this.label) return;
     return html`
       <div class="header">
-        ${this.label ? html`
-          <div class="title">${this.label}</div>`
-        : ''}
+        <div class="title">${this.label}</div>
         <slot name="header"></slot>
       </div>
     `;

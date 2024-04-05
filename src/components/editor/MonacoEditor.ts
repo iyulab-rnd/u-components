@@ -1,4 +1,4 @@
-import { css, html, LitElement, unsafeCSS } from "lit";
+import { css, html, LitElement, nothing, unsafeCSS } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { createRef, Ref, ref } from "lit/directives/ref.js";
 
@@ -9,10 +9,10 @@ import "./MonacoWorker";
 import * as monaco from "monaco-editor";
 import styles from "monaco-editor/min/vs/editor/editor.main.css?inline";
 
-export type EditorTheme = "light" | "dark";
+import { MonacoEditorModel, type EditorTheme } from "./MonacoEditor.model";
 
 @customElement("monaco-editor")
-export class MonacoEditor extends LitElement {
+export class MonacoEditor extends LitElement implements MonacoEditorModel {
   private container: Ref<HTMLElement> = createRef();
   private editor!: monaco.editor.IStandaloneCodeEditor;
   private observer: MutationObserver = new MutationObserver(() => {
@@ -20,12 +20,13 @@ export class MonacoEditor extends LitElement {
     if (this.theme !== theme) this.theme = theme;
   });
 
+  @property({ type: Boolean, reflect: true }) noHeader: boolean = false;
   @property({ type: String }) label: string = "Editor";
-  @property({ type: Boolean }) noHeader: boolean = false;
-  @property({ type: String }) theme: EditorTheme = "light";
-  @property({ type: String }) code: string = "{}";
-  @property({ type: String }) language: string = "json";
+  @property({ type: String }) theme: EditorTheme = "light"; 
   @property({ type: Boolean }) readOnly: boolean = false;
+  @property({ type: String }) language: string = "json";
+  @property({ type: Number }) fontSize: number = 14;
+  @property({ type: String }) value: string = "";
   
   connectedCallback() {
     super.connectedCallback();
@@ -36,8 +37,8 @@ export class MonacoEditor extends LitElement {
   }
 
   disconnectedCallback() {
-    super.disconnectedCallback();
     this.observer.disconnect();
+    super.disconnectedCallback();
   }
 
   async firstUpdated(changedProperties: any) {
@@ -47,23 +48,18 @@ export class MonacoEditor extends LitElement {
     this.editor = monaco.editor.create(this.container.value!, {
       language: this.language,
       theme: this.theme === "light" ? "vs-light" : "vs-dark",
+      fontSize: this.fontSize,
       automaticLayout: true,
       minimap: { enabled: false },
       lineNumbersMinChars: 2,
       lineDecorationsWidth: 1,
-      value: this.code,
       readOnly: this.readOnly,
+      value: this.value,
     });
 
     this.editor.onDidChangeModelContent(() => {
       const value = this.editor.getValue();
-      try {
-        this.dispatchEvent(new CustomEvent("change", { 
-          detail: value
-        }));
-      } catch(ex) {
-        // console.error(ex);
-      }
+      this.dispatchEvent(new CustomEvent("change", { detail: value }));
     });
   }
 
@@ -71,10 +67,10 @@ export class MonacoEditor extends LitElement {
     super.updated(changedProperties);
     await this.updateComplete;
 
-    if (changedProperties.has("code")
-      && this.code !== this.editor.getValue()
+    if (changedProperties.has("value")
+      && this.value !== this.editor.getValue()
       && !this.editor.hasWidgetFocus()) {
-        this.editor.setValue(this.code);
+      this.editor.setValue(this.value);
     }
     if (changedProperties.has("theme") && this.editor) {
       this.editor.updateOptions({
@@ -84,31 +80,26 @@ export class MonacoEditor extends LitElement {
     if (changedProperties.has("language") && this.editor) {
       monaco.editor.setModelLanguage(this.editor.getModel()!, this.language);
     }
-    if (changedProperties.has("noHeader")) {
-      this.style.setProperty("--header-height", this.noHeader ? "0px" : "32px");
-    }
   }
   
   render() {
     return html`
       ${this.renderHeader()}
       <div class="editor">
-        <main ${ref(this.container)}
-          style="width:100%; height:100%;" 
-        ></main>
+        <main ${ref(this.container)}></main>
       </div>
     `;
   }
 
   private renderHeader() {
-    if (this.noHeader) return html``;
+    if (this.noHeader) return nothing;
     return html`
       <div class="header">
         <slot name="header-preffix"></slot>
         <div class="title">${this.label}</div>
         <div class="flex"></div>
         <slot name="header-actions"></slot>
-        <sl-copy-button value=${this.code}></sl-copy-button>
+        <sl-copy-button value=${this.value}></sl-copy-button>
       </div>
     `;
   }
@@ -123,6 +114,9 @@ export class MonacoEditor extends LitElement {
       height: 100%;
       overflow: hidden;
       --header-height: 32px;
+    }
+    :host([noHeader]) {
+      --header-height: 0px;
     }
 
     .header {
@@ -154,6 +148,11 @@ export class MonacoEditor extends LitElement {
       width: 100%;
       height: calc(100% - var(--header-height));
       overflow: hidden;
+
+      main {
+        width: 100%;
+        height: 100%;
+      }
     }
   `];
   

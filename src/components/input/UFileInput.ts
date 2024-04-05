@@ -1,43 +1,74 @@
 import { css, html } from "lit";
-import { customElement, property, query } from "lit/decorators.js";
-import { UInputBase } from "./UInputBase";
+import { customElement, property, query, state } from "lit/decorators.js";
 
-import type { FileMeta } from "@/data-provider/models/FileSourceModel";
+import { UBaseInput } from "./UBaseInput";
+import { UFileInputModel, type FileMetaValue } from "./UFileInput.model";
+import { UFileItem, UploadResponse } from "../files";
+import { SystemIcon } from "../icon/UIcon.vector";
 
-import "../input-parts/UFileItem";
-
-const upload = "M7.646 5.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708l2-2z M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z"
-
+// TODO: UFileItem과 함께 구조정리 재설계 필요
 @customElement('u-file-input')
-export class UFileInput extends UInputBase {
+export class UFileInput extends UBaseInput implements UFileInputModel {
 
   @query('input') input!: HTMLInputElement;
   @query('.overlay') overlay!: HTMLElement;
   
+  @state() files?: File[];
+
+  @property({ type: Boolean, reflect: true }) uploading: boolean = false;
   @property({ type: Boolean, reflect: true }) dragover: boolean = false;
-  @property({ type: Array }) accept?: string[];
-  @property({ type: Array }) files?: File[];
-  @property({ type: Array }) value?: FileMeta[];
+  @property({ type: Array }) accepts?: string[] = [];
+  @property({ type: Array }) value?: FileMetaValue[];
+
+  protected async updated(changedProperties: any) {
+    super.updated(changedProperties);
+    await this.updateComplete;
+
+    if(changedProperties.has('files')) {
+      this.uploading = this.files && this.files.length > 0 ? true : false;
+    }
+  }
 
   render() {
     return html`
-      <input type="file" @change=${this.onClick} multiple />
+      <input type="file" multiple 
+        accept=${this.accepts?.join(',') || '*'}
+        @change=${this.onReceive}
+      />
       <u-input-container>
-        <u-input-wrapper>
+        <u-input-border>
           <div class="dropbox"
             @dragover=${this.onDragOver}
             @dragenter=${this.onDragEnter}
-            @dragleave=${this.onDragLeave}
-            @drop=${this.onDrop}
           >
             ${this.renderPlaceholder()}
-            ${this.renderOvelay()}
             ${this.renderFileUpload()}
             ${this.renderFiles()}
           </div>
-        </u-input-wrapper>
+          <div class="overlay"
+            @dragover=${this.onDragOver}
+            @dragleave=${this.onDragLeave}
+            @drop=${this.onDrop}
+          >
+            <svg viewBox="0 0 16 16">
+              <path d="${SystemIcon['upload']?.path}"></path>
+            </svg>
+            <div class="text">Drop your files here</div>
+            <div class="text">Accept: ${this.accepts?.join(', ') || 'all'}</div>
+          </div>
+        </u-input-border>
       </u-input-container>
     `;
+  }
+
+  public async validate() {
+    if(this.required && (!this.value || this.value.length === 0)) {
+      return this.setInvalid('Please select a file.');
+    }
+    if(this.uploading) {
+      return this.setInvalid('Please wait until the upload is complete.');
+    }
+    return this.setValid();
   }
 
   private renderFileUpload() {
@@ -45,7 +76,7 @@ export class UFileInput extends UInputBase {
     return this.files.map(file => html`
       <u-file-item class="upload"
         .file=${file}
-        @upload=${(e: any) => this.onUpload(e)}
+        @upload=${this.onUpload}
       ></u-file-item>
     `);
   }
@@ -55,7 +86,7 @@ export class UFileInput extends UInputBase {
     return this.value.map(value => html`
       <u-file-item class="file"
         .value=${value}
-        @remove=${(e: any) => this.onReomve(e)}
+        @remove=${this.onRemove}
       ></u-file-item>
     `);
   }
@@ -65,9 +96,7 @@ export class UFileInput extends UInputBase {
     if(this.files && this.files.length > 0) return;
     return html`
       <div class="placeholder">
-        <svg viewBox="0 0 16 16" width=32 height=32>
-          <path d=${upload}></path>
-        </svg>
+        <u-icon type="system" name="upload"></u-icon>
         <div class="text">Drag your files here or</div>
         <div class="text button" @click=${() => this.input.click()}>
           Click to browse your files
@@ -76,78 +105,92 @@ export class UFileInput extends UInputBase {
     `;
   }
 
-  private renderOvelay() {
-    return html`
-      <div class="overlay">
-        <svg viewBox="0 0 16 16" width=32 height=32>
-          <path d=${upload}></path>
-        </svg>
-        <div class="text">Drop your files here</div>
-      </div>
-    `;
-  }
-
-  public async validate() {
-    return true;
-  }
-
-  private async onUpload(event: CustomEvent) {
-    const target = event.target as HTMLElement;
-    const value = event.detail as FileMeta;
-    this.value = [...(this.value || []), value ];
-    if(target) target.remove();
-  }
-
-  private onReomve(event: CustomEvent) {
-    const value = event.detail as FileMeta;
-    this.value = this.value?.filter(f => f !== value);
-  }
-
-  private async onDragOver(event: DragEvent) {
-    event.preventDefault();
-    event.stopPropagation();
-  }
-
-  private async onDragEnter(event: DragEvent) {
-    event.preventDefault();
-    event.stopPropagation();
-    this.dragover = true;
-  }
-
-  private async onDragLeave(event: DragEvent) {
-    event.preventDefault();
-    event.stopPropagation();
-    const isNode = event.relatedTarget instanceof Node;
-    if(isNode && 
-      !this.overlay.contains(event.relatedTarget as Node) &&
-      this.overlay === event.target) {
-      this.dragover = false;
-    }
-  }
-
-  private async onDrop(event: DragEvent) {
-    event.preventDefault();
-    event.stopPropagation();
-    this.files = Array.from(event.dataTransfer?.files || []);
-    this.dragover = false;
-  }
-
-  private async onClick(event: Event) {
+  private onReceive = (event: Event) => {
     const input = event.target as HTMLInputElement;
     if(!input.files) return;
     this.files = Array.from(input.files);
   }
 
+  private onUpload = (event: CustomEvent) => {
+    const target = event.target as UFileItem;
+    const file = target.file;
+    if(!file) return;
+    const response = event.detail as UploadResponse;
+    this.value ||= [];
+    this.value = [...this.value, {
+      type: file.type,
+      name: file.name,
+      size: file.size,
+      path: response.data
+    }];
+    this.files = this.files?.filter(f => f !== file);
+  }
+
+  private onRemove = (event: CustomEvent) => {
+    console.log('remove:', event.target);
+    const target = event.target as UFileItem;
+    const file = target.file;
+    const value = target.value;
+    if(file) {
+      console.log('file:', file);
+      this.files = this.files?.filter(f => f !== file);
+    }
+    if(value) {
+      this.value = this.value?.filter(v => v !== value);
+    }
+  }
+
+  private onDragOver = (event: DragEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
+  private onDragEnter = (event: DragEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+    this.dragover = true;
+  }
+
+  private onDragLeave = (event: DragEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+    const target = event.relatedTarget as HTMLElement;
+    if(target instanceof Node && !this.overlay.contains(target)) {
+      this.dragover = false;
+    }
+  }
+
+  private onDrop = (event: DragEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+    if(this.uploading) return;
+    const files = Array.from(event.dataTransfer?.files || []);
+    this.files = files.filter(file => this.checkAccepts(file));
+    this.dragover = false;
+  }
+
+  private checkAccepts(file: File) {
+    if(!this.accepts) return true;
+    if(this.accepts.length === 0) return true;
+    return this.accepts.some((accept) => {
+      if(accept === '*') {
+        return true;
+      } else if(accept.endsWith('/*')) {
+        return file.type.startsWith(accept.replace('/*', ''));
+      } else {
+        return file.type === accept;
+      }
+    });
+  }
+
   static styles = css`
     :host {
-      display: block;
+      width: 100%;
+      --input-size: 14px;
     }
-    :host([dragover]) .dropbox {
-      .overlay {
-        display: flex;
-      }
+    :host([dragover]) .overlay {
+      display: flex;
     }
-
     input[type="file"] {
       display: none;
     }
@@ -162,6 +205,40 @@ export class UFileInput extends UInputBase {
       overflow-y: auto;
       gap: 10px;
       cursor: default;
+
+      u-file-item {
+        width: 100%;
+      }
+      
+      .placeholder {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+
+        u-icon {
+          font-size: 2em;
+        }
+
+        .text {
+          font-size: 14px;
+          font-weight: 500;
+          line-height: 20px;
+        }
+        .text.button {
+          color: var(--sl-color-primary-500);
+          cursor: pointer;
+        }
+        .text.button:hover {
+          color: var(--sl-color-primary-600);
+          text-decoration: underline;
+        }
+      }
     }
     .dropbox::-webkit-scrollbar {
       width: 5px;
@@ -169,35 +246,8 @@ export class UFileInput extends UInputBase {
     .dropbox::-webkit-scrollbar-thumb {
       background-color: var(--sl-color-gray-200);
     }
-
-    u-file-item {
-      width: 100%;
-    }
-    
-    .placeholder {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-
-      .text {
-        font-size: 14px;
-        font-weight: 500;
-        line-height: 20px;
-      }
-      .text.button {
-        color: var(--sl-color-primary-500);
-        cursor: pointer;
-      }
-      .text.button:hover {
-        color: var(--sl-color-primary-600);
-        text-decoration: underline;
-      }
+    .dropbox::-webkit-scrollbar-track {
+      background-color: transparent;
     }
 
     .overlay {
@@ -212,6 +262,13 @@ export class UFileInput extends UInputBase {
       top: 0;
       left: 0;
       background-color: var(--sl-color-gray-200);
+
+      svg {
+        fill: currentColor;
+        width: 2em;
+        height: 2em;
+        margin-bottom: 10px;
+      }
 
       .text {
         font-size: 14px;

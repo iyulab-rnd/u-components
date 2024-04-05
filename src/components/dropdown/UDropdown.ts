@@ -4,10 +4,10 @@ import { customElement, property } from "lit/decorators.js";
 import SlDropdown from "@shoelace-style/shoelace/dist/components/dropdown/dropdown.component.js";
 SlDropdown.define('sl-dropdown');
 
-export type DropdownPlacement = 'top' | 'top-start' | 'top-end' | 'bottom' | 'bottom-start' | 'bottom-end' | 'right' | 'right-start' | 'right-end' | 'left' | 'left-start' | 'left-end'
+import { UDropdownModel, type DropdownPlacement } from "./UDropdown.model";
 
 @customElement("u-dropdown")
-export class UDropdown extends LitElement {
+export class UDropdown extends LitElement implements UDropdownModel {
 
   @property({ type: Boolean }) open: boolean = false;
   @property({ type: String }) placement: DropdownPlacement = 'bottom-start';

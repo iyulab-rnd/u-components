@@ -1,5 +1,5 @@
 import { LitElement, html } from "lit";
-import { customElement, property, query, state } from "lit/decorators.js";
+import { customElement, property, query } from "lit/decorators.js";
 
 import SlAlert from "@shoelace-style/shoelace/dist/components/alert/alert.component.js";
 SlAlert.define('sl-alert');
@@ -8,21 +8,20 @@ import type {
   UAlertModel,
   AlertType,
   AlertContent 
-} from "./UAlertModel";
+} from "./UAlert.model";
 
-import '../icon';
+import '../icon/UIcon';
 
 @customElement('u-alert')
 export class UAlert extends LitElement implements UAlertModel {
   
   @query('sl-alert') alert!: SlAlert;
 
-  @state() duration: number = 3000;
-  @state() content?: AlertContent;
-
   @property({ type: String }) type: AlertType = "primary";
   @property({ type: Boolean }) open: boolean = false;
   @property({ type: Boolean }) closable: boolean = true;
+  @property({ type: Number }) duration: number = 3000;
+  @property({ type: Object }) content?: AlertContent;
 
   render() {
     return html`
@@ -31,26 +30,13 @@ export class UAlert extends LitElement implements UAlertModel {
         .duration=${this.duration}
         ?open=${this.open}
         ?closable=${this.closable}>
-        ${this.renderIcon()}
+        <u-icon 
+          slot="icon" 
+          type="system" 
+          name=${`alert-${this.type}`}
+        ></u-icon>
         ${this.content || html`<slot></slot>`}
       </sl-alert>
-    `;
-  }
-
-  private renderIcon() {
-    const type = {
-      primary: "info-circle",
-      neutral: "gear",
-      success: "check2-circle",
-      warning: "exclamation-triangle",
-      danger: "exclamation-octagon"
-    }
-
-    return html`
-      <u-icon 
-        slot="icon"
-        name="${type[this.type]}"
-      ></u-icon>
     `;
   }
 

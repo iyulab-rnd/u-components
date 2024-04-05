@@ -1,26 +1,28 @@
-import { defineConfig, normalizePath } from 'vite';
+import { defineConfig } from 'vite';
 import dts from "vite-plugin-dts";
-import { viteStaticCopy } from 'vite-plugin-static-copy'
 import { resolve } from 'path'
 import glob from "fast-glob";
 
 const entries = {} as any;
-glob.sync(['src/**/index.ts']).map(path => {
+glob.sync(['src/**/*.ts']).map(path => {
   // console.log(path);
   /**
    * ex)
    * name: 'base/u-label/index'
    * path: 'src/components/base/u-label/index.ts'
    */
+  if(path.includes('model')) return;
   const name = path.replace('src/', '').replace('.ts', '');
   entries[name] = resolve(__dirname, path);
 });
 
 export default () => {
   return defineConfig({
+    publicDir: 'statics',
     build: {
       minify: false,
       outDir: 'dist',
+      copyPublicDir: true,
       lib: {
         entry: {
           ...entries // index 엔트리 포인트
@@ -47,19 +49,9 @@ export default () => {
       }
     },
     plugins: [
-      // dts 파일 생성
+      //@ts-ignore
       dts({
-        include: [ "src/**/*"]
-      }),
-      viteStaticCopy({
-        // 정적 파일 복사(svg, css)
-        targets: [
-          {
-            src: normalizePath(resolve(__dirname, 'src/assets')),
-            dest: normalizePath(resolve(__dirname, 'dist')),
-            overwrite: true
-          }
-        ]
+        include: [ "src/**/*"] 
       }),
     ]
   })

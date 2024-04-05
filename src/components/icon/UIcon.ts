@@ -1,18 +1,19 @@
-import { LitElement, css, html } from "lit";
-import { customElement, property, query } from "lit/decorators.js";
+import { LitElement, TemplateResult, css, html, nothing } from "lit";
+import { customElement, property, state } from "lit/decorators.js";
+import { UnsafeHTMLDirective, unsafeHTML } from "lit/directives/unsafe-html.js";
+import type { DirectiveResult } from "lit/directive.js";
 
-import SlIcon from '@shoelace-style/shoelace/dist/components/icon/icon.component.js';
-SlIcon.define('sl-icon');
-
-import type { UIconModel } from "./UIconModel";
+import { UIconModel, type UIconType } from "./UIcon.model";
+import { UIconController } from "./UIconController";
+import { SystemIcon } from "./UIcon.vector";
 
 @customElement('u-icon')
 export class UIcon extends LitElement implements UIconModel {
 
-  @query("sl-icon")icon!: SlIcon;
+  @state() svg?: DirectiveResult<typeof UnsafeHTMLDirective> | TemplateResult<1>;
 
+  @property({ type: String }) type: UIconType = 'default';
   @property({ type: String }) name?: string;
-  @property({ type: String }) src?: string;
   @property({ type: String }) size?: string;
   @property({ type: String }) color?: string;
 
@@ -20,27 +21,63 @@ export class UIcon extends LitElement implements UIconModel {
     super.updated(changedProperties);
     await this.updateComplete;
 
-    if (changedProperties.has('color') && this.color) {
-      this.icon.style.color = this.color;
+    if (changedProperties.has('name') && this.name) {
+      this.svg = await this.resolveFrom(this.name);
     }
     if (changedProperties.has('size') && this.size) {
-      this.icon.style.fontSize = this.size;
+      this.style.fontSize = this.size;
+    }
+    if (changedProperties.has('color') && this.color) {
+      this.style.color = this.color;
     }
   }
 
-  render() {
+  protected render() {
+    return this.svg ?? nothing;
+  }
+
+  private resolveFrom = async (name: string) => {
+    if(this.type === 'default') {
+      return await this.resovleFromFile(name);
+    } else if(this.type === 'system') {
+      return this.resolveFromVector(name);
+    } else if(UIconController.iconRenderers.has(this.type)) {
+      const renderer = UIconController.iconRenderers.get(this.type);
+      return renderer?.call(this, name) ?? nothing;
+    } else {
+      return nothing;
+    }
+  }
+
+  private resovleFromFile = async (name: string) => {
+    const basePath = UIconController.iconBasePath;
+    const fullPath = `${basePath.endsWith('/') ? basePath.slice(0, -1) : basePath}/${name}.svg`;
+    const result = await fetch(fullPath);
+    const content = await result.text();
+    return content.startsWith('<svg') ? unsafeHTML(content) : nothing;
+  }
+  
+  private resolveFromVector = (name: string) => {
+    const vector = SystemIcon[name];
+    if(!vector) return nothing;
     return html`
-      <sl-icon 
-        .name=${this.name}
-        .src=${this.src}
-      ></sl-icon>
+      <svg viewBox="${vector.viewBox || '0 0 16 16'}">
+        <path d=${vector.path}></path>
+      </svg>
     `;
   }
   
   static styles = css`
     :host {
       display: inline-flex;
+      font-size: 16px;
     }
-  `
+
+    svg {
+      width: 1em;
+      height: 1em;
+      fill: currentColor;
+    }
+  `;
 
 }

@@ -7,7 +7,7 @@ import SlProgressBar from '@shoelace-style/shoelace/dist/components/progress-bar
 SlProgressRing.define('sl-progress-ring');
 SlProgressBar.define('sl-progress-bar');
 
-import type { UProgressModel } from './UProgressModel';
+import type { UProgressModel } from './UProgress.model';
 
 @customElement('u-progress')
 export class UProgress extends LitElement implements UProgressModel {

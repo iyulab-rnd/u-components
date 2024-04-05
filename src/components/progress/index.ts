@@ -1,2 +1,3 @@
 export * from "./UProgress";
-export * from "./UProgressModel";
+
+export * from "./UProgress.model";

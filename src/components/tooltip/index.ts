@@ -1,2 +1,3 @@
 export * from './UTooltip';
-export * from './UTooltipModel';
+
+export * from './UTooltip.model';

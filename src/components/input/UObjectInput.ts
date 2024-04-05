@@ -1,108 +1,158 @@
 import { css, html } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { customElement, property, queryAll } from "lit/decorators.js";
 import { repeat } from 'lit/directives/repeat.js';
 
-import { UInputBase } from "./UInputBase";
+import { UObjectInputModel } from "./UObjectInput.model";
+import { UBaseInput } from "./UBaseInput";
+import { UTextInput } from "./UTextInput";
 
 @customElement('u-object-input')
-export class UObjectInput extends UInputBase {
+export class UObjectInput extends UBaseInput implements UObjectInputModel {
 
-  @property({ type: String }) placeholder?: string;
-  @property({ type: Object }) value?: object = {
-    "content-type": "application/json",
-    "accept": "application/json"
-  };
+  @queryAll('u-text-input') inputs!: NodeListOf<UTextInput>;
+
+  @property({ type: Object }) value?: object;
 
   render() {
-    console.log("value", this.value);
     const entries = this.value ? Object.entries(this.value) : [];
     return html`
       <u-input-container>
-      ${repeat(entries, ([key, value]) => key, ([key, value]) => html`
-        ${console.log("key", key, "value", value)}
-          <div class="property">
-            <u-text-input .value=${key}
-              @change=${(e) => this.onChageKey(e, key)}>
-              <u-tooltip slot="prefix" content="Key">
-                <u-icon name="key"></u-icon>
-              </u-tooltip>
-            </u-text-input>
-            <u-text-input .value=${value}
-              @change=${(e) => this.onChageValue(e, key)}>
-              <u-icon slot="prefix" name="value"></u-icon>
-            </u-text-input>
-            <u-icon name="trash" @click=${() => {
-              //@ts-ignore
-              delete this.value[key];
-              this.value = { ...this.value };
-            }}></u-icon>
-          </div>
-      `)}
-        <div class="create" @click=${this.addProperty}>
-          <u-icon name="plus-square"></u-icon>
+        <div class="properties">
+          ${repeat(entries, 
+            ([key]) => key, 
+            ([key, value]) => this.renderProperty(key, value))}
+        </div>
+        <div class="create" @click=${this.appendProperty}>
+          <u-icon type="system" name="plus-square"></u-icon>
+          <label>Add New</label>
         </div>
       </u-input-container>
     `;
   }
 
-  public async validate() {
-    return true;
+  private renderProperty(key: string, value: string) {
+    return html`
+      <div class="property">
+        <u-text-input required .size=${this.size} placeholder="Enter key"
+          .value=${key}
+          @change=${(e: any) => this.onChangeKey(e, key)}>
+          <u-icon slot="prefix" type="system" name="key"></u-icon>
+        </u-text-input>
+        <u-text-input required .size=${this.size} placeholder="Enter value"
+          .value=${value}
+          @change=${(e: any) => this.onChangeValue(e, key)}>
+          <u-icon slot="prefix" type="system" name="box"></u-icon>
+        </u-text-input>
+        <u-icon class="delete" type="system" name="minus-square" 
+          @click=${() => this.deleteProperty(key)}
+        ></u-icon>
+      </div>
+    `;
   }
 
-  private async addProperty() {
+  public async validate() {
+    const inputs = Array.from(this.inputs);
+    const results = await Promise.all(inputs.map(input => input.validate()));
+    return results.every(result => result);
+  }
+
+  private appendProperty = () => {
     this.value = { ...this.value, "": "" };
   }
 
-  private async onChageKey(event: Event, prevKey: string) {
-    event.preventDefault();
+  private deleteProperty = (key: string) => {
+    //@ts-ignore
+    delete this.value[key];
+    this.value = { ...this.value };
+  }
+
+  private onChangeKey = (event: Event, prevKey: string) => {
     event.stopPropagation();
     const target = event.target as any;
+    target.validate();
     const newKey = target.value;
     if (prevKey === newKey) return;
     //@ts-ignore
     const oldValue =  this.value?.[prevKey];
-    this.value = { ...this.value, [newKey]: oldValue };
     //@ts-ignore
     delete this.value[prevKey];
+    this.value = { ...this.value, [newKey]: oldValue };
+    this.dispatchEvent(new CustomEvent('change', { detail: this.value }));
   }
 
-  private async onChageValue(event: Event, key: string) {
-    event.preventDefault();
+  private onChangeValue = (event: Event, key: string) => {
     event.stopPropagation();
     const target = event.target as any;
+    target.validate();
     const value = target.value;
     this.value = { ...this.value, [key]: value };
+    this.dispatchEvent(new CustomEvent('change', { detail: this.value }));
   }
 
   static styles = css`
     :host {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
+      width: 100%;
+      --input-size: 14px;
     }
 
-    .property {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-      gap: 5px;
+    .properties {
       width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+
+      .property {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 5px;
+
+        .delete {
+          font-size: calc((var(--input-size) * 1.5) + 12px);
+          color: var(--sl-color-gray-300);
+          cursor: pointer;
+        }
+        .delete:hover {
+          color: var(--sl-color-gray-600);
+        }
+      }
     }
 
     .create {
       display: flex;
+      flex-direction: row;
       align-items: center;
       justify-content: center;
+      gap: 10px;
       width: 100%;
-      padding: 5px;
+      margin-top: 5px;
+      padding: 5px 0px;
       border: 1px dashed var(--sl-color-gray-300);
       box-sizing: border-box;
       cursor: pointer;
+
+      u-icon {
+        font-size: var(--input-size);
+        color: var(--sl-color-gray-300);
+      }
+      label {
+        font-size: var(--input-size);
+        color: var(--sl-color-gray-300);
+        cursor: pointer;
+      }
     }
     .create:hover {
+      border-color: var(--sl-color-gray-600);
       background-color: var(--sl-color-gray-100);
+
+      u-icon {
+        color: var(--sl-color-gray-600);
+      }
+      label {
+        color: var(--sl-color-gray-600);
+      }
     }
   `;
 }

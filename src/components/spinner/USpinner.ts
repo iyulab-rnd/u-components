@@ -1,10 +1,10 @@
-import { LitElement, html } from "lit";
+import { LitElement, css, html } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 
 import SlSpinner from "@shoelace-style/shoelace/dist/components/spinner/spinner.component.js";
 SlSpinner.define('sl-spinner');
 
-import type { USpinnerModel } from "./USpinnerModel";
+import type { USpinnerModel } from "./USpinner.model";
 
 @customElement('u-spinner')
 export class USpinner extends LitElement implements USpinnerModel {
@@ -39,5 +39,15 @@ export class USpinner extends LitElement implements USpinnerModel {
       <sl-spinner></sl-spinner>
     `;
   }
+
+  static styles = css`
+    :host {
+      display: inline-flex;
+    }
+
+    sl-spinner {
+      font-size: 1rem;
+    }
+  `;
 
 }

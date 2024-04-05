@@ -1,7 +1,7 @@
 import { LitElement, css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
-import type { UContextModel } from './UContextModel';
+import { UContextModel } from './UContext.model';
 
 @customElement("u-context")
 export class UContext extends LitElement implements UContextModel {

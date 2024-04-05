@@ -1,2 +1,3 @@
 export * from './UAlert';
-export * from './UAlertModel';
+
+export * from './UAlert.model';

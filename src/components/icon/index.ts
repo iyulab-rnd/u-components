@@ -1,2 +1,3 @@
 export * from './UIcon';
-export * from './UIconModel';
+export * from './UIcon.model';
+export * from './UIconController';

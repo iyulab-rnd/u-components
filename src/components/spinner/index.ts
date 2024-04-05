@@ -1,2 +1,3 @@
 export * from './USpinner';
-export * from './USpinnerModel';
+
+export * from './USpinner.model';

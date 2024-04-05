@@ -1,12 +1,35 @@
 import 'reflect-metadata';
 import { UInputMeta } from '../components/input/UInputModel';
+import type { 
+  UCheckboxInputModel, 
+  UEditorInputModel, 
+  UFileInputModel, 
+  UNumberInputModel, 
+  UObjectInputModel, 
+  URestURLInputModel, 
+  USelectInputModel, 
+  UTextInputModel, 
+  UTextareaInputModel
+} from '../components/input';
 
 const key = Symbol('propertyMeta');
 type constructor<T = {}> = new (...args: any[]) => T; // eslint-disable-line
 
-export interface PropertyMetaData extends UInputMeta {
+export type PropertyMetaData = UInputMeta & {
   name?: string;
 }
+
+export type PropertyMeta = (
+  ({ type: 'checkbox' } & UCheckboxInputModel) | 
+  ({ type: 'editor' } & UEditorInputModel) | 
+  ({ type: 'file' } & UFileInputModel) | 
+  ({ type: 'number' } & UNumberInputModel) | 
+  ({ type: 'object' } & UObjectInputModel) | 
+  ({ type: 'rest-url' } & URestURLInputModel) | 
+  ({ type: 'select' } & USelectInputModel) | 
+  ({ type: 'text' } & UTextInputModel) | 
+  ({ type: 'textarea' } & UTextareaInputModel)
+);
 
 /**
  * 클래스 속성을 정의하기 위한 데코레이터 함수입니다.

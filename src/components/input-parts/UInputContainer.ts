@@ -6,27 +6,27 @@ type LabelPosition = 'top' | 'left' | 'right' | 'bottom';
 @customElement('u-input-container')
 export class UInputContainer extends LitElement {
 
-  @property({ type: String, attribute: "label-position", reflect: true }) 
-  labelPosition: LabelPosition = 'top';
-
+  @property({ type: String, reflect: true }) labelPosition: LabelPosition = 'top';
+  @property({ type: Boolean, reflect: true }) disabled: boolean = false;
+  @property({ type: Boolean, reflect: true }) readonly: boolean = true;
   @property({ type: Boolean }) required: boolean = false;
   @property({ type: String }) label?: string;
   @property({ type: String }) description?: string;
   @property({ type: String }) error?: string;
-
+  
   render() {
     return html`
       <div class="position">
-        <ds-input-label 
+        <u-input-label
           .required=${this.required}
           .label=${this.label}
           .description=${this.description}
-        ></ds-input-label>
+        ></u-input-label>
         <slot></slot>
       </div>
-      <ds-input-error 
+      <u-input-error 
         .error=${this.error}
-      ></ds-input-error>
+      ></u-input-error>
     `;
   }
 
@@ -37,30 +37,36 @@ export class UInputContainer extends LitElement {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      gap: 5px;
 
-      --input-label-width: 20%;
+      --label-width: auto;
     }
-    :host([label-position="top"]) .position{
+    :host([labelPosition="top"]) .position{
       flex-direction: column;
     }
-    :host([label-position="left"]) .position {
+    :host([labelPosition="left"]) .position {
       flex-direction: row;
+      --label-width: 20%;
     }
-    :host([label-position="bottom"]) .position{
+    :host([labelPosition="bottom"]) .position{
       flex-direction: column-reverse;
     }
-    :host([label-position="right"]) .position {
+    :host([labelPosition="right"]) .position {
       flex-direction: row-reverse;
+    }
+    :host([disabled]) .position slot::slotted(*) {
+      pointer-events: none;
+      opacity: 0.5;
+    }
+    :host([readonly]) .position slot::slotted(*) {
+      pointer-events: none;
     }
 
     .position {
       width: 100%;
       display: flex;
-      gap: 5px;
 
-      ds-input-label {
-        width: var(--input-label-width);
+      u-input-label {
+        width: var(--label-width);
       }
     }
   `;

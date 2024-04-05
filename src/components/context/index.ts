@@ -1,2 +1,3 @@
 export * from './UContext';
-export * from './UContextModel';
+
+export * from './UContext.model';

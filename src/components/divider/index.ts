@@ -1,2 +1,3 @@
 export * from './UDivider';
-export * from './UDividerModel';
+
+export * from './UDivider.model';

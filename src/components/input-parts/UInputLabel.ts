@@ -12,8 +12,10 @@ export class UInputLabel extends LitElement {
     if(!this.label) return nothing;
     
     return html`
-      <label class="label">${this.label}</label>
-      ${this.renderDescription()}
+      <div class="container">
+        <label>${this.label}</label>
+        ${this.renderDescription()}
+      </div>
     `;
   }
 
@@ -21,32 +23,77 @@ export class UInputLabel extends LitElement {
     if(!this.description) return nothing;
     
     return html`
-      <u-tooltip .content=${this.description}>
-        <u-icon name="question-circle"></u-icon>
-      </u-tooltip>
+      <div class="tooltip">
+        <u-icon type="system" name="info"></u-icon>
+        <pre>${this.description}</pre>
+      </div>
     `;
   }
 
   static styles = css`
     :host {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: flex-start;
+      display: inline-block;
+      --label-size: calc(var(--input-size, 14px) * 0.85);
     }
-    :host([required]) .label::before {
+    :host([required]) label::before {
       content: ' *';
       padding-right: 4px;
       color: red;
     }
 
-    .label {
-      font-size: 12px;
+    .container {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 5px;
+      padding: 3px 0px;
+    }
+
+    label {
+      font-size: var(--label-size);
       font-weight: 600;
-      line-height: 16px;
+      line-height: 1.5;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
+
+    .tooltip {
+      position: relative;
+      display: inline-flex;
+
+      u-icon {
+        font-size: var(--label-size);
+        cursor: help;
+      }
+      u-icon:hover + pre {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      pre {
+        display: block;
+        pointer-events: none;
+        position: absolute;
+        z-index: 10;
+        top: 0px;
+        left: calc(100% + 5px);
+        box-sizing: border-box;
+        margin: 0;
+        padding: 5px 10px;
+        border-radius: 5px;
+        background-color: var(--sl-color-gray-800);
+        color: var(--sl-color-neutral-0);
+        font-family: var(--sl-font-sans);
+        font-size: var(--label-size);
+        line-height: 1.5;
+        opacity: 0;
+        transform: scale(0.8);
+        transform-origin: top left;
+        transition: all 0.15s ease;
+      }
+    }
+
   `;
 }

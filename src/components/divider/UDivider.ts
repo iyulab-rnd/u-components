@@ -1,7 +1,7 @@
 import { LitElement, css } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
-import type { UDividerModel } from "./UDividerModel";
+import type { UDividerModel } from "./UDivider.model";
 
 @customElement('u-divider')
 export class UDivider extends LitElement implements UDividerModel {

@@ -1,10 +1,5 @@
 import { LitElement, css, html } from "lit";
 import { customElement, query } from "lit/decorators.js";
-import { setBasePath } from '@shoelace-style/shoelace/dist/utilities/base-path.js';
-setBasePath('src');
-
-import './src/assets/themes/light.css';
-import './src/assets/themes/dark.css';
 
 import { propertyMeta } from "./src/decorators";
 import './src/components';
@@ -27,34 +22,75 @@ export class TestContext {
 @customElement('u-app-test')
 export class AppTest extends LitElement {
 
-  @query("u-button")
-  dialog!: any;
-
-  value = 0;
+  @query("u-button") button!: any;
 
   connectedCallback() {
     super.connectedCallback();
-    setInterval(() => {
-      this.value = (this.value + 10);
-      this.requestUpdate();
-    }, 100);
   }
 
   render() {
     return html`
       ${this.buttonTest()}
-      ${this.progressTest()}
-      <!-- ${this.contextTest()}
-      ${this.formTest()} -->
+      ${this.inputTest()}
+      <!-- ${this.contextTest()} -->
+      <!-- ${this.formTest()} -->
     `;
   }
 
-  showDialog() {
-    this.requestUpdate();
-  }
-
-  toggleTheme() {
-    document.documentElement.classList.toggle('sl-theme-dark');
+  inputTest() {
+    return html`
+      <!-- <u-text-input
+        required
+        label='Name'
+        description='Your name'
+        placeholder='Enter your name'
+      ></u-text-input>
+      <u-object-input
+        required
+        label='Headers'
+        description='Your request headers'
+        placeholder='Enter your request headers'
+      ></u-object-input>
+      <u-editor-input
+        required
+        label='Body'
+        description='Your request body'
+      ></u-editor-input>
+      <u-file-input
+        required
+        label='File'
+        description='Your request file'
+      ></u-file-input>
+      <u-textarea-input
+        required
+        label='Description'
+        description='Your description'
+        placeholder='Enter your description'
+      ></u-textarea-input>
+      <u-number-input
+        required
+        label='Age'
+        description='Your age'
+        placeholder='Enter your age'
+      ></u-number-input>
+      <u-checkbox-input
+        required
+        label='Agree'
+        description='Your agreement'
+      ></u-checkbox-input> -->
+      <u-rest-url-input
+        required
+        label='Request URL'
+        description='Your request URL'
+        placeholder='Enter your request URL'
+      ></u-rest-url-input>
+      <u-select-input
+        label="Select"
+        description="Your selection"
+        placeholder="Select your option"
+        .options=${['1', '2', '3', '4', '5', '6']}
+      ></u-select-input>
+    `;
   }
 
   renderMenu() {
@@ -78,12 +114,20 @@ export class AppTest extends LitElement {
     return html`
       <h3>===== Button Test =====</h3>
       <u-divider></u-divider>
-      <u-button @click=${this.showDialog}>Render</u-button>
-      <u-button @click=${this.toggleTheme}>Theme</u-button>
-      <u-dropdown>
-        <u-button slot="trigger" caret>Dropdown</u-button>
-        ${this.renderMenu()}
-      </u-dropdown>
+      <u-button-group position="start" gap="5px">
+        <u-button @click=${this.request} tooltip="hello">Render</u-button>
+        <u-button @click=${this.toggleTheme}>Theme</u-button>
+        <u-button @click=${this.toggleTheme}>Theme</u-button>
+        <u-button @click=${this.toggleTheme}>Theme</u-button>
+        <u-button @click=${this.toggleTheme}>Theme</u-button>
+        <u-button @click=${this.toggleTheme}>Theme</u-button>
+        <u-button @click=${this.toggleTheme}>Theme</u-button>
+        <u-dropdown>
+          <u-button slot="trigger" caret>Dropdown</u-button>
+          ${this.renderMenu()}
+        </u-dropdown>
+        <div slot="collapsed">Hello</div>
+      </u-button-group>
     `;
   }
 
@@ -114,16 +158,12 @@ export class AppTest extends LitElement {
     `;
   }
 
-  progressTest() {
-    return html`
-      <h3>===== Progress Test =====</h3>
-      <u-divider></u-divider>
-      <u-progress label="hello" infinite
-        value=${this.value}>
-        <div>Hello</div>
-        ${this.value} %
-      </u-progress>
-    `;
+  request() {
+    this.requestUpdate();
+  }
+
+  toggleTheme() {
+    document.documentElement.classList.toggle('sl-theme-dark');
   }
 
   static styles = css`

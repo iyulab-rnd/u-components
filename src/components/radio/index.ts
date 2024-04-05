@@ -1,2 +1,3 @@
 export * from './URadio';
-export * from './URadioModel';
+
+export * from './URadio.model';

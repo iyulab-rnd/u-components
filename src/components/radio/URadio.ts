@@ -14,7 +14,7 @@ import type {
   URadioSize, 
   URadioType,
   URadioModel
-} from "./URadioModel";
+} from "./URadio.model";
 
 @customElement('u-radio')
 export class URadio extends LitElement implements URadioModel {

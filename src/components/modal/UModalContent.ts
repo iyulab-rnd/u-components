@@ -27,14 +27,9 @@ import { property } from "lit/decorators.js";
  */
 export class UModalContent extends LitElement {
   
-  @property({ type: String })
-  label?: string;
-
-  @property({ attribute: false })
-  confirmValue?: any;
-
-  @property({ attribute: false })
-  cancelValue?: any;
+  @property({ type: String }) label?: string;
+  @property({ attribute: false }) confirmValue?: any;
+  @property({ attribute: false }) cancelValue?: any;
 
   protected async updated(changedProperties: any) {
     super.updated(changedProperties);

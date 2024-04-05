@@ -1,27 +1,37 @@
 {
-    "main": "index.cjs.js",
-    "module": "index.es.js",
-    "types": "index.d.ts",
-    "exports": {
-        ".": {
-            "require": "./index.cjs.js",
-            "import": "./index.es.js",
-            "types": "./index.d.ts"
-        },
-        "./*": {
-            "require": "./*/index.cjs.js",
-            "import": "./*/index.es.js",
-            "types": "./*/index.d.ts"
-        },
-        "./decorators": {
-            "require": "./src/decorators/index.cjs.js",
-            "import": "./src/decorators/index.es.js",
-            "types": "./src/decorators/index.d.ts"
-          },
-        "./components/*": {
-            "require": "./components/*/index.cjs.js",
-            "import": "./components/*/index.es.js",
-            "types": "./components/*/index.d.ts"
-        }
+  "main": "index.cjs.js",
+  "module": "index.es.js",
+  "types": "index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./index.cjs.js",
+      "import": "./index.es.js",
+      "types": "./index.d.ts"
+    },
+    "./*": {
+      "require": "./*/index.cjs.js",
+      "import": "./*/index.es.js",
+      "types": "./*/index.d.ts"
+    },
+    "./decorators": {
+      "require": "./src/decorators/index.cjs.js",
+      "import": "./src/decorators/index.es.js",
+      "types": "./src/decorators/index.d.ts"
+    },
+    "./components/*": {
+      "require": "./components/*/index.cjs.js",
+      "import": "./components/*/index.es.js",
+      "types": "./components/*/index.d.ts"
+    },
+    "./components/button/*": {
+      "require": "./components/button/*.cjs.js",
+      "import": "./components/button/*.es.js",
+      "types": "./components/button/*.d.ts"
+    },
+    "./components/input/*": {
+      "require": "./components/input/*.cjs.js",
+      "import": "./components/input/*.es.js",
+      "types": "./components/input/*.d.ts"
     }
+  }
 }

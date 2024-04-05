@@ -31,40 +31,49 @@
       "require": "./src/components/*/index.js",
       "import": "./src/components/*/index.js",
       "types": "./src/components/*/index.d.ts"
+    },
+    "./components/button/*": {
+      "require": "./src/components/button/*.js",
+      "import": "./src/components/button/*.js",
+      "types": "./src/components/button/*.d.ts"
+    },
+    "./components/input/*": {
+      "require": "./src/components/input/*.js",
+      "import": "./src/components/input/*.js",
+      "types": "./src/components/input/*.d.ts"
     }
   },
   "scripts": {
-    "test": "vite -d",
+    "test": "vite",
     "build": "iyulab build -d dist -b vite",
     "deploy": "iyulab publish",
     "demo": "storybook dev -p 6006",
     "build-demo": "storybook build -o docs"
   },
   "dependencies": {
+    "@lit/react": "^1.0.4",
     "lit": "^3.1.2",
-    "mobx": "^6.12.1",
+    "mobx": "^6.12.3",
     "react": "^18.2.0",
-    "reflect-metadata": "^0.2.1"
+    "reflect-metadata": "^0.2.2"
   },
   "devDependencies": {
     "@iyulab/utils": "^0.0.8",
-    "@lit/react": "^1.0.4",
-    "@shoelace-style/shoelace": "^2.14.0",
-    "@storybook/addon-essentials": "^8.0.4",
-    "@storybook/addon-links": "^8.0.4",
-    "@storybook/blocks": "^8.0.4",
-    "@storybook/web-components": "^8.0.4",
-    "@storybook/web-components-vite": "^8.0.4",
-    "@types/node": "^20.11.30",
+    "@shoelace-style/shoelace": "^2.15.0",
+    "@storybook/addon-essentials": "^8.0.5",
+    "@storybook/addon-links": "^8.0.5",
+    "@storybook/blocks": "^8.0.5",
+    "@storybook/web-components": "^8.0.5",
+    "@storybook/web-components-vite": "^8.0.5",
+    "@types/node": "^20.12.4",
     "monaco-editor": "^0.47.0",
     "postcss": "^8.4.38",
-    "postcss-nesting": "^12.1.0",
-    "sass": "^1.72.0",
+    "postcss-nesting": "^12.1.1",
+    "sass": "^1.74.1",
     "sass-loader": "^14.1.1",
-    "storybook": "^8.0.4",
-    "typescript": "^5.4.3",
-    "vite": "^5.2.6",
-    "vite-plugin-dts": "^3.7.3",
-    "vite-plugin-static-copy": "^1.0.1"
+    "storybook": "^8.0.5",
+    "typescript": "^5.4.4",
+    "vite": "^5.2.8",
+    "vite-plugin-dts": "^3.8.1"
   }
 }
