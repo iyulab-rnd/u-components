@@ -77,15 +77,20 @@ export class UTextareaInput extends UBaseInput implements UTextareaInputModel {
     this.input.focus();
   }
 
-  private adjustHeight() {
+  private async adjustHeight() {
     this.input.style.height = 'auto';
-    this.input.style.height = `${this.input.scrollHeight}px`;
+    const height = this.input.scrollHeight;
+    if(height) {
+      this.input.style.height = `${height}px`;
+    } else {
+      this.input.style.height = `${this.minRow || 3 * 1.5}em`;
+    }
   }
 
   static styles = css`
     :host {
       width: 100%;
-      --input-size: 14px;
+      font-size: 14px;
     }
     :host([clearable]) u-icon {
       display: inline-flex;
@@ -99,9 +104,8 @@ export class UTextareaInput extends UBaseInput implements UTextareaInputModel {
       padding: 0;
       background-color: transparent;
       font-family: var(--sl-font-sans);
-      font-size: var(--input-size);
-      line-height: attr(minRow);
-      appearance: none;
+      font-size: inherit;
+      line-height: 1.5;
       -webkit-appearance: none;
     }
     textarea::-webkit-scrollbar {
@@ -120,7 +124,7 @@ export class UTextareaInput extends UBaseInput implements UTextareaInputModel {
       right: 10px;
       top: 10px;
       display: none;
-      font-size: var(--input-size);
+      font-size: inherit;
       cursor: pointer;
     }
   `;

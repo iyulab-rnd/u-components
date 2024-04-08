@@ -1,5 +1,6 @@
 import { css, html } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
+import { ifDefined } from "lit/directives/if-defined.js";
 
 import { UTextInputModel, type InputTextFormat } from "./UTextInput.model";
 import { UBaseInput } from "./UBaseInput";
@@ -34,10 +35,11 @@ export class UTextInput extends UBaseInput implements UTextInputModel {
           <input type=${this.format || 'text'}
             autocomplete="off"
             spellcheck="false"
-            maxlength=${this.length || ''}
-            value=${this.value || ''}
-            placeholder=${this.placeholder || ''}
             ?required=${this.required}
+            pattern=${ifDefined(this.pattern)}
+            maxlength=${ifDefined(this.length)}
+            placeholder=${ifDefined(this.placeholder)}
+            value=${this.value || ''}
             @input=${this.onInput}
             @change=${this.onChage}
           />
@@ -48,6 +50,16 @@ export class UTextInput extends UBaseInput implements UTextInputModel {
         </u-input-border>
       </u-input-container>
     `;
+  }
+
+  public async validate() {
+    if(this.input.validity.valid) {
+      return this.setValid();
+    } else if(this.input.validity.valueMissing) {
+      return this.setInvalid(this.invalidMessage || "This field is required");
+    } else {
+      return this.setInvalid(this.input.validationMessage);
+    }
   }
 
   private onInput = (event: Event) => {
@@ -71,23 +83,13 @@ export class UTextInput extends UBaseInput implements UTextInputModel {
     this.input.focus();
   }
 
-  public async validate() {
-    if(!this.input.validity.valid) {
-      return this.setInvalid(this.input.validationMessage);
-    }
-    if(this.pattern && this.value) {
-      const regExp = new RegExp(this.pattern);
-      if(!regExp.test(this.value)) {
-        return this.setInvalid(this.invalidMessage || "Invalid format");
-      }
-    }
-    return this.setValid();
-  }
-
   static styles = css`
     :host {
       width: 100%;
-      --input-size: 14px;
+      font-size: 14px;
+    }
+    :host slot::slotted(*) {
+      font-size: inherit;
     }
     :host([clearable]) u-icon {
       display: inline-flex;
@@ -99,13 +101,13 @@ export class UTextInput extends UBaseInput implements UTextInputModel {
       outline: none;
       padding: 0;
       background-color: transparent;
-      font-size: var(--input-size);
+      font-size: inherit;
       line-height: 1.5;
     }
 
     u-icon {
       display: none;
-      font-size: var(--input-size);
+      font-size: inherit;
       cursor: pointer;
     }
   `;

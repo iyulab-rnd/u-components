@@ -43,10 +43,11 @@ export class USpinner extends LitElement implements USpinnerModel {
   static styles = css`
     :host {
       display: inline-flex;
+      font-size: 32px;
     }
 
     sl-spinner {
-      font-size: 1rem;
+      font-size: inherit;
     }
   `;
 

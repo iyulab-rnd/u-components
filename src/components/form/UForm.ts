@@ -2,10 +2,10 @@ import { LitElement, css, html } from "lit";
 import { customElement, property, queryAll, query, state } from 'lit/decorators.js';
 
 import { getPropertyMeta, type PropertyMetaData } from "../../decorators";
-import { UInput } from "../input";
+import { UInput } from "./UInput";
 import { UButton } from "../button";
-import { UAlert } from "../alert";
-import "../input";
+import { UAlertController } from "../alert/UAlertController";
+import "./UInput";
 import "../button";
 
 @customElement('u-form')
@@ -112,7 +112,6 @@ export class UForm extends LitElement {
   }
 
   private async handleSubmit() {
-    const alert = new UAlert();
     try {
       this.submit.loading = true;
       const isValid = await this.checkValidity();
@@ -123,12 +122,11 @@ export class UForm extends LitElement {
         }));
       }
     } catch(error: any) {
-      document.body.appendChild(alert);
-      alert.toastAsync("danger", error);
+      UAlertController.toastAsync({
+        type: 'danger',
+        content: error.message
+      });
     } finally {
-      if(document.body.contains(alert)) {
-        document.body.removeChild(alert);
-      }
       this.submit.loading = false;
     }
   }

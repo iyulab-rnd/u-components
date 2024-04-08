@@ -1,6 +1,7 @@
 import type { UIconType } from "../icon/UIcon.model";
 import type { UTooltipPosition } from "../tooltip/UTooltip.model";
 import type { CommandModel } from "../../patterns/CommandPattern";
+import type { UButtonTarget } from "./UButton.model";
 
 /**
  * UIconButtonModel은 UIconButton 컴포넌트의 모델을 정의하는 인터페이스입니다.
@@ -38,7 +39,7 @@ export interface UIconButtonModel {
   /**
    * 링크를 열 때 사용할 타겟입니다.
    */
-  target?: string;
+  target?: UButtonTarget;
 
   /**
    * 다운로드할 파일의 이름입니다.

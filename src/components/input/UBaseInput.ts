@@ -61,13 +61,14 @@ export abstract class UBaseInput extends LitElement implements UBaseInputModel {
     }
 
     if (changedProperties.has('size')) {
-      this.style.setProperty('--input-size', this.size || '14px');
+      this.style.fontSize = this.size || '14px';
     }
 
     // Context bind to value
-    if ((changedProperties.has('context') || changedProperties.has('name')) 
-      && this.context && this.name) {
-      this.value = this.context[this.name];
+    if ((changedProperties.has('context') || changedProperties.has('name'))) {
+      if(this.context && this.name) {
+        this.value = this.context[this.name];
+      }
     }
 
     // Value bind to context

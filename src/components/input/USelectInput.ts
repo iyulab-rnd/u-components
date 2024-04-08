@@ -150,8 +150,12 @@ export class USelectInput extends UBaseInput implements USelectInputModel {
       position: relative;
       width: 100%;
 
-      --input-size: 14px;
+      font-size: 14px;
+      --select-padding: 
       --option-limit: 5;
+    }
+    :host slot::slotted(*) {
+      font-size: inherit;
     }
     :host([open]) .popover {
       display: block;
@@ -177,12 +181,12 @@ export class USelectInput extends UBaseInput implements USelectInputModel {
       align-items: center;
       justify-content: space-between;
       box-sizing: border-box;
-      font-size: var(--input-size);
+      font-size: inherit;
       height: 1.5em;
       cursor: pointer;
 
       u-icon {
-        font-size: var(--input-size);
+        font-size: inherit;
         transition: transform 0.2s ease;
       }
     }
@@ -200,7 +204,7 @@ export class USelectInput extends UBaseInput implements USelectInputModel {
       border: 2px solid var(--sl-color-primary-500);
       border-top: none;
       box-sizing: border-box;
-      font-size: var(--input-size);
+      font-size: inherit;
       line-height: 1.5;
 
       .option {
@@ -211,7 +215,13 @@ export class USelectInput extends UBaseInput implements USelectInputModel {
         outline: none;
         padding: 2px 10px;
         box-sizing: border-box;
+        font-size: inherit;
+        line-height: 1.5;
         cursor: pointer;
+
+        u-icon {
+          font-size: inherit;
+        }
       }
       .option:hover {
         background: var(--sl-color-gray-100);

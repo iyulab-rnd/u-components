@@ -33,7 +33,7 @@ export class UInputLabel extends LitElement {
   static styles = css`
     :host {
       display: inline-block;
-      --label-size: calc(var(--input-size, 14px) * 0.85);
+      font-size: 0.85em;
     }
     :host([required]) label::before {
       content: ' *';
@@ -51,7 +51,7 @@ export class UInputLabel extends LitElement {
     }
 
     label {
-      font-size: var(--label-size);
+      font-size: inherit;
       font-weight: 600;
       line-height: 1.5;
       overflow: hidden;
@@ -64,7 +64,7 @@ export class UInputLabel extends LitElement {
       display: inline-flex;
 
       u-icon {
-        font-size: var(--label-size);
+        font-size: inherit;
         cursor: help;
       }
       u-icon:hover + pre {
@@ -86,7 +86,7 @@ export class UInputLabel extends LitElement {
         background-color: var(--sl-color-gray-800);
         color: var(--sl-color-neutral-0);
         font-family: var(--sl-font-sans);
-        font-size: var(--label-size);
+        font-size: inherit;
         line-height: 1.5;
         opacity: 0;
         transform: scale(0.8);

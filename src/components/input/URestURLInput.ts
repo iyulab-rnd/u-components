@@ -1,5 +1,5 @@
 import { css, html } from "lit";
-import { customElement, property, query } from "lit/decorators.js";
+import { customElement, property, query, state } from "lit/decorators.js";
 
 import { URestURLInputModel, type RestURLValue } from "./URestURLInput.model";
 import { UBaseInput } from "./UBaseInput";
@@ -10,8 +10,9 @@ export class URestURLInput extends UBaseInput implements URestURLInputModel {
 
   @query('input') input!: HTMLInputElement;
 
+  @state() prefix: 'http://' | 'https://' = 'https://';
+
   @property({ type: Boolean, reflect: true }) clearable: boolean = false;
-  @property({ type: String }) placeholder?: string;
   @property({ type: Object }) value?: RestURLValue;
 
   protected async updated(changedProperties: any) {
@@ -34,12 +35,15 @@ export class URestURLInput extends UBaseInput implements URestURLInputModel {
             .options=${this.methods}
             @change=${this.onChangeMethod}
           ></u-select-input>
-          <input type="url"
+          <div class="prefix"
+            @click=${this.onChangePrefix}>
+            ${this.prefix}
+          </div>
+          <input type="text"
             autocomplete="off"
             spellcheck="false"
             value=${this.value?.url || ''}
             ?required=${this.required}
-            placeholder=${this.placeholder || ''}
             @input=${this.onInputUrl}
             @change=${this.onChangeUrl}
           />
@@ -67,11 +71,20 @@ export class URestURLInput extends UBaseInput implements URestURLInputModel {
     this.dispatchEvent(new CustomEvent('change', { detail: this.value }));
   }
 
+  private onChangePrefix = () => {
+    this.prefix = this.prefix === 'http://' ? 'https://' : 'http://';
+    if(this.value?.url) {
+      this.value = { method: this.value.method, url: this.prefix + this.value.url.replace(/^https?:\/\//, '') };
+      this.dispatchEvent(new CustomEvent('change', { detail: this.value }));
+    }
+  }
+
   private onInputUrl = (event: Event) => {
     event.stopPropagation();
     const target = event.target as HTMLInputElement;
     this.value ||= { method: "GET", url: "" };
-    this.value = { method: this.value.method, url: target.value };
+    const fullUrl = target.value || `${this.prefix}${target.value}` || "";
+    this.value = { method: this.value.method, url: fullUrl };
     this.dispatchEvent(new CustomEvent('input', { detail: this.value }));
   }
 
@@ -79,7 +92,8 @@ export class URestURLInput extends UBaseInput implements URestURLInputModel {
     event.stopPropagation();
     const target = event.target as HTMLInputElement;
     this.value ||= { method: "GET", url: "" };
-    this.value = { method: this.value.method, url: target.value };
+    const fullUrl = target.value || `${this.prefix}${target.value}` || "";
+    this.value = { method: this.value.method, url: fullUrl };
     this.validate();
     this.dispatchEvent(new CustomEvent('change', { detail: this.value }));
   }
@@ -95,31 +109,47 @@ export class URestURLInput extends UBaseInput implements URestURLInputModel {
   static styles = css`
     :host {
       width: 100%;
-      --input-size: 14px;
+      font-size: 14px;
     }
     :host([clearable]) u-icon {
       display: inline-flex;
     }
 
+    u-input-border {
+      gap: 0;
+    }
+
     u-select-input {
-      width: calc(var(--input-size) * 7);
+      width: 10em;
+      font-size: 0.8em;
+      margin-right: 10px;
+    }
+
+    .prefix {
+      font-size: inherit;
+      line-height: 1.5;
+      padding: 0px 1px;
+      cursor: pointer;
+    }
+    .prefix:hover {
+      color: var(--sl-color-primary-500);
     }
 
     input {
       flex: 1;
       border: none;
       outline: none;
-      padding: 0;
+      padding: 0px 1px;
       background-color: transparent;
-      font-size: var(--input-size);
+      font-family: inherit;
+      font-size: inherit;
       line-height: 1.5;
-      border-bottom: 1px solid var(--sl-color-gray-300);
       box-sizing: border-box;
     }
 
     u-icon {
       display: none;
-      font-size: var(--input-size);
+      font-size: inherit;
       cursor: pointer;
     }
   `;

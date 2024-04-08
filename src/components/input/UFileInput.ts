@@ -186,7 +186,7 @@ export class UFileInput extends UBaseInput implements UFileInputModel {
   static styles = css`
     :host {
       width: 100%;
-      --input-size: 14px;
+      font-size: 14px;
     }
     :host([dragover]) .overlay {
       display: flex;

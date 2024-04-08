@@ -1,28 +1,29 @@
-import { css, html, LitElement } from 'lit'
-import { customElement, property, query } from 'lit/decorators.js'
+import { css, html, LitElement, TemplateResult } from 'lit'
+import { customElement, property } from 'lit/decorators.js'
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import type { UIconType } from '../icon/UIcon.model';
 import type { UTooltipPosition } from '../tooltip/UTooltip.model';
 import type { CommandModel } from '../../patterns/CommandPattern';
+import type { UButtonTarget } from './UButton.model';
 import { UIconButtonModel } from "./UIconButton.model";
 
-import '../icon/UIcon';
 import '../spinner/USpinner';
 import '../tooltip/UTooltip';
+import '../icon/UIcon';
 
 @customElement('u-icon-button')
 export class UIconButton extends LitElement implements UIconButtonModel {
-
-  @query('a') anchor!: HTMLAnchorElement;
 
   @property({ type: String }) type: UIconType = 'default';
   @property({ type: String }) name?: string;
   @property({ type: String }) color?: string;
   @property({ type: String }) size?: string = "16px";
+
   @property({ type: String }) href?: string;
-  @property({ type: String }) target: string = '_self';
+  @property({ type: String }) target: UButtonTarget = '_self';
   @property({ type: String }) download?: string;
+  
   @property({ type: Boolean }) disabled: boolean = false;
   @property({ type: Boolean }) loading: boolean = false;
   @property({ type: String }) tooltip?: string;
@@ -33,49 +34,51 @@ export class UIconButton extends LitElement implements UIconButtonModel {
   protected async updated(changedProperties: any) {
     super.updated(changedProperties);
     await this.updateComplete;
+
+    if (changedProperties.has('size') && this.size) {
+      this.style.fontSize = this.size;
+    }
   }
 
   render() {
     if (this.loading) {
-      return this.renderLoadingSpinner();
-    } else {
-      return html`
-        <a target=${ifDefined(this.target)}
-          href=${ifDefined(this.href)} 
-          download=${ifDefined(this.download)}
-        ></a>
-        ${this.tooltip
-          ? this.renderIconButtonWithTooltip()
-          : this.renderIconButton()}
-      `;
+      return html`<u-spinner></u-spinner>`;
+    } 
+    let content = this.renderIcon();
+
+    if (this.href || this.download) {
+      content = this.renderAnchorWith(content);
     }
+    if (this.tooltip) {
+      content = this.renderTooltipWith(content);
+    }
+    return content;
   }
 
-  private renderLoadingSpinner() {
+  private renderAnchorWith(content: TemplateResult<1>) {
     return html`
-      <u-spinner
-        .size=${this.size}
-      ></u-spinner>
+      <a target=${ifDefined(this.target)}
+        href=${ifDefined(this.href)} 
+        download=${ifDefined(this.download)}
+      >${content}</a>
     `;
   }
 
-  private renderIconButtonWithTooltip() {
+  private renderTooltipWith(content: TemplateResult<1>) {
     return html`
       <u-tooltip
         .content=${this.tooltip}
-        .position=${this.tooltipPosition}>
-        ${this.renderIconButton()}
-      </u-tooltip>
+        .position=${this.tooltipPosition}
+      >${content}</u-tooltip>
     `;
   }
 
-  private renderIconButton() {
+  private renderIcon() {
     return html`
       <u-icon
         .type=${this.type}
         .name=${this.name}
         .color=${this.color}
-        .size=${this.size}
         @click=${this.handleButtonClick}
       ></u-icon>
     `;
@@ -84,9 +87,6 @@ export class UIconButton extends LitElement implements UIconButtonModel {
   private handleButtonClick = async (event: Event) => {
     event.preventDefault();
     event.stopPropagation();
-    if (this.href || this.download) {
-      this.anchor.click();
-    }
     if (this.command && this.command.canExecute(this.commandParam)) {
       try {
         this.loading = true;
@@ -106,6 +106,7 @@ export class UIconButton extends LitElement implements UIconButtonModel {
     :host {
       display: inline-flex;
       cursor: pointer;
+      font-size: 16px;
     }
     :host([disabled]) {
       pointer-events: none;
@@ -114,10 +115,19 @@ export class UIconButton extends LitElement implements UIconButtonModel {
     :host([loading]) {
       cursor: wait;
     }
-
-    a {
-      display: none;
+    
+    u-spinner {
+      font-size: inherit;
     }
+
+    u-icon {
+      color: var(--sl-color-gray-600);
+      font-size: inherit;
+    }
+    u-icon:hover {
+      color: var(--sl-color-primary-600);
+    }
+    
   `;
 
 }

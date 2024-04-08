@@ -15,13 +15,12 @@ export class UInputError extends LitElement {
   static styles = css`
     :host {
       display: inline-block;
-
-      --error-size: calc(var(--input-size, 14px) * 0.85);
+      font-size: 0.85em;
     }
 
     .error {
       color: red;
-      font-size: var(--error-size);
+      font-size: inherit;
       font-weight: 400;
       line-height: 1.5;
       padding: 2px 5px;

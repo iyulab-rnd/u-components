@@ -94,7 +94,10 @@ export class UNumberInput extends UBaseInput implements UNumberInputModel {
   static styles = css`
     :host {
       width: 100%;
-      --input-size: 14px;
+      font-size: 14px;
+    }
+    :host slot::slotted(*) {
+      font-size: inherit;
     }
     :host([clearable]) u-icon {
       display: inline-flex;
@@ -106,7 +109,7 @@ export class UNumberInput extends UBaseInput implements UNumberInputModel {
       outline: none;
       padding: 0;
       background-color: transparent;
-      font-size: var(--input-size);
+      font-size: inherit;
       line-height: 1.5;
     }
     input::-webkit-outer-spin-button,
@@ -118,7 +121,7 @@ export class UNumberInput extends UBaseInput implements UNumberInputModel {
 
     u-icon {
       display: none;
-      font-size: var(--input-size);
+      font-size: inherit;
       cursor: pointer;
     }
   `;

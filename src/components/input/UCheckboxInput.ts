@@ -40,10 +40,11 @@ export class UCheckboxInput extends UBaseInput implements UCheckboxInputModel {
   }
 
   public async validate() {
-    if(!this.input.validity.valid) {
+    if(this.input.validity.valid) {
+      return this.setValid();
+    } else {
       return this.setInvalid(this.input.validationMessage);
     }
-    return this.setValid();
   }
 
   static styles = css`
@@ -53,9 +54,7 @@ export class UCheckboxInput extends UBaseInput implements UCheckboxInputModel {
       grid-template-columns: auto 1fr;
       align-items: center;
       grid-column-gap: 8px;
-
-      --input-size: 14px;
-      --checkbox-size: calc(var(--input-size) * 0.85 * 1.5);
+      font-size: 14px;
     }
     :host([disabled]) {
       pointer-events: none;
@@ -67,8 +66,9 @@ export class UCheckboxInput extends UBaseInput implements UCheckboxInputModel {
 
     input {
       grid-column: 1;
-      width: var(--checkbox-size);
-      height: var(--checkbox-size);
+      font-size: inherit;
+      width: 1.275em;
+      height: 1.275em;
       margin: 0;
       padding: 0;
     }

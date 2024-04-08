@@ -16,7 +16,8 @@ export class UEditorInput extends UBaseInput implements UEditorInputModel {
     return html`
       <u-input-container>
         <u-input-border>
-          <monaco-editor noHeader
+          <monaco-editor 
+            noHeader
             .language=${this.language || 'json'}
             .readOnly=${this.readonly}
             .value=${this.value || ''}
@@ -45,11 +46,11 @@ export class UEditorInput extends UBaseInput implements UEditorInputModel {
   static styles = css`
     :host {
       width: 100%;
-      --input-size: 14px;
+      font-size: 14px;
     }
 
     u-input-border {
-      height: calc(var(--input-size) * 10);
+      height: 10em;
       overflow: hidden;
       resize: vertical;
     }

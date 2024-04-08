@@ -7,12 +7,7 @@ SlButton.define('sl-button');
 
 import type { UTooltipPosition } from '../tooltip/UTooltip.model';
 import type { CommandModel } from '../../patterns/CommandPattern';
-import type {
-  UButtonModel,
-  UButtonTheme, 
-  UButtonSize,
-  UButtonTarget
-} from './UButton.model';
+import type { UButtonModel, UButtonTheme, UButtonSize, UButtonTarget } from './UButton.model';
 
 import '../tooltip/UTooltip';
 
@@ -103,9 +98,7 @@ export class UButton extends LitElement implements UButtonModel {
   }
 
   static styles = css`
-    sl-icon-button::part(base) {
-      padding: var(--sl-spacing-2x-small);
-    }
+
   `;
 
 }

@@ -33,12 +33,12 @@ export class UObjectInput extends UBaseInput implements UObjectInputModel {
   private renderProperty(key: string, value: string) {
     return html`
       <div class="property">
-        <u-text-input required .size=${this.size} placeholder="Enter key"
+        <u-text-input required placeholder="Enter key"
           .value=${key}
           @change=${(e: any) => this.onChangeKey(e, key)}>
           <u-icon slot="prefix" type="system" name="key"></u-icon>
         </u-text-input>
-        <u-text-input required .size=${this.size} placeholder="Enter value"
+        <u-text-input required placeholder="Enter value"
           .value=${value}
           @change=${(e: any) => this.onChangeValue(e, key)}>
           <u-icon slot="prefix" type="system" name="box"></u-icon>
@@ -92,7 +92,7 @@ export class UObjectInput extends UBaseInput implements UObjectInputModel {
   static styles = css`
     :host {
       width: 100%;
-      --input-size: 14px;
+      font-size: 14px;
     }
 
     .properties {
@@ -109,8 +109,12 @@ export class UObjectInput extends UBaseInput implements UObjectInputModel {
         justify-content: space-between;
         gap: 5px;
 
+        u-text-input {
+          font-size: inherit;
+        }
+
         .delete {
-          font-size: calc((var(--input-size) * 1.5) + 12px);
+          font-size: calc(1.5em + 10px);
           color: var(--sl-color-gray-300);
           cursor: pointer;
         }
@@ -134,11 +138,11 @@ export class UObjectInput extends UBaseInput implements UObjectInputModel {
       cursor: pointer;
 
       u-icon {
-        font-size: var(--input-size);
+        font-size: inherit;
         color: var(--sl-color-gray-300);
       }
       label {
-        font-size: var(--input-size);
+        font-size: inherit;
         color: var(--sl-color-gray-300);
         cursor: pointer;
       }

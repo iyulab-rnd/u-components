@@ -2,7 +2,9 @@ import { LitElement, css, html } from "lit";
 import { customElement, query } from "lit/decorators.js";
 
 import { propertyMeta } from "./src/decorators";
-import './src/components';
+import './src';
+import { SystemIcon } from "./src/components/icon/UIcon.vector";
+import { UAlertController } from "./src/components/alert/UAlertController";
 
 export class TestContext {
 
@@ -30,10 +32,25 @@ export class AppTest extends LitElement {
 
   render() {
     return html`
+      ${this.renderSystemIcons()}
       ${this.buttonTest()}
       ${this.inputTest()}
       <!-- ${this.contextTest()} -->
       <!-- ${this.formTest()} -->
+    `;
+  }
+
+  renderSystemIcons() {
+    const icons = Object.keys(SystemIcon);
+    return html`
+      <h3>===== System Icons =====</h3>
+      <u-divider></u-divider>
+      <div class="icons">
+        ${icons.map(icon => html`
+          <u-icon type="system" name=${icon}></u-icon>
+          <span>${icon}</span>
+        `)}
+      </div>
     `;
   }
 
@@ -77,7 +94,7 @@ export class AppTest extends LitElement {
         required
         label='Agree'
         description='Your agreement'
-      ></u-checkbox-input> -->
+      ></u-checkbox-input>
       <u-rest-url-input
         required
         label='Request URL'
@@ -90,6 +107,14 @@ export class AppTest extends LitElement {
         placeholder="Select your option"
         .options=${['1', '2', '3', '4', '5', '6']}
       ></u-select-input>
+      <u-range-input
+        label="Range"
+        description="Your range"
+        min="0"
+        max="100"
+        step="5"
+        value="50"
+      ></u-range-input> -->
     `;
   }
 
@@ -117,11 +142,11 @@ export class AppTest extends LitElement {
       <u-button-group position="start" gap="5px">
         <u-button @click=${this.request} tooltip="hello">Render</u-button>
         <u-button @click=${this.toggleTheme}>Theme</u-button>
-        <u-button @click=${this.toggleTheme}>Theme</u-button>
-        <u-button @click=${this.toggleTheme}>Theme</u-button>
-        <u-button @click=${this.toggleTheme}>Theme</u-button>
-        <u-button @click=${this.toggleTheme}>Theme</u-button>
-        <u-button @click=${this.toggleTheme}>Theme</u-button>
+        <u-button @click=${() => this.toggleAlert('askdu ajd as sdckj skj aa', 'bottom-left')}>alert</u-button>
+        <u-button @click=${() => this.toggleAlert('askdncsdckj skj aa', 'bottom-center')}>Theme</u-button>
+        <u-button @click=${() => this.toggleAlert('askdncjdnsjcsu ajd  skj aa', 'bottom-right')}>Theme</u-button>
+        <u-button @click=${() => this.toggleAlert('askdncjdnsjcsu ajd as sdckj skj aa', 'bottom')}>Theme</u-button>
+        <u-button @click=${() => this.toggleAlert(' sdckj skj aa', 'bottom')}>Theme</u-button>
         <u-dropdown>
           <u-button slot="trigger" caret>Dropdown</u-button>
           ${this.renderMenu()}
@@ -164,6 +189,14 @@ export class AppTest extends LitElement {
 
   toggleTheme() {
     document.documentElement.classList.toggle('sl-theme-dark');
+  }
+
+  toggleAlert(content: string, position: string) {
+    UAlertController.toastAsync({
+      type: 'success',
+      content: content,
+      position: position
+    });
   }
 
   static styles = css`

@@ -24,11 +24,11 @@ export class UIcon extends LitElement implements UIconModel {
     if (changedProperties.has('name') && this.name) {
       this.svg = await this.resolveFrom(this.name);
     }
-    if (changedProperties.has('size') && this.size) {
-      this.style.fontSize = this.size;
+    if (changedProperties.has('size')) {
+      this.style.fontSize = this.size ?? '16px';
     }
-    if (changedProperties.has('color') && this.color) {
-      this.style.color = this.color;
+    if (changedProperties.has('color')) {
+      this.style.color = this.color ?? 'currentColor';
     }
   }
 
