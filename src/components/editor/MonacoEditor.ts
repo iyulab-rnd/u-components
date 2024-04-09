@@ -5,7 +5,7 @@ import { createRef, Ref, ref } from "lit/directives/ref.js";
 import SlCopyButton from "@shoelace-style/shoelace/dist/components/copy-button/copy-button.component.js";
 SlCopyButton.define('sl-copy-button');
 
-import "./MonacoWorker";
+import "./MonacoEditor.worker";
 import * as monaco from "monaco-editor";
 import styles from "monaco-editor/min/vs/editor/editor.main.css?inline";
 

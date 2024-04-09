@@ -3,8 +3,8 @@ import { customElement, property, queryAll } from "lit/decorators.js";
 import { repeat } from 'lit/directives/repeat.js';
 
 import { UObjectInputModel } from "./UObjectInput.model";
-import { UBaseInput } from "./UBaseInput";
-import { UTextInput } from "./UTextInput";
+import { UBaseInput } from "../input-parts/UBaseInput";
+import { UTextInput } from "../input/UTextInput";
 
 @customElement('u-object-input')
 export class UObjectInput extends UBaseInput implements UObjectInputModel {

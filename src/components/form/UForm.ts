@@ -1,13 +1,13 @@
 import { LitElement, css, html } from "lit";
 import { customElement, property, queryAll, query, state } from 'lit/decorators.js';
+import { localized, msg } from "@lit/localize";
 
 import { getPropertyMeta, type PropertyMetaData } from "../../decorators";
-import { UInput } from "./UInput";
-import { UButton } from "../button";
 import { UAlertController } from "../alert/UAlertController";
-import "./UInput";
-import "../button";
+import { UInput } from "./UInput";
+import { UButton } from "../button/UButton";
 
+@localized()
 @customElement('u-form')
 export class UForm extends LitElement {
 
@@ -100,13 +100,13 @@ export class UForm extends LitElement {
           size="medium"
           theme="default"
           @click=${this.handleCancel}
-        >취소</u-button>
+        >${msg('Cancel')}</u-button>
         <u-button
           class="submit"
           size="medium"
           theme="primary"
           @click=${this.handleSubmit}
-        >등록</u-button>
+        >${msg('Confirm')}</u-button>
       </u-button-group>
     `;
   }

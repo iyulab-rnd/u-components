@@ -2,7 +2,7 @@ import { css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
 import { UEditorInputModel } from "./UEditorInput.model";
-import { UBaseInput } from "./UBaseInput";
+import { UBaseInput } from "../input-parts/UBaseInput";
 import "../editor/MonacoEditor";
 
 @customElement('u-editor-input')

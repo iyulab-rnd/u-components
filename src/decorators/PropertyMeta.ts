@@ -1,35 +1,42 @@
 import 'reflect-metadata';
-import { UInputMeta } from '../components/input/UInputModel';
+import type { UInputMeta } from '../components/form/UInputModel';
 import type { 
-  UCheckboxInputModel, 
-  UEditorInputModel, 
-  UFileInputModel, 
-  UNumberInputModel, 
-  UObjectInputModel, 
-  URestURLInputModel, 
-  USelectInputModel, 
-  UTextInputModel, 
+  UCheckboxInputModel,
+  UFileInputModel,
+  UNumberInputModel,
+  URangeInputModel,
+  USelectInputModel,
+  UTextInputModel,
   UTextareaInputModel
 } from '../components/input';
-
-const key = Symbol('propertyMeta');
-type constructor<T = {}> = new (...args: any[]) => T; // eslint-disable-line
+import type { 
+  UObjectInputModel, 
+  URestURLInputModel,
+} from '../components/input-extension';
+import type { 
+  UEditorInputModel,
+} from '../components/input-advanced';
 
 export type PropertyMetaData = UInputMeta & {
   name?: string;
 }
 
 export type PropertyMeta = (
+  (UTextInputModel) | 
   ({ type: 'checkbox' } & UCheckboxInputModel) | 
-  ({ type: 'editor' } & UEditorInputModel) | 
   ({ type: 'file' } & UFileInputModel) | 
   ({ type: 'number' } & UNumberInputModel) | 
+  ({ type: 'range' } & URangeInputModel) |
+  ({ type: 'select' } & USelectInputModel) | 
+  ({ type: 'textarea' } & UTextareaInputModel) |
   ({ type: 'object' } & UObjectInputModel) | 
   ({ type: 'rest-url' } & URestURLInputModel) | 
-  ({ type: 'select' } & USelectInputModel) | 
-  ({ type: 'text' } & UTextInputModel) | 
-  ({ type: 'textarea' } & UTextareaInputModel)
+  ({ type: 'editor' } & UEditorInputModel)
 );
+
+type Constructor<T = {}> = new (...args: any[]) => T; // eslint-disable-line
+
+const propertyMetaKey = Symbol('propertyMeta');
 
 /**
  * 클래스 속성을 정의하기 위한 데코레이터 함수입니다.
@@ -37,13 +44,20 @@ export type PropertyMeta = (
  */
 export function propertyMeta(metadata: PropertyMetaData) {
   return (target: any, propertyKey: string) => {
-
-    const metaList: PropertyMetaData[] = Reflect.getMetadata(key, target) || [];
-    metaList.push({ name: propertyKey, ...metadata });
-    Reflect.defineMetadata(key, metaList, target);
-
-    // Reflect.defineMetadata(key, metadata, target, propertyKey);
+    setPropertyMeta(target, propertyKey, metadata);
   };
+}
+
+/**
+ * target 클래스의 모든 속성에 대한 메타데이터를 설정합니다.
+ * @param target - 클래스의 생성자 함수입니다.
+ * @param propertyKey - 메타데이터를 설정할 속성의 이름입니다.
+ * @param metadata - 속성에 대한 메타데이터입니다.
+ */
+export function setPropertyMeta(target: any, propertyKey: string, metadata: PropertyMetaData): void {
+  const metaList: PropertyMetaData[] = Reflect.getMetadata(propertyMetaKey, target) || [];
+  metaList.push({ name: propertyKey, ...metadata });
+  Reflect.defineMetadata(propertyMetaKey, metaList, target);
 }
 
 /**
@@ -51,19 +65,19 @@ export function propertyMeta(metadata: PropertyMetaData) {
  * @param target - 클래스의 생성자 함수입니다.
  * @return 모든 메타데이터의 배열을 반환합니다.
  */
-export function getPropertyMeta(target: constructor): PropertyMetaData[] | undefined;
+export function getPropertyMeta(target: Constructor): PropertyMetaData[] | undefined;
 /**
  * target 클래스의 특정속성에 대한 메타데이터를 반환합니다.
  * @param target - 클래스의 생성자 함수입니다.
  * @param propertyKey - 메타데이터를 검색할 속성의 이름입니다.
  * @returns 특정 속성에 대한 메타데이터를 반환합니다.
  */
-export function getPropertyMeta(target: constructor, propertyKey: string): PropertyMetaData | undefined;
+export function getPropertyMeta(target: Constructor, propertyKey: string): PropertyMetaData | undefined;
 
-export function getPropertyMeta(target: constructor, propertyKey?: string): PropertyMetaData[] | PropertyMetaData | undefined {
+export function getPropertyMeta(target: Constructor, propertyKey?: string): PropertyMetaData[] | PropertyMetaData | undefined {
   try{
     target = target.prototype ? target.prototype : target;
-    const metaList: PropertyMetaData[] | undefined = Reflect.getMetadata(key, target);
+    const metaList: PropertyMetaData[] | undefined = Reflect.getMetadata(propertyMetaKey, target);
     // propertyKey가 존재하면 해당 속성에 대한 메타데이터를 반환합니다.
     return propertyKey 
     ? metaList?.find((meta: PropertyMetaData) => meta.name === propertyKey) 

@@ -32,6 +32,21 @@
       "require": "./components/input/*.cjs.js",
       "import": "./components/input/*.es.js",
       "types": "./components/input/*.d.ts"
+    },
+    "./components/input-parts/*": {
+      "require": "./components/input-parts/*.cjs.js",
+      "import": "./components/input-parts/*.es.js",
+      "types": "./components/input-parts/*.d.ts"
+    },
+    "./components/input-extension/*": {
+      "require": "./components/input-extension/*.cjs.js",
+      "import": "./components/input-extension/*.es.js",
+      "types": "./components/input-extension/*.d.ts"
+    },
+    "./components/input-advanced/*": {
+      "require": "./components/input-advanced/*.cjs.js",
+      "import": "./components/input-advanced/*.es.js",
+      "types": "./components/input-advanced/*.d.ts"
     }
   }
 }

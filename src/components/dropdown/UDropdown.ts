@@ -10,11 +10,11 @@ import { UDropdownModel, type DropdownPlacement } from "./UDropdown.model";
 export class UDropdown extends LitElement implements UDropdownModel {
 
   @property({ type: Boolean }) open: boolean = false;
-  @property({ type: String }) placement: DropdownPlacement = 'bottom-start';
   @property({ type: Boolean }) disabled: boolean = false;
+  @property({ type: Boolean }) hoist: boolean = false;
+  @property({ type: String }) placement: DropdownPlacement = 'bottom-start';
   @property({ type: Number }) distance: number = 5;
   @property({ type: Number }) skidding: number = 0;
-  @property({ type: Boolean }) hoist: boolean = false;
 
   render() {
     return html`

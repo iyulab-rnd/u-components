@@ -3,7 +3,7 @@ import { customElement, property, query } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
 import { UNumberInputModel } from "./UNumberInput.model";
-import { UBaseInput } from "./UBaseInput";
+import { UBaseInput } from "../input-parts/UBaseInput";
 
 @customElement('u-number-input')
 export class UNumberInput extends UBaseInput implements UNumberInputModel {
@@ -11,9 +11,9 @@ export class UNumberInput extends UBaseInput implements UNumberInputModel {
   @query('input') input!: HTMLInputElement;
 
   @property({ type: Boolean, reflect: true }) clearable: boolean = false;
-  @property({ type: Boolean }) integerOnly?: boolean;
-  @property({ type: Number }) min?: number = 0;
-  @property({ type: Number }) max?: number = 10;
+  @property({ type: Boolean }) integerOnly: boolean = false;
+  @property({ type: Number }) min?: number;
+  @property({ type: Number }) max?: number;
   @property({ type: String }) placeholder?: string;
   @property({ type: Number }) value?: number;
 

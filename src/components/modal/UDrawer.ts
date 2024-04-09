@@ -1,28 +1,27 @@
 import { LitElement, css, html } from "lit";
-import { customElement, property, query } from "lit/decorators.js";
+import { customElement, property, query, state } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
 import SlDrawer from '@shoelace-style/shoelace/dist/components/drawer/drawer.component.js';
 SlDrawer.define('sl-drawer');
 
+import { UDrawerModel, type DrawerPosition } from "./UDrawer.model";
 import { UModalContent } from "./UModalContent";
-import type { UModalResult } from "./UModalModel";
-
-export type DrawerPosition = 'top' | 'end' | 'bottom' | 'start';
+import type { UModalResult } from "./UModalContent.model";
 
 @customElement('u-drawer')
-export class UDrawer extends LitElement {
+export class UDrawer extends LitElement implements UDrawerModel {
   
-  @query("sl-drawer")drawer!: SlDrawer;
+  @query("sl-drawer") drawer!: SlDrawer;
+
+  @state() content?: UModalContent;
 
   @property({ type: Boolean }) open: boolean = false;
-  @property({ type: String }) label?: string;
-  @property({ type: String }) position: DrawerPosition = "end";
-  @property({ type: Boolean }) contained: boolean = false;
   @property({ type: Boolean }) noHeader: boolean = false;
-  @property({ attribute: false }) headerActions?: HTMLElement;
-  @property({ attribute: false }) content?: UModalContent;
-
+  @property({ type: Boolean }) contained: boolean = false;
+  @property({ type: String }) position: DrawerPosition = "end";
+  @property({ type: String }) label?: string;
+  
   protected async updated(changedProperties: any) {
     super.updated(changedProperties);
     await this.updateComplete;
@@ -37,21 +36,15 @@ export class UDrawer extends LitElement {
   render() {
     return html`
       <sl-drawer
-        label=${ifDefined(this.label)}
         ?open=${this.open}
-        .noHeader=${this.noHeader}
+        ?noHeader=${this.noHeader}
         ?contained=${this.contained}
         .placement=${this.position}
+        label=${ifDefined(this.label)}
       >
-        ${this.renderContent()}
+        <slot name="action" slot="header-actions"></slot>
+        ${this.content ?? html`<slot></slot>`}
       </sl-drawer>
-    `;
-  }
-
-  private renderContent() {
-    return html`
-      ${this.headerActions ? html`<div slot="header-actions">${this.headerActions}</div>` : ''}
-      ${this.content ?? html`<slot></slot>`}
     `;
   }
 

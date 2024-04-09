@@ -1,8 +1,10 @@
 import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
+import { UInputErrorModel } from './UInputError.model';
+
 @customElement('u-input-error')
-export class UInputError extends LitElement {
+export class UInputError extends LitElement implements UInputErrorModel {
 
   @property({ type: String }) error?: string;
 

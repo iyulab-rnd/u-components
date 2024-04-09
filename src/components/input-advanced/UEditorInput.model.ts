@@ -1,4 +1,4 @@
-import { UBaseInputModel } from "./UBaseInput.model";
+import { UBaseInputModel } from "../input-parts/UBaseInput.model";
 
 export interface UEditorInputModel extends UBaseInputModel {
   /**

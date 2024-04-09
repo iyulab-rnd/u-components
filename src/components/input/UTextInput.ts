@@ -2,8 +2,8 @@ import { css, html } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
-import { UTextInputModel, type InputTextFormat } from "./UTextInput.model";
-import { UBaseInput } from "./UBaseInput";
+import { UTextInputModel, type InputTextType } from "./UTextInput.model";
+import { UBaseInput } from "../input-parts/UBaseInput";
 
 @customElement('u-text-input')
 export class UTextInput extends UBaseInput implements UTextInputModel {
@@ -11,8 +11,8 @@ export class UTextInput extends UBaseInput implements UTextInputModel {
   @query('input') input!: HTMLInputElement;
 
   @property({ type: Boolean, reflect: true }) clearable: boolean = false;  
+  @property({ type: String }) type?: InputTextType;
   @property({ type: Number }) length?: number;
-  @property({ type: String }) format?: InputTextFormat;
   @property({ type: String }) pattern?: string | RegExp;
   @property({ type: String }) invalidMessage?: string;
   @property({ type: String }) placeholder?: string;
@@ -32,7 +32,7 @@ export class UTextInput extends UBaseInput implements UTextInputModel {
       <u-input-container>
         <u-input-border>
           <slot name="prefix"></slot>
-          <input type=${this.format || 'text'}
+          <input type=${this.type || 'text'}
             autocomplete="off"
             spellcheck="false"
             ?required=${this.required}

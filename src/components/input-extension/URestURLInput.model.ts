@@ -1,4 +1,4 @@
-import { UBaseInputModel } from "./UBaseInput.model";
+import { UBaseInputModel } from "../input-parts/UBaseInput.model";
 
 export type RestMethod = "GET" | "PUT" | "POST" | "DELETE" | "HEAD" | "OPTIONS" | "TRACE" | "PATCH" | "CONNECT";
 
@@ -22,9 +22,9 @@ export interface RestURLValue {
  */
 export interface URestURLInputModel extends UBaseInputModel {
   /**
-   * The placeholder text for the input field.
+   * The list of HTTP methods that can be used for the request.
    */
-  placeholder?: string;
+  methods: RestMethod[];
 
   /**
    * The initial value for the input field.

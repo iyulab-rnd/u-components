@@ -2,7 +2,7 @@ import { LitElement, css, html, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 
 import { UFileItemModel, type FileMetaValue } from './UFileItem.model';
-import { FileTypeImage } from "./UFileItem.base64";
+import { FileTypeImage } from "./UFileItem.resource";
 import { UFileController } from "./UFileController";
 
 @customElement('u-file-item')

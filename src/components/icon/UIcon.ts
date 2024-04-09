@@ -5,7 +5,7 @@ import type { DirectiveResult } from "lit/directive.js";
 
 import { UIconModel, type UIconType } from "./UIcon.model";
 import { UIconController } from "./UIconController";
-import { SystemIcon } from "./UIcon.vector";
+import { SystemIcon } from "./UIcon.resource";
 
 @customElement('u-icon')
 export class UIcon extends LitElement implements UIconModel {
@@ -41,8 +41,8 @@ export class UIcon extends LitElement implements UIconModel {
       return await this.resovleFromFile(name);
     } else if(this.type === 'system') {
       return this.resolveFromVector(name);
-    } else if(UIconController.iconRenderers.has(this.type)) {
-      const renderer = UIconController.iconRenderers.get(this.type);
+    } else if(UIconController.renderers.has(this.type)) {
+      const renderer = UIconController.renderers.get(this.type);
       return renderer?.call(this, name) ?? nothing;
     } else {
       return nothing;
@@ -50,7 +50,7 @@ export class UIcon extends LitElement implements UIconModel {
   }
 
   private resovleFromFile = async (name: string) => {
-    const basePath = UIconController.iconBasePath;
+    const basePath = UIconController.basePath;
     const fullPath = `${basePath.endsWith('/') ? basePath.slice(0, -1) : basePath}/${name}.svg`;
     const result = await fetch(fullPath);
     const content = await result.text();
