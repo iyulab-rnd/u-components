@@ -2,15 +2,16 @@ import { css, html } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
-import { UTextInputModel } from "./UTextInput.model";
+import { UPasswordInputModel } from "./UPasswordInput.model";
 import { UBaseInput } from "../input-parts/UBaseInput";
 
-@customElement('u-text-input')
-export class UTextInput extends UBaseInput implements UTextInputModel {
+@customElement('u-password-input')
+export class UPasswordInput extends UBaseInput implements UPasswordInputModel {
   
   @query('input') inputEl!: HTMLInputElement;
 
   @property({ type: Boolean, reflect: true }) clearable?: boolean;  
+  @property({ type: Boolean }) visible?: boolean;  
   @property({ type: Number }) length?: number;
   @property({ type: String }) pattern?: string | RegExp;
   @property({ type: String }) invalidMessage?: string;
@@ -31,7 +32,7 @@ export class UTextInput extends UBaseInput implements UTextInputModel {
       <u-input-container>
         <u-input-border>
           <slot name="prefix"></slot>
-          <input type="text"
+          <input type=${this.visible ? 'text' : 'password'}
             autocomplete="off"
             spellcheck="false"
             ?required=${this.required}
@@ -42,6 +43,9 @@ export class UTextInput extends UBaseInput implements UTextInputModel {
             @input=${this.onInput}
             @change=${this.onChage}
           />
+          <u-icon class="visible" type="system" name=${this.visible ? 'visible' : 'invisible'}
+            @click=${this.handleVisible}
+          ></u-icon>
           <u-icon class="clear" type="system" name="clear"
             @click=${this.handleClear}
           ></u-icon>
@@ -55,7 +59,7 @@ export class UTextInput extends UBaseInput implements UTextInputModel {
     if(this.inputEl.validity.valid) {
       return this.setValid();
     } else if(this.inputEl.validity.patternMismatch) {
-      return this.setInvalid(this.invalidMessage || "Invalid pattern");
+      return this.setInvalid(this.invalidMessage || "Invalid pattern.");
     } else {
       return this.setInvalid(this.inputEl.validationMessage);
     }
@@ -74,6 +78,10 @@ export class UTextInput extends UBaseInput implements UTextInputModel {
     this.value = target.value;
     this.validate();
     this.dispatchEvent(new CustomEvent('change', { detail: this.value }));
+  }
+
+  private handleVisible = () => {
+    this.visible = !this.visible;
   }
 
   private handleClear = () => {
@@ -102,6 +110,18 @@ export class UTextInput extends UBaseInput implements UTextInputModel {
       background-color: transparent;
       font-size: inherit;
       line-height: 1.5;
+    }
+
+    .visible {
+      display: inline-flex;
+      font-size: inherit;
+      color: var(--sl-color-gray-500);
+      cursor: pointer;
+      margin-right: 5px;
+      box-sizing: border-box;
+    }
+    .visible:hover {
+      color: var(--sl-color-gray-800);
     }
 
     .clear {

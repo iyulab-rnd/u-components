@@ -152,18 +152,21 @@ export class USelectInput extends UBaseInput implements USelectInputModel {
       width: 100%;
 
       font-size: 14px;
-      --select-padding: 
+      --vertical-padding: 5px;
       --option-limit: 5;
     }
     :host slot::slotted(*) {
       font-size: inherit;
+    }
+    :host u-input-border {
+      padding: var(--vertical-padding) 10px;
     }
     :host([open]) .popover {
       display: block;
     }
     :host([open]) u-input-border {
       border: 2px solid var(--sl-color-primary-500);
-      padding: 4px 9px;
+      padding: calc(var(--vertical-padding) - 1px) 10px;
       border-radius: 4px 4px 0 0;
       border-bottom: none;
     }

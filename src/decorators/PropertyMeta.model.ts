@@ -1,11 +1,16 @@
 import type { 
   UCheckboxInputModel,
+  UDatetimeInputModel,
+  UEmailInputModel,
   UFileInputModel,
   UNumberInputModel,
+  UPasswordInputModel,
   URangeInputModel,
   USelectInputModel,
+  UTelInputModel,
   UTextInputModel,
-  UTextareaInputModel
+  UTextareaInputModel,
+  UUrlInputModel
 } from '../components/input';
 import type { 
   UObjectInputModel, 
@@ -17,6 +22,7 @@ import type {
 
 export type PropertyMetaType = (
   'text' | 'textarea' | 'number' | 'checkbox' | 
+  'password' | 'tel' | 'email' | 'url' | 'datetime' |
   'file' | 'range' | 'select' | 
   'object' | 'rest-url' | 
   'editor'
@@ -27,6 +33,11 @@ export type PropertyMetaData = (
   ({ type: 'textarea' } & UTextareaInputModel) |
   ({ type: 'number' } & UNumberInputModel) | 
   ({ type: 'checkbox' } & UCheckboxInputModel) | 
+  ({ type: 'password' } & UPasswordInputModel) |
+  ({ type: 'tel' } & UTelInputModel) |
+  ({ type: 'email' } & UEmailInputModel) |
+  ({ type: 'url' } & UUrlInputModel) |
+  ({ type: 'datetime' } & UDatetimeInputModel) |
   ({ type: 'file' } & UFileInputModel) | 
   ({ type: 'range' } & URangeInputModel) |
   ({ type: 'select' } & USelectInputModel) | 

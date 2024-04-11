@@ -1,20 +1,16 @@
 import { css, html } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
-import { ifDefined } from "lit/directives/if-defined.js";
 
-import { UTextInputModel } from "./UTextInput.model";
+import { UDatetimeInputModel, type DatetimeInputFormat } from "./UDatetimeInput.model";
 import { UBaseInput } from "../input-parts/UBaseInput";
 
-@customElement('u-text-input')
-export class UTextInput extends UBaseInput implements UTextInputModel {
+@customElement('u-datetime-input')
+export class UDatetimeInput extends UBaseInput implements UDatetimeInputModel {
   
   @query('input') inputEl!: HTMLInputElement;
 
   @property({ type: Boolean, reflect: true }) clearable?: boolean;  
-  @property({ type: Number }) length?: number;
-  @property({ type: String }) pattern?: string | RegExp;
-  @property({ type: String }) invalidMessage?: string;
-  @property({ type: String }) placeholder?: string;
+  @property({ type: String }) format?: DatetimeInputFormat;
   @property({ type: String }) value?: string;
 
   protected async updated(changedProperties: any) {
@@ -31,13 +27,10 @@ export class UTextInput extends UBaseInput implements UTextInputModel {
       <u-input-container>
         <u-input-border>
           <slot name="prefix"></slot>
-          <input type="text"
+          <input type=${this.format || 'datetime-local'}
             autocomplete="off"
             spellcheck="false"
             ?required=${this.required}
-            pattern=${ifDefined(this.pattern)}
-            maxlength=${ifDefined(this.length)}
-            placeholder=${ifDefined(this.placeholder)}
             value=${this.value || ''}
             @input=${this.onInput}
             @change=${this.onChage}
@@ -54,8 +47,6 @@ export class UTextInput extends UBaseInput implements UTextInputModel {
   public async validate() {
     if(this.inputEl.validity.valid) {
       return this.setValid();
-    } else if(this.inputEl.validity.patternMismatch) {
-      return this.setInvalid(this.invalidMessage || "Invalid pattern");
     } else {
       return this.setInvalid(this.inputEl.validationMessage);
     }

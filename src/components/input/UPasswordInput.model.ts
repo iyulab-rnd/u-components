@@ -1,6 +1,6 @@
 import { UBaseInputModel } from "../input-parts/UBaseInput.model";
 
-export interface UTextInputModel extends UBaseInputModel {
+export interface UPasswordInputModel extends UBaseInputModel {
   /**
    * The placeholder for the input.
    */

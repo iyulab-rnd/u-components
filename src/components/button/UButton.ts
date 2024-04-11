@@ -22,7 +22,7 @@ export class UButton extends LitElement implements UButtonModel {
   @property({ type: String }) download?: string;
   @property({ type: Boolean }) round: boolean = false;
   @property({ type: Boolean }) disabled: boolean = false;
-  @property({ type: Boolean }) loading: boolean = false;
+  @property({ type: Boolean, reflect: true }) loading: boolean = false;
   @property({ type: Boolean }) caret?: boolean = false;
   @property({ type: String }) tooltip?: string;
   @property({ type: String }) tooltipPosition: UTooltipPosition = 'top';
@@ -98,7 +98,13 @@ export class UButton extends LitElement implements UButtonModel {
   }
 
   static styles = css`
-
+    :host {
+      display: inline-flex;
+    }
+    :host([loading]) {
+      pointer-events: none;
+      cursor: progress;
+    }
   `;
 
 }

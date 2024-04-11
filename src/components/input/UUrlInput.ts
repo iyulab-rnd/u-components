@@ -1,19 +1,24 @@
 import { css, html } from "lit";
-import { customElement, property, query } from "lit/decorators.js";
+import { customElement, property, query, state } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
-import { UTextInputModel } from "./UTextInput.model";
+import { UUrlInputModel } from "./UUrlInput.model";
 import { UBaseInput } from "../input-parts/UBaseInput";
+import "./USelectInput";
 
-@customElement('u-text-input')
-export class UTextInput extends UBaseInput implements UTextInputModel {
-  
+@customElement('u-url-input')
+export class UUrlInput extends UBaseInput implements UUrlInputModel {
+  private static readonly pattern: RegExp = /^[a-zA-Z][a-zA-Z\d+\-.]*:(\/\/)?[\S]+$/;
+
   @query('input') inputEl!: HTMLInputElement;
 
+  @state() scheme?: string;
+  @state() path?: string;
+
   @property({ type: Boolean, reflect: true }) clearable?: boolean;  
-  @property({ type: Number }) length?: number;
-  @property({ type: String }) pattern?: string | RegExp;
-  @property({ type: String }) invalidMessage?: string;
+  @property({ type: Array }) schemes?: string[] = ['Enter Manually', 
+  'http://', 'https://', 'ftp://', 'file://', 'mailto:', 'tel:', 
+  'sms:', 'geo:', 'urn:', 'data:', 'ws://', 'wss://'];
   @property({ type: String }) placeholder?: string;
   @property({ type: String }) value?: string;
 
@@ -31,14 +36,16 @@ export class UTextInput extends UBaseInput implements UTextInputModel {
       <u-input-container>
         <u-input-border>
           <slot name="prefix"></slot>
+          <u-select-input
+            required
+            .options=${this.schemes}
+            @change=${this.onSchemeChange}
+          ></u-select-input>
           <input type="text"
             autocomplete="off"
             spellcheck="false"
-            ?required=${this.required}
-            pattern=${ifDefined(this.pattern)}
-            maxlength=${ifDefined(this.length)}
             placeholder=${ifDefined(this.placeholder)}
-            value=${this.value || ''}
+            value=${this.path || ''}
             @input=${this.onInput}
             @change=${this.onChage}
           />
@@ -52,33 +59,38 @@ export class UTextInput extends UBaseInput implements UTextInputModel {
   }
 
   public async validate() {
-    if(this.inputEl.validity.valid) {
-      return this.setValid();
-    } else if(this.inputEl.validity.patternMismatch) {
-      return this.setInvalid(this.invalidMessage || "Invalid pattern");
+    if(this.required && (!this.value || !UUrlInput.pattern.test(this.value))) {
+      return this.setInvalid('Invalid URL');
     } else {
-      return this.setInvalid(this.inputEl.validationMessage);
+      return this.setValid();
     }
+  }
+
+  private onSchemeChange = (event: CustomEvent) => {
+    this.scheme = event.detail === 'Enter Manually' ? '' : event.detail;
+    this.value = `${this.scheme}${this.path}`;
   }
 
   private onInput = (event: Event) => {
     event.stopPropagation();
     const target = event.target as HTMLInputElement;
-    this.value = target.value;
+    this.path = target.value;
+    this.value = `${this.scheme}${this.path}`;
     this.dispatchEvent(new CustomEvent('input', { detail: this.value }));
   }
 
   private onChage = (event: Event) => {
     event.stopPropagation();
     const target = event.target as HTMLInputElement;
-    this.value = target.value;
+    this.path = target.value;
+    this.value = `${this.scheme}${this.path}`;
     this.validate();
     this.dispatchEvent(new CustomEvent('change', { detail: this.value }));
   }
 
   private handleClear = () => {
     this.inputEl.value = "";
-    this.value = "";
+    this.value = this.scheme || '';
     this.inputEl.focus();
   }
 
@@ -92,6 +104,12 @@ export class UTextInput extends UBaseInput implements UTextInputModel {
     }
     :host([clearable]) .clear {
       display: inline-flex;
+    }
+
+    u-select-input {
+      width: 10em;
+      font-size: 0.9em;
+      --vertical-padding: 2px;
     }
 
     input {

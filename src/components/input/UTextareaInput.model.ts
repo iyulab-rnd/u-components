@@ -13,7 +13,7 @@ export interface UTextareaInputModel extends UBaseInputModel {
 
   /**
    * The textarea min row length.
-   * @default 3
+   * @default 1
    */
   minRow?: number;
 

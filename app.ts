@@ -11,11 +11,23 @@ export class TestContext {
   @propertyMeta({ type:"text", label: 'Name', required: true })
   name: string = '';
 
-  @propertyMeta({ type:"text", format:'email', label: 'Email', required: true })
+  @propertyMeta({ type:"email", label: 'Email', required: true })
   email: string = '';
 
-  @propertyMeta({ type:"text", format:'password', label: 'Password', required: true })
+  @propertyMeta({ type:"url", label: 'Url', required: true })
+  url: string = '';
+
+  @propertyMeta({ type:"password", label: 'Password', required: true })
   password: string = 'asdas';
+
+  @propertyMeta({ type:"tel", label: 'Phone', required: true })
+  phone: string = '01038089235';
+
+  @propertyMeta({ type:"datetime", label: 'Date', required: true })
+  date: string = '';
+
+  @propertyMeta({ type:"number", label: 'Age', required: true })
+  age: number = 0;
 
   @propertyMeta({ type:"checkbox", label: '동의?' })
   agree: boolean = false;
@@ -60,7 +72,14 @@ export class PreviewApp extends LitElement {
       <u-form
         headLine="Register"
         .context=${this.context}
-        .onSubmit=${() => {console.log('submit', this.context)}}
+        @submit=${(e: any) => {
+          const target = e.target as any;
+          target.loading = true;
+          setTimeout(() => {
+            target.loading = false;
+          }, 1000);
+          console.log('submit', this.context)
+        }}
       ></u-form>
     `;
   }

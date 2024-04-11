@@ -121,8 +121,9 @@ export class URestURLInput extends UBaseInput implements URestURLInputModel {
 
     u-select-input {
       width: 10em;
-      font-size: 0.8em;
+      font-size: 0.9em;
       margin-right: 10px;
+      --vertical-padding: 2px;
     }
 
     .prefix {
