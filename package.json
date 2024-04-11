@@ -41,16 +41,34 @@
       "require": "./src/components/input/*.js",
       "import": "./src/components/input/*.js",
       "types": "./src/components/input/*.d.ts"
+    },
+    "./components/input-parts/*": {
+      "require": "./src/components/input-parts/*.js",
+      "import": "./src/components/input-parts/*.js",
+      "types": "./src/components/input-parts/*.d.ts"
+    },
+    "./components/input-extension/*": {
+      "require": "./src/components/input-extension/*.js",
+      "import": "./src/components/input-extension/*.js",
+      "types": "./src/components/input-extension/*.d.ts"
+    },
+    "./components/input-advanced/*": {
+      "require": "./src/components/input-advanced/*.js",
+      "import": "./src/components/input-advanced/*.js",
+      "types": "./src/components/input-advanced/*.d.ts"
     }
   },
   "scripts": {
     "test": "vite",
-    "build": "iyulab build -d dist -b vite",
-    "deploy": "iyulab publish",
     "demo": "storybook dev -p 6006",
-    "build-demo": "storybook build -o docs"
+    "localize": "lit-localize extract",
+    "build": "iyulab build -d dist -b vite",
+    "build:demo": "storybook build -o docs",
+    "build:localize": "lit-localize build",
+    "deploy": "iyulab publish"
   },
   "dependencies": {
+    "@lit/localize": "^0.12.1",
     "@lit/react": "^1.0.4",
     "lit": "^3.1.2",
     "mobx": "^6.12.3",
@@ -59,6 +77,7 @@
   },
   "devDependencies": {
     "@iyulab/utils": "^0.0.8",
+    "@lit/localize-tools": "^0.7.2",
     "@shoelace-style/shoelace": "^2.15.0",
     "@storybook/addon-essentials": "^8.0.5",
     "@storybook/addon-links": "^8.0.5",

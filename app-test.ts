@@ -195,7 +195,7 @@ export class AppTest extends LitElement {
     UAlertController.toastAsync({
       type: 'success',
       content: content,
-      position: position
+      position: position as any
     });
   }
 

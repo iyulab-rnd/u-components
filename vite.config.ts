@@ -18,7 +18,7 @@ glob.sync(['src/**/*.ts']).map(path => {
 
 export default () => {
   return defineConfig({
-    publicDir: 'statics',
+    publicDir: 'assets',
     build: {
       minify: false,
       outDir: 'dist',
@@ -36,9 +36,9 @@ export default () => {
         // Shoelace 외부종속성: lit/*, react, @lit/react
         // 이외 문제 발생가능성: mobx, reflect-metadata
         external: [
-          /^lit*/,
+          /^lit.*/,
+          /^@lit.*/,
           'react',
-          '@lit/react',
           'mobx',
           'reflect-metadata',
         ],
