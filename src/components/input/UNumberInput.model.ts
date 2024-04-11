@@ -1,5 +1,7 @@
 import { UBaseInputModel } from "../input-parts/UBaseInput.model";
 
+export type NumberInputFormat = 'float' | 'integer';
+
 export interface UNumberInputModel extends UBaseInputModel {
 
   /**
@@ -13,10 +15,10 @@ export interface UNumberInputModel extends UBaseInputModel {
   max?: number;
 
   /**
-   * Indicates whether the input is integer only.
-   * @default false
+   * Indicates whether the input is float or integer.
+   * @default 'float'
    */
-  integerOnly?: boolean;
+  format?: NumberInputFormat;
 
   /**
    * The placeholder for the input.

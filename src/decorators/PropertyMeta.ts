@@ -1,38 +1,5 @@
 import 'reflect-metadata';
-import type { UInputMeta } from '../components/form/UInputModel';
-import type { 
-  UCheckboxInputModel,
-  UFileInputModel,
-  UNumberInputModel,
-  URangeInputModel,
-  USelectInputModel,
-  UTextInputModel,
-  UTextareaInputModel
-} from '../components/input';
-import type { 
-  UObjectInputModel, 
-  URestURLInputModel,
-} from '../components/input-extension';
-import type { 
-  UEditorInputModel,
-} from '../components/input-advanced';
-
-export type PropertyMetaData = UInputMeta & {
-  name?: string;
-}
-
-export type PropertyMeta = (
-  (UTextInputModel) | 
-  ({ type: 'checkbox' } & UCheckboxInputModel) | 
-  ({ type: 'file' } & UFileInputModel) | 
-  ({ type: 'number' } & UNumberInputModel) | 
-  ({ type: 'range' } & URangeInputModel) |
-  ({ type: 'select' } & USelectInputModel) | 
-  ({ type: 'textarea' } & UTextareaInputModel) |
-  ({ type: 'object' } & UObjectInputModel) | 
-  ({ type: 'rest-url' } & URestURLInputModel) | 
-  ({ type: 'editor' } & UEditorInputModel)
-);
+import { PropertyMetaData } from './PropertyMeta.model';
 
 type Constructor<T = {}> = new (...args: any[]) => T; // eslint-disable-line
 

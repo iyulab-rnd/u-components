@@ -19,7 +19,7 @@ export class UEditorInput extends UBaseInput implements UEditorInputModel {
           <monaco-editor 
             noHeader
             .language=${this.language || 'json'}
-            .readOnly=${this.readonly}
+            .readOnly=${this.readonly || false}
             .value=${this.value || ''}
             .fontSize=${this.fontSize || 14}
             @change=${this.onChange}

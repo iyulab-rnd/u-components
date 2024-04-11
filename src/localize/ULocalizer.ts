@@ -1,5 +1,5 @@
 import { configureLocalization, LOCALE_STATUS_EVENT } from '@lit/localize';
-import { sourceLocale, targetLocales } from './model/LocaleCodes';
+import { sourceLocale, targetLocales } from './ULocaleCodes';
 
 export class ULocalizer {
 

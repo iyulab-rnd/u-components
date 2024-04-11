@@ -1,13 +1,13 @@
 import { UBaseInputModel } from "../input-parts/UBaseInput.model";
 
-export type InputTextType = 'text' | 'email' | 'password' | 'tel' | 'url' | 'date' | 'time' | 'datetime-local' | 'month' | 'week';
+export type TextInputFormat = 'email' | 'password' | 'tel' | 'url' | 'date' | 'time' | 'datetime-local' | 'month' | 'week';
 
 export interface UTextInputModel extends UBaseInputModel {
   /**
    * The input format.
    * @todo remove this property and make separate components for each input type.
    */
-  type?: InputTextType;
+  format?: TextInputFormat;
 
   /**
    * The placeholder for the input.

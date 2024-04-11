@@ -1,6 +1,5 @@
 import { LitElement, css, html } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
-import { ifDefined } from "lit/directives/if-defined.js";
 
 import SlDrawer from '@shoelace-style/shoelace/dist/components/drawer/drawer.component.js';
 SlDrawer.define('sl-drawer');
@@ -39,8 +38,8 @@ export class UDrawer extends LitElement implements UDrawerModel {
         ?open=${this.open}
         ?noHeader=${this.noHeader}
         ?contained=${this.contained}
+        label=${this.label || ''}
         .placement=${this.position}
-        label=${ifDefined(this.label)}
       >
         <slot name="action" slot="header-actions"></slot>
         ${this.content ?? html`<slot></slot>`}
@@ -49,6 +48,7 @@ export class UDrawer extends LitElement implements UDrawerModel {
   }
 
   public async showAsync(content?: UModalContent) : Promise<UModalResult> {
+    this.label = content?.label ?? undefined;
     this.content = content ?? this.content;
     await this.updateComplete;
     await this.drawer.show();

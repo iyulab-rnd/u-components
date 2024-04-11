@@ -1,30 +1,31 @@
 import { LitElement, css, html } from "lit";
-import { customElement, query } from "lit/decorators.js";
+import { customElement, query, state } from "lit/decorators.js";
 
-import { propertyMeta } from "./src/decorators";
 import './src';
-import { SystemIcon } from "./src/components/icon/UIcon.vector";
+import { propertyMeta } from "./src/decorators";
+import { SystemIcon } from "./src/components/icon/UIcon.resource";
 import { UAlertController } from "./src/components/alert/UAlertController";
 
 export class TestContext {
 
-  @propertyMeta({ label: 'Name', required: true })
+  @propertyMeta({ type:"text", label: 'Name', required: true })
   name: string = '';
 
-  @propertyMeta({ type:"email", label: 'Email', required: true })
+  @propertyMeta({ type:"text", format:'email', label: 'Email', required: true })
   email: string = '';
 
-  @propertyMeta({ type:"password", label: 'Password', required: true })
-  password: string = '';
+  @propertyMeta({ type:"text", format:'password', label: 'Password', required: true })
+  password: string = 'asdas';
 
-  @propertyMeta({ type:"password", label: 'Confirm Password', required: true })
-  confirmPassword: string = '';
+  @propertyMeta({ type:"checkbox", label: '동의?' })
+  agree: boolean = false;
 }
 
-@customElement('u-app-test')
-export class AppTest extends LitElement {
+@customElement('preview-app')
+export class PreviewApp extends LitElement {
 
   @query("u-button") button!: any;
+  @state() context: object = new TestContext();
 
   connectedCallback() {
     super.connectedCallback();
@@ -56,65 +57,11 @@ export class AppTest extends LitElement {
 
   inputTest() {
     return html`
-      <!-- <u-text-input
-        required
-        label='Name'
-        description='Your name'
-        placeholder='Enter your name'
-      ></u-text-input>
-      <u-object-input
-        required
-        label='Headers'
-        description='Your request headers'
-        placeholder='Enter your request headers'
-      ></u-object-input>
-      <u-editor-input
-        required
-        label='Body'
-        description='Your request body'
-      ></u-editor-input>
-      <u-file-input
-        required
-        label='File'
-        description='Your request file'
-      ></u-file-input>
-      <u-textarea-input
-        required
-        label='Description'
-        description='Your description'
-        placeholder='Enter your description'
-      ></u-textarea-input>
-      <u-number-input
-        required
-        label='Age'
-        description='Your age'
-        placeholder='Enter your age'
-      ></u-number-input>
-      <u-checkbox-input
-        required
-        label='Agree'
-        description='Your agreement'
-      ></u-checkbox-input>
-      <u-rest-url-input
-        required
-        label='Request URL'
-        description='Your request URL'
-        placeholder='Enter your request URL'
-      ></u-rest-url-input>
-      <u-select-input
-        label="Select"
-        description="Your selection"
-        placeholder="Select your option"
-        .options=${['1', '2', '3', '4', '5', '6']}
-      ></u-select-input>
-      <u-range-input
-        label="Range"
-        description="Your range"
-        min="0"
-        max="100"
-        step="5"
-        value="50"
-      ></u-range-input> -->
+      <u-form
+        headLine="Register"
+        .context=${this.context}
+        .onSubmit=${() => {console.log('submit', this.context)}}
+      ></u-form>
     `;
   }
 

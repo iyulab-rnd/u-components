@@ -2,16 +2,16 @@ import { css, html } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
-import { UTextInputModel, type InputTextType } from "./UTextInput.model";
+import { UTextInputModel, type TextInputFormat } from "./UTextInput.model";
 import { UBaseInput } from "../input-parts/UBaseInput";
 
 @customElement('u-text-input')
 export class UTextInput extends UBaseInput implements UTextInputModel {
   
-  @query('input') input!: HTMLInputElement;
+  @query('input') inputEl!: HTMLInputElement;
 
-  @property({ type: Boolean, reflect: true }) clearable: boolean = false;  
-  @property({ type: String }) type?: InputTextType;
+  @property({ type: Boolean, reflect: true }) clearable?: boolean;  
+  @property({ type: String }) format?: TextInputFormat;
   @property({ type: Number }) length?: number;
   @property({ type: String }) pattern?: string | RegExp;
   @property({ type: String }) invalidMessage?: string;
@@ -32,7 +32,7 @@ export class UTextInput extends UBaseInput implements UTextInputModel {
       <u-input-container>
         <u-input-border>
           <slot name="prefix"></slot>
-          <input type=${this.type || 'text'}
+          <input type=${this.format || 'text'}
             autocomplete="off"
             spellcheck="false"
             ?required=${this.required}
@@ -43,7 +43,7 @@ export class UTextInput extends UBaseInput implements UTextInputModel {
             @input=${this.onInput}
             @change=${this.onChage}
           />
-          <u-icon type="system" name="clear"
+          <u-icon class="clear" type="system" name="clear"
             @click=${this.handleClear}
           ></u-icon>
           <slot name="suffix"></slot>
@@ -53,12 +53,12 @@ export class UTextInput extends UBaseInput implements UTextInputModel {
   }
 
   public async validate() {
-    if(this.input.validity.valid) {
+    if(this.inputEl.validity.valid) {
       return this.setValid();
-    } else if(this.input.validity.valueMissing) {
+    } else if(this.inputEl.validity.patternMismatch) {
       return this.setInvalid(this.invalidMessage || "This field is required");
     } else {
-      return this.setInvalid(this.input.validationMessage);
+      return this.setInvalid(this.inputEl.validationMessage);
     }
   }
 
@@ -78,9 +78,9 @@ export class UTextInput extends UBaseInput implements UTextInputModel {
   }
 
   private handleClear = () => {
-    this.input.value = "";
+    this.inputEl.value = "";
     this.value = "";
-    this.input.focus();
+    this.inputEl.focus();
   }
 
   static styles = css`
@@ -91,7 +91,7 @@ export class UTextInput extends UBaseInput implements UTextInputModel {
     :host slot::slotted(*) {
       font-size: inherit;
     }
-    :host([clearable]) u-icon {
+    :host([clearable]) .clear {
       display: inline-flex;
     }
 
@@ -105,10 +105,14 @@ export class UTextInput extends UBaseInput implements UTextInputModel {
       line-height: 1.5;
     }
 
-    u-icon {
+    .clear {
       display: none;
       font-size: inherit;
+      color: var(--sl-color-gray-500);
       cursor: pointer;
+    }
+    .clear:hover {
+      color: var(--sl-color-gray-800);
     }
   `;
 }

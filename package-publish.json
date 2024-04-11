@@ -23,6 +23,11 @@
       "import": "./components/*/index.es.js",
       "types": "./components/*/index.d.ts"
     },
+    "./components/modal/*": {
+      "require": "./components/modal/*.js",
+      "import": "./components/modal/*.js",
+      "types": "./components/modal/*.d.ts"
+    },
     "./components/button/*": {
       "require": "./components/button/*.cjs.js",
       "import": "./components/button/*.es.js",

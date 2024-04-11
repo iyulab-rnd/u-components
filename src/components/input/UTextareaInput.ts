@@ -7,9 +7,9 @@ import { UBaseInput } from "../input-parts/UBaseInput";
 @customElement('u-textarea-input')
 export class UTextareaInput extends UBaseInput implements UTextareaInputModel {
   
-  @query('textarea') input!: HTMLTextAreaElement;
+  @query('textarea') inputEl!: HTMLTextAreaElement;
 
-  @property({ type: Boolean, reflect: true }) clearable: boolean = false;  
+  @property({ type: Boolean, reflect: true }) clearable?: boolean;  
   @property({ type: String }) placeholder?: string;
   @property({ type: String }) value?: string;
   @property({ type: Number }) minRow?: number;
@@ -24,7 +24,7 @@ export class UTextareaInput extends UBaseInput implements UTextareaInputModel {
       this.adjustHeight();
     }
     if(changedProperties.has('maxRow')) {
-      this.input.style.maxHeight = this.maxRow ? `${this.maxRow * 1.5}em` : 'none';
+      this.inputEl.style.maxHeight = this.maxRow ? `${this.maxRow * 1.5}em` : 'none';
     }
   }
 
@@ -37,12 +37,12 @@ export class UTextareaInput extends UBaseInput implements UTextareaInputModel {
             spellcheck="false"
             ?required=${this.required}
             placeholder=${this.placeholder || ''}
-            rows=${this.minRow || 3}
+            rows=${this.minRow || 1}
             .value=${this.value || ''}
             @input=${this.onInput}
             @change=${this.onChage}
           ></textarea>
-          <u-icon type="system" name="clear"
+          <u-icon class="clear" type="system" name="clear"
             @click=${this.handleClear}
           ></u-icon>
         </u-input-border>
@@ -51,10 +51,11 @@ export class UTextareaInput extends UBaseInput implements UTextareaInputModel {
   }
 
   public async validate() {
-    if(!this.input.validity.valid) {
-      return this.setInvalid(this.input.validationMessage);
+    if(this.inputEl.validity.valid) {
+      return this.setValid();
+    } else {
+      return this.setInvalid(this.inputEl.validationMessage);
     }
-    return this.setValid();
   }
 
   private onInput = (event: Event) => {
@@ -72,18 +73,18 @@ export class UTextareaInput extends UBaseInput implements UTextareaInputModel {
   }
 
   private handleClear = () => {
-    this.input.value = "";
+    this.inputEl.value = "";
     this.value = "";
-    this.input.focus();
+    this.inputEl.focus();
   }
 
   private async adjustHeight() {
-    this.input.style.height = 'auto';
-    const height = this.input.scrollHeight;
+    this.inputEl.style.height = 'auto';
+    const height = this.inputEl.scrollHeight;
     if(height) {
-      this.input.style.height = `${height}px`;
+      this.inputEl.style.height = `${height}px`;
     } else {
-      this.input.style.height = `${this.minRow || 3 * 1.5}em`;
+      this.inputEl.style.height = `${this.minRow || 3 * 1.5}em`;
     }
   }
 
@@ -92,7 +93,7 @@ export class UTextareaInput extends UBaseInput implements UTextareaInputModel {
       width: 100%;
       font-size: 14px;
     }
-    :host([clearable]) u-icon {
+    :host([clearable]) .clear {
       display: inline-flex;
     }
 
@@ -118,14 +119,18 @@ export class UTextareaInput extends UBaseInput implements UTextareaInputModel {
       background-color: transparent;
     }
 
-    u-icon {
+    .clear {
       position: absolute;
       z-index: 1;
       right: 10px;
       top: 10px;
       display: none;
       font-size: inherit;
+      color: var(--sl-color-gray-500);
       cursor: pointer;
+    }
+    .clear:hover {
+      color: var(--sl-color-gray-800);
     }
   `;
 }

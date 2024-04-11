@@ -6,7 +6,7 @@ import { UInputBorderModel } from "./UInputBorder.model";
 @customElement('u-input-border')
 export class UInputBorder extends LitElement implements UInputBorderModel {
 
-  @property({ type: Boolean, reflect: true }) invaild: boolean = false;
+  @property({ type: Boolean, reflect: true }) invaild?: boolean;
 
   render() {
     return html`
@@ -28,6 +28,9 @@ export class UInputBorder extends LitElement implements UInputBorderModel {
       border: 1px solid var(--sl-color-gray-300);
       background-color: var(--sl-color-neutral-0);
       box-sizing: border-box;
+    }
+    :host(:hover) {
+      border: 1px solid var(--sl-color-gray-800);
     }
     :host(:focus-within) {
       border: 2px solid var(--sl-color-primary-500);

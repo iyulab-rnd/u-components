@@ -1,3 +1,3 @@
 export * from './UForm';
-export * from './UInput';
-export * from './UInputModel';
+
+export * from './UForm.model';

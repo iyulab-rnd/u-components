@@ -10,7 +10,7 @@ import { SystemIcon } from "../icon/UIcon.resource";
 @customElement('u-file-input')
 export class UFileInput extends UBaseInput implements UFileInputModel {
 
-  @query('input') input!: HTMLInputElement;
+  @query('input') inputEl!: HTMLInputElement;
   @query('.overlay') overlay!: HTMLElement;
   
   @state() files?: File[];
@@ -98,7 +98,7 @@ export class UFileInput extends UBaseInput implements UFileInputModel {
       <div class="placeholder">
         <u-icon type="system" name="upload"></u-icon>
         <div class="text">Drag your files here or</div>
-        <div class="text button" @click=${() => this.input.click()}>
+        <div class="text button" @click=${() => this.inputEl.click()}>
           Click to browse your files
         </div>
       </div>

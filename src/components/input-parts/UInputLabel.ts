@@ -6,7 +6,7 @@ import { UInputLabelModel } from './UInputLabel.model';
 @customElement('u-input-label')
 export class UInputLabel extends LitElement implements UInputLabelModel {
 
-  @property({ type: Boolean, reflect: true }) required: boolean = false;
+  @property({ type: Boolean, reflect: true }) required?: boolean;
   @property({ type: String }) label?: string;
   @property({ type: String }) description?: string;
 
@@ -67,7 +67,11 @@ export class UInputLabel extends LitElement implements UInputLabelModel {
 
       u-icon {
         font-size: inherit;
+        color: var(--sl-color-gray-500);
         cursor: help;
+      }
+      u-icon:hover {
+        color: var(--sl-color-gray-800);
       }
       u-icon:hover + pre {
         opacity: 1;

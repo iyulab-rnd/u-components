@@ -2,16 +2,16 @@ import { css, html } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
-import { UNumberInputModel } from "./UNumberInput.model";
+import { UNumberInputModel, type NumberInputFormat } from "./UNumberInput.model";
 import { UBaseInput } from "../input-parts/UBaseInput";
 
 @customElement('u-number-input')
 export class UNumberInput extends UBaseInput implements UNumberInputModel {
   
-  @query('input') input!: HTMLInputElement;
+  @query('input') inputEl!: HTMLInputElement;
 
-  @property({ type: Boolean, reflect: true }) clearable: boolean = false;
-  @property({ type: Boolean }) integerOnly: boolean = false;
+  @property({ type: Boolean, reflect: true }) clearable?: boolean;
+  @property({ type: String }) format?: NumberInputFormat;
   @property({ type: Number }) min?: number;
   @property({ type: Number }) max?: number;
   @property({ type: String }) placeholder?: string;
@@ -42,13 +42,21 @@ export class UNumberInput extends UBaseInput implements UNumberInputModel {
             @input=${this.onInput}
             @change=${this.onChage}
           />
-          <u-icon type="system" name="clear"
+          <u-icon class="clear" type="system" name="clear"
             @click=${this.handleClear}
           ></u-icon>
           <slot name="suffix"></slot>
         </u-input-border>
       </u-input-container>
     `;
+  }
+
+  public async validate() {
+    if(this.inputEl.validity.valid) {
+      return this.setValid();  
+    } else {
+      return this.setInvalid(this.inputEl.validationMessage);
+    }
   }
 
   private onInput = (event: Event) => {
@@ -61,7 +69,7 @@ export class UNumberInput extends UBaseInput implements UNumberInputModel {
     } else if(this.max && Number(value) > this.max) {
       target.value = this.max.toString();
       this.value = this.max;
-    } else if(this.integerOnly && value.includes('.')) {
+    } else if(this.format === 'integer' && value.includes('.')) {
       target.value = value.split('.')[0];
       this.value = Number(value.split('.')[0]);
     } else {
@@ -79,16 +87,9 @@ export class UNumberInput extends UBaseInput implements UNumberInputModel {
   }
 
   private handleClear = () => {
-    this.input.value = "";
+    this.inputEl.value = "";
     this.value = undefined;
-    this.input.focus();
-  }
-
-  public async validate() {
-    if(!this.input.validity.valid) {
-      return this.setInvalid(this.input.validationMessage);
-    }
-    return this.setValid();
+    this.inputEl.focus();
   }
 
   static styles = css`
@@ -99,7 +100,7 @@ export class UNumberInput extends UBaseInput implements UNumberInputModel {
     :host slot::slotted(*) {
       font-size: inherit;
     }
-    :host([clearable]) u-icon {
+    :host([clearable]) .clear {
       display: inline-flex;
     }
 
@@ -119,10 +120,14 @@ export class UNumberInput extends UBaseInput implements UNumberInputModel {
       margin: 0;
     }
 
-    u-icon {
+    .clear {
       display: none;
       font-size: inherit;
+      color: var(--sl-color-gray-500);
       cursor: pointer;
+    }
+    .clear:hover {
+      color: var(--sl-color-gray-800);
     }
   `;
 }

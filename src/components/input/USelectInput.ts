@@ -49,8 +49,9 @@ export class USelectInput extends UBaseInput implements USelectInputModel {
   public async validate() {
     if (this.required && !this.value) {
       return this.setInvalid('This field is required');
+    } else {
+      return this.setValid();
     }
-    return this.setValid();
   }
 
   private renderNoneOption() {

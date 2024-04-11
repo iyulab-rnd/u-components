@@ -38,7 +38,7 @@ export class UModalContent extends LitElement implements UModalContentModel {
     super.updated(changedProperties);
     await this.updateComplete;
     
-    if (changedProperties.has('label') && this.label) {
+    if (changedProperties.has('label')) {
       this.dispatchEvent(new CustomEvent('label', {
         detail: this.label
       }));

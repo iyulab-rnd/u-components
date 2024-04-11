@@ -6,10 +6,10 @@ import { UInputContainerModel, type LabelPosition } from "./UInputContainer.mode
 @customElement('u-input-container')
 export class UInputContainer extends LitElement implements UInputContainerModel {
 
-  @property({ type: String, reflect: true }) labelPosition: LabelPosition = 'top';
-  @property({ type: Boolean, reflect: true }) disabled: boolean = false;
-  @property({ type: Boolean, reflect: true }) readonly: boolean = false;
-  @property({ type: Boolean }) required: boolean = false;
+  @property({ type: String, reflect: true }) labelPosition?: LabelPosition;
+  @property({ type: Boolean, reflect: true }) disabled?: boolean;
+  @property({ type: Boolean, reflect: true }) readonly?: boolean;
+  @property({ type: Boolean }) required?: boolean;
   @property({ type: String }) label?: string;
   @property({ type: String }) description?: string;
   @property({ type: String }) error?: string;
@@ -18,7 +18,7 @@ export class UInputContainer extends LitElement implements UInputContainerModel 
     return html`
       <div class="label-position">
         <u-input-label
-          .required=${this.required}
+          .required=${this.required || false}
           .label=${this.label}
           .description=${this.description}
         ></u-input-label>
@@ -58,6 +58,7 @@ export class UInputContainer extends LitElement implements UInputContainerModel 
     .label-position {
       width: 100%;
       display: flex;
+      flex-direction: column;
 
       u-input-label {
         width: var(--label-width);

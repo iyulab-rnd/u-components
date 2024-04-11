@@ -4,7 +4,6 @@
 export interface UInputBorderModel {
   /**
    * Indicates whether the input is invalid.
-   * @default false
    */
-  invaild: boolean;
+  invaild?: boolean;
 }

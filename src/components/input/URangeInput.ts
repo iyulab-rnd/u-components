@@ -65,7 +65,6 @@ export class URangeInput extends UBaseInput implements URangeInputModel {
     event.stopPropagation();
     const target = event.target as HTMLInputElement;
     this.value = parseFloat(target.value);
-    console.log(this.value);
     this.dispatchEvent(new CustomEvent('change', { detail: this.value }));
   }
 

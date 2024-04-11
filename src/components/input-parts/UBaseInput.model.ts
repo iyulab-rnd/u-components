@@ -55,9 +55,4 @@ export interface UBaseInputModel {
    * The value of the input.
    */
   value?: any;
-
-  /**
-   * Validates the input component.
-   */
-  validate(): Promise<boolean>;
 }

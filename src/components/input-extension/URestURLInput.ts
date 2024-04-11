@@ -11,7 +11,7 @@ export class URestURLInput extends UBaseInput implements URestURLInputModel {
 
   @state() prefix: 'http://' | 'https://' = 'https://';
 
-  @property({ type: Boolean, reflect: true }) clearable: boolean = false;
+  @property({ type: Boolean, reflect: true }) clearable?: boolean;
   @property({ type: Array }) methods: RestMethod[] = ["GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS", "TRACE", "PATCH", "CONNECT"];
   @property({ type: Object }) value?: RestURLValue;
 
@@ -47,7 +47,7 @@ export class URestURLInput extends UBaseInput implements URestURLInputModel {
             @input=${this.onInputUrl}
             @change=${this.onChangeUrl}
           />
-          <u-icon type="system" name="clear"
+          <u-icon class="clear" type="system" name="clear"
             @click=${this.onClearUrl}
           ></u-icon>
         </u-input-border>
@@ -111,7 +111,7 @@ export class URestURLInput extends UBaseInput implements URestURLInputModel {
       width: 100%;
       font-size: 14px;
     }
-    :host([clearable]) u-icon {
+    :host([clearable]) .clear {
       display: inline-flex;
     }
 
@@ -147,10 +147,14 @@ export class URestURLInput extends UBaseInput implements URestURLInputModel {
       box-sizing: border-box;
     }
 
-    u-icon {
+    .clear {
       display: none;
       font-size: inherit;
+      color: var(--sl-color-gray-500);
       cursor: pointer;
+    }
+    .clear:hover {
+      color: var(--sl-color-gray-800);
     }
   `;
 }

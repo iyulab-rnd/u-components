@@ -8,6 +8,7 @@ export interface UCheckboxInputModel extends UBaseInputModel {
 
   /**
    * Required value to true.
+   * @default false
    */
   requiredCheck?: boolean;
 }

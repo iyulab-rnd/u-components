@@ -7,10 +7,10 @@ import { UBaseInput } from "../input-parts/UBaseInput";
 @customElement('u-checkbox-input')
 export class UCheckboxInput extends UBaseInput implements UCheckboxInputModel {
   
-  @query('input') input!: HTMLInputElement;
+  @query('input') inputEl!: HTMLInputElement;
 
-  @property({ type: Boolean, reflect: true }) clearable: boolean = false;
-  @property({ type: Boolean }) requiredCheck: boolean = true;
+  @property({ type: Boolean, reflect: true }) clearable?: boolean;
+  @property({ type: Boolean }) requiredCheck?: boolean;
   @property({ type: Boolean }) value?: boolean;
 
   render() {
@@ -31,20 +31,20 @@ export class UCheckboxInput extends UBaseInput implements UCheckboxInputModel {
     `;
   }
 
+  public async validate() {
+    if(this.inputEl.validity.valid) {
+      return this.setValid();
+    } else {
+      return this.setInvalid(this.inputEl.validationMessage);
+    }
+  }
+
   private onChage = (event: Event) => {
     event.stopPropagation();
     const target = event.target as HTMLInputElement;
     this.value = target.checked;
     this.validate();
     this.dispatchEvent(new CustomEvent('change', { detail: this.value }));
-  }
-
-  public async validate() {
-    if(this.input.validity.valid) {
-      return this.setValid();
-    } else {
-      return this.setInvalid(this.input.validationMessage);
-    }
   }
 
   static styles = css`

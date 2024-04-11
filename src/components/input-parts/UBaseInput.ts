@@ -3,6 +3,7 @@ import { property, query } from "lit/decorators.js";
 
 import { UBaseInputModel } from "./UBaseInput.model";
 import type { UInputContainer } from "./UInputContainer";
+import type { LabelPosition } from "././UInputContainer.model";
 import type { UInputBorder } from "./UInputBorder";
 import "./UInputLabel";
 import "./UInputError";
@@ -15,17 +16,19 @@ export abstract class UBaseInput extends LitElement implements UBaseInputModel {
   @query('u-input-container') inputContainer?: UInputContainer;
   @query('u-input-border') inputBorder?: UInputBorder;
 
-  @property({ type: Boolean }) required: boolean = false;
-  @property({ type: Boolean }) disabled: boolean = false;
-  @property({ type: Boolean }) readonly: boolean = false;
+  @property({ type: Boolean }) required?: boolean;
+  @property({ type: Boolean }) disabled?: boolean;
+  @property({ type: Boolean }) readonly?: boolean;
   @property({ type: String }) label?: string;
+  @property({ type: String }) labelPosition?: LabelPosition;
   @property({ type: String }) description?: string;
   @property({ type: String }) error?: string;
   @property({ type: String }) size?: string;
 
   @property({ type: Object }) context?: any;
   @property({ type: String }) name?: string;
-  @property() value?: any;
+  @property({ attribute: false }) value?: any;
+  @property({ attribute: false }) meta?: any;
 
   protected async updated(changedProperties: any) {
     super.updated(changedProperties);
@@ -44,6 +47,9 @@ export abstract class UBaseInput extends LitElement implements UBaseInputModel {
       }
       if (changedProperties.has('label')) {
         this.inputContainer.label = this.label;
+      }
+      if (changedProperties.has('labelPosition')) {
+        this.inputContainer.labelPosition = this.labelPosition;
       }
       if (changedProperties.has('description')) {
         this.inputContainer.description = this.description;
@@ -78,15 +84,34 @@ export abstract class UBaseInput extends LitElement implements UBaseInputModel {
       }
     }
 
+    // Meta Data update
+    if (changedProperties.has('meta') && this.meta) {
+      try {
+        Object.assign(this, this.meta);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
   }
 
+  /**
+   * Validate function this input value
+   */
   public abstract validate(): Promise<boolean>;
 
+  /**
+   * Set clear error message and retrun true
+   */
   protected setValid(): true {
     this.error = '';
     return true;
   }
 
+  /**
+   * Set error message and return false
+   * @param error 
+   */
   protected setInvalid(error: string): false {
     this.error = error;
     return false;
