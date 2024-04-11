@@ -1,16 +1,17 @@
 import { LitElement, css, html } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { customElement, property, state } from "lit/decorators.js";
 
 import { UContextModel } from './UContext.model';
 
 @customElement("u-context")
 export class UContext extends LitElement implements UContextModel {
   
-  @property({ type: Array }) bounds: HTMLElement[] = [];
+  @state() posX?: number;
+  @state() posY?: number;
+
   @property({ type: Boolean, reflect: true }) open: boolean = false;
+  @property({ type: Array }) bounds: HTMLElement[] = [];
   @property({ type: Boolean }) hideOnClick: boolean = false;
-  @property({ type: Number }) posX?: number;
-  @property({ type: Number }) posY?: number;
 
   protected async firstUpdated(changedProperties: any) {
     super.firstUpdated(changedProperties);

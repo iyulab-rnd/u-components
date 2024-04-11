@@ -1,33 +1,24 @@
 import { css, html, LitElement } from 'lit'
-import { customElement, property, query } from 'lit/decorators.js'
+import { customElement, property, query, state } from 'lit/decorators.js'
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 import SlDialog from '@shoelace-style/shoelace/dist/components/dialog/dialog.component.js';
 SlDialog.define('sl-dialog');
 
+import { UDialogModel } from './UDialog.model';
 import { UModalContent } from './UModalContent';
-import type { UModalResult } from './UModalModel';
+import type { UModalResult } from './UModalContent.model';
 
 @customElement('u-dialog')
-export class UDialog extends LitElement {
+export class UDialog extends LitElement implements UDialogModel {
   
-  @query("sl-dialog") 
-  dialog!: SlDialog;
+  @query("sl-dialog") dialog!: SlDialog;
 
-  @property({ type: Boolean })
-  open: boolean = false;
+  @state() content?: UModalContent;
 
-  @property({ type: String })
-  label?: string;
-
-  @property({ type: Boolean })
-  noHeader: boolean = false;
-
-  @property({ attribute: false })
-  headerActions?: HTMLElement;
-
-  @property({ attribute: false })
-  content?: UModalContent;
+  @property({ type: Boolean }) open: boolean = false;
+  @property({ type: Boolean }) noHeader: boolean = false;
+  @property({ type: String }) label?: string;
   
   protected async updated(changedProperties: any) {
     super.updated(changedProperties);
@@ -43,19 +34,13 @@ export class UDialog extends LitElement {
   render() {
     return html`
       <sl-dialog 
-        label=${ifDefined(this.label)}
-        .noHeader=${this.noHeader}
         ?open=${this.open}
+        ?noHeader=${this.noHeader}
+        label=${ifDefined(this.label)}
       >
-        ${this.renderContent()}
+        <slot name="action" slot="header-actions"></slot>
+        ${this.content ?? html`<slot></slot>`}
       </sl-dialog>
-    `;
-  }
-
-  private renderContent() {
-    return html`
-      ${this.headerActions ? html`<div slot="header-actions">${this.headerActions}</div>` : ''}
-      ${this.content ?? html`<slot></slot>`}
     `;
   }
   

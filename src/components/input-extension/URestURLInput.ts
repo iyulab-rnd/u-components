@@ -1,18 +1,18 @@
 import { css, html } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
 
-import { URestURLInputModel, type RestURLValue } from "./URestURLInput.model";
-import { UBaseInput } from "./UBaseInput";
+import { URestURLInputModel, type RestMethod, type RestURLValue } from "./URestURLInput.model";
+import { UBaseInput } from "../input-parts/UBaseInput";
 
 @customElement('u-rest-url-input')
 export class URestURLInput extends UBaseInput implements URestURLInputModel {
-  private methods = ["GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS", "TRACE", "PATCH", "CONNECT"];  
-
+  
   @query('input') input!: HTMLInputElement;
 
   @state() prefix: 'http://' | 'https://' = 'https://';
 
   @property({ type: Boolean, reflect: true }) clearable: boolean = false;
+  @property({ type: Array }) methods: RestMethod[] = ["GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS", "TRACE", "PATCH", "CONNECT"];
   @property({ type: Object }) value?: RestURLValue;
 
   protected async updated(changedProperties: any) {

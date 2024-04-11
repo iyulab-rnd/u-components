@@ -1,5 +1,7 @@
 import { LitElement } from "lit";
-import { property } from "lit/decorators.js";
+import { property, state } from "lit/decorators.js";
+
+import { UModalContentModel } from "./UModalContent.model";
 
 /**
  * u-dialog 및 u-drawer 컴포넌트의 컨텐츠를 정의하는 추상 클래스입니다.
@@ -25,11 +27,12 @@ import { property } from "lit/decorators.js";
  *   }
  * }
  */
-export class UModalContent extends LitElement {
+export class UModalContent extends LitElement implements UModalContentModel {
   
-  @property({ type: String }) label?: string;
-  @property({ attribute: false }) confirmValue?: any;
-  @property({ attribute: false }) cancelValue?: any;
+  @state() confirmValue?: any;
+  @state() cancelValue?: any;
+
+  @property({ type: String }) label?: string
 
   protected async updated(changedProperties: any) {
     super.updated(changedProperties);
@@ -52,11 +55,11 @@ export class UModalContent extends LitElement {
     }
   }
 
-  protected requestConfirm(value: any) {
+  public requestConfirm(value?: any) {
     this.confirmValue = value;
   }
 
-  protected requestCancle(value: any) {
+  public requestCancel(value?: any) {
     this.cancelValue = value;
   }
 

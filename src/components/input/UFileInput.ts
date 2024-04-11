@@ -1,10 +1,10 @@
 import { css, html } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
 
-import { UBaseInput } from "./UBaseInput";
+import { UBaseInput } from "../input-parts/UBaseInput";
 import { UFileInputModel, type FileMetaValue } from "./UFileInput.model";
 import { UFileItem, UploadResponse } from "../files";
-import { SystemIcon } from "../icon/UIcon.vector";
+import { SystemIcon } from "../icon/UIcon.resource";
 
 // TODO: UFileItem과 함께 구조정리 재설계 필요
 @customElement('u-file-input')

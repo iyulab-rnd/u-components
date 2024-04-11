@@ -1,8 +1,10 @@
 import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
+import { UInputLabelModel } from './UInputLabel.model';
+
 @customElement('u-input-label')
-export class UInputLabel extends LitElement {
+export class UInputLabel extends LitElement implements UInputLabelModel {
 
   @property({ type: Boolean, reflect: true }) required: boolean = false;
   @property({ type: String }) label?: string;

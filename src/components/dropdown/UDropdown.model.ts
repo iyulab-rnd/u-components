@@ -16,16 +16,22 @@ export interface UDropdownModel {
   open?: boolean;
 
   /**
-   * Specifies the placement of the dropdown.
-   * @default 'bottom-start'
-   */
-  placement?: DropdownPlacement;
-
-  /**
    * Specifies whether the dropdown is disabled or not.
    * @default false
    */
   disabled?: boolean;
+
+  /**
+   * Specifies whether the dropdown should be hoisted to the body element.
+   * @default false
+   */
+  hoist?: boolean;
+
+  /**
+   * Specifies the placement of the dropdown.
+   * @default 'bottom-start'
+   */
+  placement?: DropdownPlacement;
 
   /**
    * Specifies the distance of the dropdown from its target element.
@@ -38,10 +44,4 @@ export interface UDropdownModel {
    * @default 0
    */
   skidding?: number;
-
-  /**
-   * Specifies whether the dropdown should be hoisted to the body element.
-   * @default false
-   */
-  hoist?: boolean;
 }

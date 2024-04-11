@@ -3,18 +3,19 @@ import type { TemplateResult } from "lit";
 export type RenderMethod = (type: string) => TemplateResult<1>;
 
 export class UIconController {
-  public static readonly iconRenderers: Map<string, RenderMethod> = new Map();
-  public static iconBasePath: string = "assets/icons";
+  public static readonly renderers: Map<string, RenderMethod> = new Map();
+  public static basePath: string = "icons";
 
-  public static setIconBasePath(path: string) {
-    this.iconBasePath = path;
+  public static setBasePath(path: string) {
+    this.basePath = path;
   }
 
-  public static registerIconRenderer(type: string, render: RenderMethod) {
-    if(this.iconRenderers.has(type)) {
+  public static registerRenderer(type: string, render: RenderMethod) {
+    if(this.renderers.has(type) || type === "default" || type === "system") {
       throw new Error(`UIconController: Render method with type "${type}" already exists`);
     } else {
-      this.iconRenderers.set(type, render);
+      this.renderers.set(type, render);
     }
   }
+  
 }

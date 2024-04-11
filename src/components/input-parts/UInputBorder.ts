@@ -1,8 +1,10 @@
 import { LitElement, css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
+import { UInputBorderModel } from "./UInputBorder.model";
+
 @customElement('u-input-border')
-export class UInputBorder extends LitElement {
+export class UInputBorder extends LitElement implements UInputBorderModel {
 
   @property({ type: Boolean, reflect: true }) invaild: boolean = false;
 

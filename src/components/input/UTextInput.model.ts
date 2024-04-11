@@ -1,8 +1,14 @@
-import { UBaseInputModel } from "./UBaseInput.model";
+import { UBaseInputModel } from "../input-parts/UBaseInput.model";
 
-export type InputTextFormat = 'text' | 'email' | 'password' | 'tel' | 'url' | 'date' | 'time' | 'datetime-local' | 'month' | 'week';
+export type InputTextType = 'text' | 'email' | 'password' | 'tel' | 'url' | 'date' | 'time' | 'datetime-local' | 'month' | 'week';
 
 export interface UTextInputModel extends UBaseInputModel {
+  /**
+   * The input format.
+   * @todo remove this property and make separate components for each input type.
+   */
+  type?: InputTextType;
+
   /**
    * The placeholder for the input.
    */
@@ -17,11 +23,6 @@ export interface UTextInputModel extends UBaseInputModel {
    * The input max length.
    */
   length?: number;
-
-  /**
-   * The input format.
-   */
-  fotmat?: InputTextFormat;
 
   /**
    * The validation pattern for the input.

@@ -2,12 +2,12 @@ import { LitElement } from "lit";
 import { property, query } from "lit/decorators.js";
 
 import { UBaseInputModel } from "./UBaseInput.model";
-import type { UInputContainer } from "../input-parts/UInputContainer";
-import type { UInputBorder } from "../input-parts/UInputBorder";
-import "../input-parts/UInputLabel";
-import "../input-parts/UInputError";
-import "../input-parts/UInputContainer";
-import "../input-parts/UInputBorder";
+import type { UInputContainer } from "./UInputContainer";
+import type { UInputBorder } from "./UInputBorder";
+import "./UInputLabel";
+import "./UInputError";
+import "./UInputContainer";
+import "./UInputBorder";
 import "../icon/UIcon";
 
 export abstract class UBaseInput extends LitElement implements UBaseInputModel {

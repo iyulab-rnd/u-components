@@ -2,7 +2,7 @@ import { css, html, nothing } from "lit";
 import { customElement, property, queryAll } from "lit/decorators.js";
 
 import { USelectInputModel, type USelectOption } from "./USelectInput.model";
-import { UBaseInput } from "./UBaseInput";
+import { UBaseInput } from "../input-parts/UBaseInput";
 
 @customElement('u-select-input')
 export class USelectInput extends UBaseInput implements USelectInputModel {

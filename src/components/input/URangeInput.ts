@@ -4,7 +4,7 @@ import SlRange from "@shoelace-style/shoelace/dist/components/range/range.compon
 SlRange.define('sl-range');
 
 import { URangeInputModel } from "./URangeInput.model";
-import { UBaseInput } from "./UBaseInput";
+import { UBaseInput } from "../input-parts/UBaseInput";
 
 @customElement('u-range-input')
 export class URangeInput extends UBaseInput implements URangeInputModel {
