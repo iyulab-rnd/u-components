@@ -6,8 +6,9 @@ import { localized, msg } from "@lit/localize";
 import { UFormModel } from "./UForm.model";
 import { getPropertyMeta, type PropertyMetaData } from "../../decorators";
 import type { LabelPosition } from '../input-parts/UInputContainer.model';
-import type { UButtonSize } from "../button/UButton.model";
 import type { UBaseInput } from "../input-parts/UBaseInput";
+import type { UButtonSize } from "../button/UButton.model";
+import "../input";
 import "../button/UButton";
 
 @localized()
@@ -117,6 +118,14 @@ export class UForm extends LitElement implements UFormModel {
     `;
   }
 
+  public async validate() {
+    const inputs = Array.from(this.inputs);
+    const results = await Promise.all(
+      inputs.map(input => input.validate())
+    );
+    return results.every(result => result);
+  }
+
   private handleSubmit = async () => {
     const isValid = await this.validate();
     if(!isValid) return;
@@ -129,14 +138,6 @@ export class UForm extends LitElement implements UFormModel {
     this.dispatchEvent(new CustomEvent('cancel', {
       detail: this.context
     }));
-  }
-
-  public async validate() {
-    const inputs = Array.from(this.inputs);
-    const results = await Promise.all(
-      inputs.map(input => input.validate())
-    );
-    return results.every(result => result);
   }
 
   static styles = css`

@@ -105,6 +105,10 @@ export class UButton extends LitElement implements UButtonModel {
       pointer-events: none;
       cursor: progress;
     }
+
+    sl-button {
+      width: inherit;
+    }
   `;
 
 }

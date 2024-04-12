@@ -22,6 +22,9 @@
       "import": "./src/*/index.js",
       "types": "./src/*/index.d.ts"
     },
+    "./styles/*": {
+      "import": "./src/styles/*.css"
+    },
     "./decorators": {
       "require": "./src/decorators/index.js",
       "import": "./src/decorators/index.js",

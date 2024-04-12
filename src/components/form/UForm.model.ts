@@ -1,6 +1,6 @@
 import type { PropertyMetaData } from "../../decorators/PropertyMeta.model";
-import type { UButtonSize } from "../button/UButton.model";
 import type { LabelPosition } from "../input-parts/UInputContainer.model";
+import type { UButtonSize } from "../button/UButton.model";
 
 /**
  * UFormModel은 UForm 컴포넌트의 모델을 정의하는 인터페이스입니다.

@@ -161,7 +161,6 @@ export class UEmailInput extends UBaseInput implements UEmailInputModel {
       font-size: inherit;
       line-height: 1.5;
     }
-    
 
     .at {
       font-size: inherit;
@@ -169,7 +168,7 @@ export class UEmailInput extends UBaseInput implements UEmailInputModel {
     }
 
     u-select-input {
-      width: 20em;
+      width: 10em;
       font-size: 0.9em;
       --vertical-padding: 2px;
     }

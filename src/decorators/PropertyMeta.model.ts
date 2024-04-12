@@ -42,6 +42,6 @@ export type PropertyMetaData = (
   ({ type: 'range' } & URangeInputModel) |
   ({ type: 'select' } & USelectInputModel) | 
   ({ type: 'object' } & UObjectInputModel) | 
-  ({ type: 'rest-url' } & URestURLInputModel) | 
+  ({ type: 'rest-url' } & URestURLInputModel) |
   ({ type: 'editor' } & UEditorInputModel)
 );

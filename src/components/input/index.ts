@@ -1,3 +1,4 @@
+export * from './UInput';
 export * from './UCheckboxInput';
 export * from './UDatetimeInput';
 export * from './UEmailInput';
@@ -11,6 +12,7 @@ export * from './UTextareaInput';
 export * from './UTextInput';
 export * from './UUrlInput';
 
+export * from './UInput.model';
 export * from './UCheckboxInput.model';
 export * from './UDatetimeInput.model';
 export * from './UEmailInput.model';
