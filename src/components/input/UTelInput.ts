@@ -1,9 +1,11 @@
 import { css, html, nothing } from "lit";
 import { customElement, property, queryAll, state } from "lit/decorators.js";
+import { localized, msg } from "@lit/localize";
 
 import { UTelInputModel } from "./UTelInput.model";
 import { UBaseInput } from "../input-parts/UBaseInput";
 
+@localized()
 @customElement('u-tel-input')
 export class UTelInput extends UBaseInput implements UTelInputModel {
   
@@ -79,7 +81,7 @@ export class UTelInput extends UBaseInput implements UTelInputModel {
 
   public async validate() {
     if(this.required && this.totalLength !== this.value?.length) {
-      return this.setInvalid('Please fill in all fields');
+      return this.setInvalid(msg('이 입력란은 필수입니다.'));
     } else {
       return this.setValid();
     }

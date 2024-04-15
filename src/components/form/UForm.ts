@@ -107,13 +107,13 @@ export class UForm extends LitElement implements UFormModel {
           theme="default"
           .size=${this.buttonSize || 'small'}
           @click=${this.handleCancel}
-        >${msg('Cancel')}</u-button>
+        >${msg('취소')}</u-button>
         <u-button
           theme="primary"
           .size=${this.buttonSize || 'small'}
           .loading=${this.loading || false}
           @click=${this.handleSubmit}
-        >${msg('Confirm')}</u-button>
+        >${msg('확인')}</u-button>
       </div>
     `;
   }

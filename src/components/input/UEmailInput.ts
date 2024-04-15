@@ -1,10 +1,12 @@
 import { css, html } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
+import { localized, msg } from "@lit/localize";
 
 import { UEmailInputModel } from "./UEmailInput.model";
 import { UBaseInput } from "../input-parts/UBaseInput";
 import "./USelectInput";
 
+@localized()
 @customElement('u-email-input')
 export class UEmailInput extends UBaseInput implements UEmailInputModel {
   private static readonly pattern: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/u;
@@ -14,7 +16,7 @@ export class UEmailInput extends UBaseInput implements UEmailInputModel {
 
   @state() userName?: string;
   @state() domain?: string;
-  @state() manualDomain?: boolean;
+  @state() manualDomain?: boolean = true;
 
   @property({ type: Boolean, reflect: true }) clearable?: boolean;  
   @property({ type: Array }) domains?: string[] = ['Enter Manually', 
@@ -73,11 +75,13 @@ export class UEmailInput extends UBaseInput implements UEmailInputModel {
   }
 
   public async validate() {
-    if(this.required && (!this.value || !UEmailInput.pattern.test(this.value))) {
-      return this.setInvalid('Please enter a valid email address');
-    } else {
-      return this.setValid();
+    if(this.required && !this.value) {
+      return this.setInvalid(msg('이 입력란은 필수입니다.'));
     }
+    if(this.value && !UEmailInput.pattern.test(this.value)) {
+      return this.setInvalid(msg('유효한 이메일 주소를 입력해주세요.'));
+    }
+    return this.setValid();
   }
 
   private onUsernameInput = (event: Event) => {

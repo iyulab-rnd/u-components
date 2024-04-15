@@ -1,9 +1,11 @@
 import { css, html } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
+import { msg, localized } from "@lit/localize";
 
 import { UCheckboxInputModel } from "./UCheckboxInput.model";
 import { UBaseInput } from "../input-parts/UBaseInput";
 
+@localized()
 @customElement('u-checkbox-input')
 export class UCheckboxInput extends UBaseInput implements UCheckboxInputModel {
   
@@ -32,10 +34,10 @@ export class UCheckboxInput extends UBaseInput implements UCheckboxInputModel {
   }
 
   public async validate() {
-    if(this.inputEl.validity.valid) {
-      return this.setValid();
+    if(this.requiredCheck && !this.value) {
+      return this.setInvalid(msg("계속하려면 이 확인란을 선택하세요."));
     } else {
-      return this.setInvalid(this.inputEl.validationMessage);
+      return this.setValid();
     }
   }
 

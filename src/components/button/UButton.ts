@@ -80,6 +80,7 @@ export class UButton extends LitElement implements UButtonModel {
   }
 
   private async handleClick(event: Event) {
+    if (this.href || this.download) return;
     event.preventDefault();
     event.stopPropagation();
     if (this.command && this.command.canExecute(this.commandParam)) {
@@ -92,6 +93,7 @@ export class UButton extends LitElement implements UButtonModel {
         this.loading = false;
       }
     }
+
     this.dispatchEvent(new CustomEvent('click', { 
       bubbles: true, composed: true
     }));

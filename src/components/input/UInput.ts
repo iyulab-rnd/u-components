@@ -2,10 +2,10 @@ import { LitElement, css, nothing } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { unsafeStatic, html } from 'lit/static-html.js';
 
+import "./index";
 import { UInputModel } from './UInput.model';
 import type { UBaseInput } from '../input-parts/UBaseInput';
 import type { LabelPosition } from "../input-parts/UInputContainer.model";
-import "./index";
 import { 
   getPropertyMeta, 
   type PropertyMetaType, 

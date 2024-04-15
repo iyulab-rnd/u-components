@@ -53,7 +53,7 @@ export class UNumberInput extends UBaseInput implements UNumberInputModel {
 
   public async validate() {
     if(this.inputEl.validity.valid) {
-      return this.setValid();  
+      return this.setValid();
     } else {
       return this.setInvalid(this.inputEl.validationMessage);
     }

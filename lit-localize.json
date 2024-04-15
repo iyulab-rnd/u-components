@@ -1,13 +1,13 @@
 {
   "$schema": "https://raw.githubusercontent.com/lit/lit/main/packages/localize-tools/config.schema.json",
-  "sourceLocale": "en",
-  "targetLocales": ["ko", "zh", "ja", "es"],
+  "sourceLocale": "ko",
+  "targetLocales": ["en"],
   "inputFiles": ["./src/components/**/*.ts"],
   "tsConfig": "./tsconfig.json",
   "output": {
     "mode": "runtime",
     "outputDir": "./src/localize/locales",
-    "localeCodesModule": "./src/localize/model/ULocaleCodes.ts"
+    "localeCodesModule": "./src/localize/ULocaleCodes.ts"
   },
   "interchange": {
     "format": "xliff",

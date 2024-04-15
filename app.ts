@@ -5,6 +5,7 @@ import './src';
 import { propertyMeta } from "./src/decorators";
 import { SystemIcon } from "./src/components/icon/UIcon.resource";
 import { UAlertController } from "./src/components/alert/UAlertController";
+import { ULocalizer } from "./src";
 
 export class TestContext {
 
@@ -29,7 +30,7 @@ export class TestContext {
   @propertyMeta({ type:"number", label: 'Age', required: true })
   age: number = 0;
 
-  @propertyMeta({ type:"checkbox", label: '동의?' })
+  @propertyMeta({ type:"checkbox", label: '동의?', requiredCheck: true })
   agree: boolean = false;
 }
 
@@ -41,13 +42,23 @@ export class PreviewApp extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
+    ULocalizer.getLocale();
   }
 
   render() {
     return html`
-      ${this.renderSystemIcons()}
-      ${this.buttonTest()}
-      ${this.inputTest()}
+      <u-wizard>
+        <u-wizard-step content="step1">Step1</u-wizard-step>
+        <u-wizard-step content="step2">Step2</u-wizard-step>
+        <u-wizard-step content="step3">Step3</u-wizard-step>
+        <u-wizard-content name="step1">Step1</u-wizard-content>
+        <u-wizard-content name="step2">Step2</u-wizard-content>
+        <u-wizard-content name="step3">Step3</u-wizard-content>
+      </u-wizard>
+
+      <!-- ${this.renderSystemIcons()} -->
+      <!-- ${this.buttonTest()} -->
+      <!-- ${this.inputTest()} -->
       <!-- ${this.contextTest()} -->
       <!-- ${this.formTest()} -->
     `;

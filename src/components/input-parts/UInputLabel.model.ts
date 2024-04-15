@@ -1,6 +1,7 @@
 export interface UInputLabelModel {
   /**
    * Specifies whether the input field is required.
+   * @default false
    */
   required?: boolean;
 
