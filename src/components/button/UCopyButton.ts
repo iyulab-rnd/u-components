@@ -1,10 +1,12 @@
 import { LitElement, css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
+import { msg, localized } from "@lit/localize";
 
 import { UCopyButtonModel } from "./UCopyButton.model";
 import "../tooltip/UTooltip";
 import "../icon/UIcon";
 
+@localized()
 @customElement('u-copy-button')
 export class UCopyButton extends LitElement implements UCopyButtonModel {
 
@@ -25,7 +27,7 @@ export class UCopyButton extends LitElement implements UCopyButtonModel {
     return html`
       <u-tooltip 
         position="bottom"
-        .content=${this.copied ? 'Copied!' : 'Copy to Clipboard'}
+        .content=${this.copied ? msg('복사완료') : msg('클립보드에 복사하기')}
       >
         <u-icon
           type="system"

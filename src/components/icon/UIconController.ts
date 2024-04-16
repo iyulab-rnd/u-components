@@ -1,13 +1,18 @@
 import type { TemplateResult } from "lit";
+import { SystemIcon } from "./UIcon.resource";
 
-export type RenderMethod = (type: string) => TemplateResult<1>;
+export type RenderMethod = (type: string) => Promise<TemplateResult<1>>;
 
 export class UIconController {
   public static readonly renderers: Map<string, RenderMethod> = new Map();
-  public static basePath: string = "icons";
+  public static basePath: string = "/assets/icons";
 
   public static setBasePath(path: string) {
     this.basePath = path;
+  }
+
+  public static setSystemIcon(icon: typeof SystemIcon) {
+    Object.assign(SystemIcon, icon);
   }
 
   public static registerRenderer(type: string, render: RenderMethod) {

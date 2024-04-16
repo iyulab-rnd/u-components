@@ -1,16 +1,14 @@
-import { LitElement, TemplateResult, css, html, nothing } from "lit";
-import { customElement, property, state } from "lit/decorators.js";
-import { UnsafeHTMLDirective, unsafeHTML } from "lit/directives/unsafe-html.js";
-import type { DirectiveResult } from "lit/directive.js";
+import { LitElement, css, html, nothing } from "lit";
+import { customElement, property, } from "lit/decorators.js";
+import { unsafeHTML } from "lit/directives/unsafe-html.js";
 
 import { UIconModel, type UIconType } from "./UIcon.model";
 import { UIconController } from "./UIconController";
 import { SystemIcon } from "./UIcon.resource";
+import { until } from "lit/directives/until.js";
 
 @customElement('u-icon')
 export class UIcon extends LitElement implements UIconModel {
-
-  @state() svg?: DirectiveResult<typeof UnsafeHTMLDirective> | TemplateResult<1>;
 
   @property({ type: String }) type: UIconType = 'default';
   @property({ type: String }) name?: string;
@@ -21,9 +19,6 @@ export class UIcon extends LitElement implements UIconModel {
     super.updated(changedProperties);
     await this.updateComplete;
 
-    if (changedProperties.has('name') && this.name) {
-      this.svg = await this.resolveFrom(this.name);
-    }
     if (changedProperties.has('size')) {
       this.style.fontSize = this.size ?? '16px';
     }
@@ -32,32 +27,22 @@ export class UIcon extends LitElement implements UIconModel {
     }
   }
 
-  protected render() {
-    return this.svg ?? nothing;
-  }
+  render() {
+    if(!this.name) return nothing;
 
-  private resolveFrom = async (name: string) => {
-    if(this.type === 'default') {
-      return await this.resovleFromFile(name);
-    } else if(this.type === 'system') {
-      return this.resolveFromVector(name);
+    if(this.type === 'system') {
+      return this.renderSystemIcon(this.name);
+    } else if(this.type === 'default') {
+      return html`${until(this.renderDefaultIcon(this.name), nothing)}`;
     } else if(UIconController.renderers.has(this.type)) {
       const renderer = UIconController.renderers.get(this.type);
-      return renderer?.call(this, name) ?? nothing;
+      return html`${until(renderer?.(this.name), nothing)}`;
     } else {
       return nothing;
     }
   }
 
-  private resovleFromFile = async (name: string) => {
-    const basePath = UIconController.basePath;
-    const fullPath = `${basePath.endsWith('/') ? basePath.slice(0, -1) : basePath}/${name}.svg`;
-    const result = await fetch(fullPath);
-    const content = await result.text();
-    return content.startsWith('<svg') ? unsafeHTML(content) : nothing;
-  }
-  
-  private resolveFromVector = (name: string) => {
+  private renderSystemIcon(name: string) {
     const vector = SystemIcon[name];
     if(!vector) return nothing;
     return html`
@@ -65,6 +50,14 @@ export class UIcon extends LitElement implements UIconModel {
         <path d=${vector.path}></path>
       </svg>
     `;
+  }
+
+  private async renderDefaultIcon (name: string) {
+    const basePath = UIconController.basePath;
+    const fullPath = `${basePath.endsWith('/') ? basePath.slice(0, -1) : basePath}/${name}.svg`;
+    const result = await fetch(fullPath);
+    const content = await result.text();
+    return content.startsWith('<svg') ? unsafeHTML(content) : nothing;
   }
   
   static styles = css`

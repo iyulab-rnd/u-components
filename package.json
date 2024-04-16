@@ -11,6 +11,13 @@
   "main": "./src/index.js",
   "module": "./src/index.js",
   "types": "./src/index.d.ts",
+  "scripts": {
+    "test": "vite",
+    "demo": "storybook dev -p 6006",
+    "build": "iyulab build -d dist -b vite",
+    "build:demo": "storybook build -o docs",
+    "deploy": "iyulab publish"
+  },
   "exports": {
     ".": {
       "require": "./src/index.js",
@@ -23,7 +30,7 @@
       "types": "./src/*/index.d.ts"
     },
     "./styles/*": {
-      "import": "./src/styles/*.css"
+      "import": "./static/styles/*.css"
     },
     "./decorators": {
       "require": "./src/decorators/index.js",
@@ -66,15 +73,6 @@
       "types": "./src/components/input-advanced/*.d.ts"
     }
   },
-  "scripts": {
-    "test": "vite",
-    "demo": "storybook dev -p 6006",
-    "localize": "lit-localize extract",
-    "build": "iyulab build -d dist -b vite",
-    "build:demo": "storybook build -o docs",
-    "build:localize": "lit-localize build",
-    "deploy": "iyulab publish"
-  },
   "dependencies": {
     "@lit/localize": "^0.12.1",
     "@lit/react": "^1.0.4",
@@ -85,7 +83,6 @@
   },
   "devDependencies": {
     "@iyulab/utils": "^0.0.8",
-    "@lit/localize-tools": "^0.7.2",
     "@shoelace-style/shoelace": "^2.15.0",
     "@storybook/addon-essentials": "^8.0.5",
     "@storybook/addon-links": "^8.0.5",

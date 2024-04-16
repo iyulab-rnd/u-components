@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
 import dts from "vite-plugin-dts";
-import { resolve } from 'path'
+import { resolve } from 'path';
 import glob from "fast-glob";
 
 const entries = {} as any;
@@ -18,15 +18,12 @@ glob.sync(['src/**/*.ts']).map(path => {
 
 export default () => {
   return defineConfig({
-    publicDir: 'assets',
+    publicDir: resolve(__dirname, 'static'),
     build: {
       minify: false,
       outDir: 'dist',
-      copyPublicDir: true,
       lib: {
-        entry: {
-          ...entries // index 엔트리 포인트
-        },
+        entry: entries,
         fileName: (format: string, entry: string): string => {
           return `${entry}.${format}.js`;
         },
@@ -49,7 +46,6 @@ export default () => {
       }
     },
     plugins: [
-      //@ts-ignore
       dts({
         include: [ "src/**/*"] 
       }),

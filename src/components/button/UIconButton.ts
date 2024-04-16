@@ -85,9 +85,10 @@ export class UIconButton extends LitElement implements UIconButtonModel {
   }
 
   private handleButtonClick = async (event: Event) => {
+    if (this.href || this.download) return;
     event.preventDefault();
     event.stopPropagation();
-    if (this.command && this.command.canExecute(this.commandParam)) {
+    if (this.command && this.command.canExecute(this.commandParam)) {  
       try {
         this.loading = true;
         this.command.execute(this.commandParam);
@@ -97,6 +98,7 @@ export class UIconButton extends LitElement implements UIconButtonModel {
         this.loading = false;
       }
     }
+
     this.dispatchEvent(new CustomEvent('click', { 
       bubbles: true, composed: true
     }));

@@ -52,6 +52,7 @@ export class UWizard extends LitElement {
 
   private renderHeader() {
     return this.stepElList?.map((step, index) => {
+      console.log(step, index);
       return html`
         
       `;
@@ -80,6 +81,7 @@ export class UWizard extends LitElement {
     this.totalSteps = steps.length;
     steps.forEach((step, index) => {
       console.log(step.assignedSlot);
+      console.log(index);
     });
     return Array.from(steps);
   }

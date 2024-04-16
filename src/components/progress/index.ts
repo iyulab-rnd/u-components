@@ -1,3 +1,5 @@
-export * from "./UProgress";
+export * from "./UProgressBar";
+export * from "./UProgressRing";
 
-export * from "./UProgress.model";
+export * from "./UProgressBar.model";
+export * from "./UProgressRing.model";

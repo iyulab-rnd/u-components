@@ -13,6 +13,11 @@ interface LitOptions<I extends HTMLElement, E extends EventNames = {}> { // esli
   events?: E;
 }
 
+/**
+ * Converts a Lit Element to a React Component.
+ * @param option - The options for the conversion.
+ * @returns The converted React Component.
+ */
 export function convertReact<I extends HTMLElement, E extends EventNames = {}> // eslint-disable-line
   (option: LitOptions<I, E>) 
 {

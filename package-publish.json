@@ -13,10 +13,13 @@
       "import": "./*/index.es.js",
       "types": "./*/index.d.ts"
     },
+    "./styles/*": {
+      "import": "./styles/*.css"
+    },
     "./decorators": {
-      "require": "./src/decorators/index.cjs.js",
-      "import": "./src/decorators/index.es.js",
-      "types": "./src/decorators/index.d.ts"
+      "require": "./decorators/index.cjs.js",
+      "import": "./decorators/index.es.js",
+      "types": "./decorators/index.d.ts"
     },
     "./components/*": {
       "require": "./components/*/index.cjs.js",
