@@ -11,7 +11,7 @@ export class UIconController {
     this.basePath = path;
   }
 
-  public static setSystemIcon(icon: typeof SystemIcon) {
+  public static assignSystemIcon(icon: typeof SystemIcon) {
     Object.assign(SystemIcon, icon);
   }
 

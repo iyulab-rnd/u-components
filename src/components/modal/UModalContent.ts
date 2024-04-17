@@ -1,5 +1,5 @@
 import { LitElement } from "lit";
-import { property, state } from "lit/decorators.js";
+import { property } from "lit/decorators.js";
 
 import { UModalContentModel } from "./UModalContent.model";
 
@@ -28,9 +28,6 @@ import { UModalContentModel } from "./UModalContent.model";
  * }
  */
 export class UModalContent extends LitElement implements UModalContentModel {
-  
-  @state() confirmValue?: any;
-  @state() cancelValue?: any;
 
   @property({ type: String }) label?: string
 
@@ -43,24 +40,18 @@ export class UModalContent extends LitElement implements UModalContentModel {
         detail: this.label
       }));
     }
-    if (changedProperties.has('confirmValue') && this.confirmValue) {
-      this.dispatchEvent(new CustomEvent('confirm', {
-        detail: this.confirmValue
-      }));
-    }
-    if (changedProperties.has('cancelValue') && this.cancelValue) {
-      this.dispatchEvent(new CustomEvent('cancel', {
-        detail: this.cancelValue
-      }));
-    }
   }
 
   public requestConfirm(value?: any) {
-    this.confirmValue = value;
+    this.dispatchEvent(new CustomEvent('confirm', {
+      detail: value
+    }));
   }
 
   public requestCancel(value?: any) {
-    this.cancelValue = value;
+    this.dispatchEvent(new CustomEvent('cancel', {
+      detail: value
+    }));
   }
 
 }
