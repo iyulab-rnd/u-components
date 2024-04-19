@@ -18,7 +18,7 @@ export class UIconButton extends LitElement implements UIconButtonModel {
   @property({ type: String }) type: UIconType = 'default';
   @property({ type: String }) name?: string;
   @property({ type: String }) color?: string;
-  @property({ type: String }) size?: string = "16px";
+  @property({ type: String }) size?: string;
 
   @property({ type: String }) href?: string;
   @property({ type: String }) target: UButtonTarget = '_self';
