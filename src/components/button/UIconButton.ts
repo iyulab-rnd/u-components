@@ -117,6 +117,10 @@ export class UIconButton extends LitElement implements UIconButtonModel {
     :host([loading]) {
       cursor: wait;
     }
+
+    a {
+      display: inline-flex;
+    }
     
     u-spinner {
       font-size: inherit;

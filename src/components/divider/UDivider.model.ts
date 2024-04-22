@@ -15,7 +15,7 @@ export interface UDividerModel {
   /**
    * 구분선의 마진을 지정합니다.
    */
-  space?: string;
+  spacing?: string;
 
   /**
    * 구분선의 방향을 수직으로 지정합니다.

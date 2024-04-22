@@ -25,6 +25,6 @@ export function convertReact<I extends HTMLElement, E extends EventNames = {}> /
     react: React,
     elementClass: option.elementClass,
     tagName: option.tagName,
-    events: option.events as any,
+    events: option.events || {},
   });
 }
