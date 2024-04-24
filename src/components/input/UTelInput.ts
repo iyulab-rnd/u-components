@@ -55,7 +55,7 @@ export class UTelInput extends UBaseInput implements UTelInputModel {
           <slot name="prefix"></slot>
           ${this.segments.map((length, index) => this.renderTelInput(index, length))}
           <div class="flex"></div>
-          <u-icon class="clear" type="system" name="clear"
+          <u-icon class="clear" type="system" name="x-circle-fill"
             @click=${this.handleClear}
           ></u-icon>
           <slot name="suffix"></slot>

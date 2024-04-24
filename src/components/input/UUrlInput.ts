@@ -51,7 +51,7 @@ export class UUrlInput extends UBaseInput implements UUrlInputModel {
             @input=${this.onInput}
             @change=${this.onChage}
           />
-          <u-icon class="clear" type="system" name="clear"
+          <u-icon class="clear" type="system" name="x-circle-fill"
             @click=${this.handleClear}
           ></u-icon>
           <slot name="suffix"></slot>

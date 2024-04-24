@@ -42,7 +42,7 @@ export class UTextareaInput extends UBaseInput implements UTextareaInputModel {
             @input=${this.onInput}
             @change=${this.onChage}
           ></textarea>
-          <u-icon class="clear" type="system" name="clear"
+          <u-icon class="clear" type="system" name="x-circle-fill"
             @click=${this.handleClear}
           ></u-icon>
         </u-input-border>

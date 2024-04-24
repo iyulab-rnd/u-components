@@ -65,7 +65,7 @@ export class UEmailInput extends UBaseInput implements UEmailInputModel {
             .options=${this.domains}
             @change=${this.onDomainSelect}
           ></u-select-input>
-          <u-icon class="clear" type="system" name="clear"
+          <u-icon class="clear" type="system" name="x-circle-fill"
             @click=${this.handleClear}
           ></u-icon>
           <slot name="suffix"></slot>

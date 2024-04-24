@@ -47,7 +47,7 @@ export class URestURLInput extends UBaseInput implements URestURLInputModel {
             @input=${this.onInputUrl}
             @change=${this.onChangeUrl}
           />
-          <u-icon class="clear" type="system" name="clear"
+          <u-icon class="clear" type="system" name="x-circle-fill"
             @click=${this.onClearUrl}
           ></u-icon>
         </u-input-border>

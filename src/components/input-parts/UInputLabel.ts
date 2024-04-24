@@ -26,7 +26,7 @@ export class UInputLabel extends LitElement implements UInputLabelModel {
     
     return html`
       <div class="tooltip">
-        <u-icon type="system" name="info"></u-icon>
+        <u-icon type="system" name="info-circle-fill"></u-icon>
         <pre>${this.description}</pre>
       </div>
     `;

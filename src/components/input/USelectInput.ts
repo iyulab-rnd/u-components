@@ -36,7 +36,7 @@ export class USelectInput extends UBaseInput implements USelectInputModel {
           <div class="container" @click=${() => this.open = !this.open}>
             <slot name="prefix"></slot>
             <div class="value">${this.display || this.value || this.placeholder}</div>
-            <u-icon type="system" name="arrow-down"></u-icon>
+            <u-icon type="system" name="chevron-down"></u-icon>
           </div>
           <div class="popover">
             ${this.renderNoneOption()}

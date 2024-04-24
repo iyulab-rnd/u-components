@@ -48,7 +48,7 @@ export class UPasswordInput extends UBaseInput implements UPasswordInputModel {
           <u-icon class="visible" type="system" name=${this.visible ? 'visible' : 'invisible'}
             @click=${this.handleVisible}
           ></u-icon>
-          <u-icon class="clear" type="system" name="clear"
+          <u-icon class="clear" type="system" name="x-circle-fill"
             @click=${this.handleClear}
           ></u-icon>
           <slot name="suffix"></slot>
