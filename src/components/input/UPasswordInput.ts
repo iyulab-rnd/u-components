@@ -1,12 +1,11 @@
 import { css, html } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
-import { localized, msg } from "@lit/localize";
+import { t } from "../../localization/ULocalizer";
 
 import { UPasswordInputModel } from "./UPasswordInput.model";
 import { UBaseInput } from "../input-parts/UBaseInput";
 
-@localized()
 @customElement('u-password-input')
 export class UPasswordInput extends UBaseInput implements UPasswordInputModel {
   
@@ -61,7 +60,7 @@ export class UPasswordInput extends UBaseInput implements UPasswordInputModel {
     if(this.inputEl.validity.valid) {
       return this.setValid();
     } else if(this.inputEl.validity.patternMismatch) {
-      return this.setInvalid(this.invalidMessage || msg('잘못된 형식입니다.'));
+      return this.setInvalid(this.invalidMessage || t("component::invalidPattern"));
     } else {
       return this.setInvalid(this.inputEl.validationMessage);
     }

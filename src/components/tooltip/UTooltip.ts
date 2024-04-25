@@ -1,4 +1,4 @@
-import { LitElement, TemplateResult, css, html } from "lit";
+import { LitElement, css, html } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
@@ -17,7 +17,7 @@ export class UTooltip extends LitElement implements UTooltipModel {
   @property({ type: Boolean }) hoist: boolean = false;
   @property({ type: Number }) maxWidth?: number;
   @property({ type: Boolean, reflect: true }) arrow: boolean = false;
-  @property({ type: String }) content?: string | HTMLElement | LitElement | TemplateResult;
+  @property({ type: String }) content?: any;
 
   protected async update(changedProperties: any) {
     super.update(changedProperties);

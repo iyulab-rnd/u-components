@@ -5,7 +5,7 @@ import './src';
 import { propertyMeta } from "./src/decorators";
 import { SystemIcon } from "./src/components/icon/UIcon.resource";
 import { UAlertController } from "./src/components/alert/UAlertController";
-import { getLocale, t, setLocale, setup } from "./src/localize";
+import { getLocale, t, setLocale, setup } from "./src/localization";
 
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -13,12 +13,24 @@ import { ReactComponent } from "./react";
 
 setup({
   en: {
-    hello: 'Hello',
-    world: 'World'
+    hello: {
+      one: 'Hello',
+      two: 'World',
+    },
+    world: {
+      one: 'Hello',
+      two: 'World',
+    }
   },
   ko: {
-    hello: '안녕하세요',
-    world: '이 세상아'
+    hello: {
+      one: '안녕',
+      two: '세계',
+    },
+    world: {
+      one: '안녕',
+      two: '세계',
+    }
   }
 })
 
@@ -69,9 +81,8 @@ export class PreviewApp extends LitElement {
         Change Language
       </u-button>
 
-      i18next: ${t('hello')}
+      i18next: ${t('ss')}
 
-      
       <!-- ${this.wizardTest()} -->
       <!-- ${this.renderSystemIcons()} -->
       <!-- ${this.buttonTest()} -->

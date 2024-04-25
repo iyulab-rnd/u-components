@@ -1,12 +1,11 @@
 import { LitElement, css, html } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
-import { localized, msg } from "@lit/localize";
 
+import { t } from '../../localization/ULocalizer';
 import '../button/UButton';
 
 export type WizardState = "init" | "inProgress" | "completed";
 
-@localized()
 @customElement("u-wizard")
 export class UWizard extends LitElement {
 
@@ -63,15 +62,15 @@ export class UWizard extends LitElement {
     return html`
       <u-button theme="default"
         @click=${this.previous}>
-        ${msg('이전')}
+        ${t('component::previous')}
       </u-button>
       <u-button theme="primary"
         @click=${this.next}>
-        ${msg('다음')}
+        ${t('component::next')}
       </u-button>
       <u-button theme="success"
         @click=${this.done}>
-        ${msg('완료')}
+        ${t('component::done')}
       </u-button>
     `;
   }

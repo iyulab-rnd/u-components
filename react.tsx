@@ -1,4 +1,4 @@
-import { useT } from "./src/localize";
+import { useT } from "./src/localization/ULocalizer";
 
 export function ReactComponent() {
   const { t } = useT();

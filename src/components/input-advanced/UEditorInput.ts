@@ -1,12 +1,11 @@
 import { css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { localized, msg } from "@lit/localize";
 
+import { t } from '../../localization/ULocalizer';
 import { UEditorInputModel } from "./UEditorInput.model";
 import { UBaseInput } from "../input-parts/UBaseInput";
 import "../editor/MonacoEditor";
 
-@localized()
 @customElement('u-editor-input')
 export class UEditorInput extends UBaseInput implements UEditorInputModel {
 
@@ -33,7 +32,7 @@ export class UEditorInput extends UBaseInput implements UEditorInputModel {
 
   public async validate() {
     if (this.required && !this.value) {
-      return this.setInvalid(msg('이 입력란은 필수입니다.'));
+      return this.setInvalid(t('component::requiredField'));
     } else {
       return this.setValid();
     }

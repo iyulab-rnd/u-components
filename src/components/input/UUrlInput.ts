@@ -1,13 +1,12 @@
 import { css, html } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
-import { localized, msg } from "@lit/localize";
 
+import { t } from "../../localization/ULocalizer";
 import { UUrlInputModel } from "./UUrlInput.model";
 import { UBaseInput } from "../input-parts/UBaseInput";
 import "./USelectInput";
 
-@localized()
 @customElement('u-url-input')
 export class UUrlInput extends UBaseInput implements UUrlInputModel {
   private static readonly pattern: RegExp = /^[a-zA-Z][a-zA-Z\d+\-.]*:(\/\/)?[\S]+$/;
@@ -62,10 +61,10 @@ export class UUrlInput extends UBaseInput implements UUrlInputModel {
 
   public async validate() {
     if(this.required && !this.value) {
-      return this.setInvalid(msg('이 입력란은 필수입니다.'));
+      return this.setInvalid(t('component::requiredField'));
     }
     if(this.value && !UUrlInput.pattern.test(this.value)) {
-      return this.setInvalid(msg('이메일 형식이 올바르지 않습니다.'));
+      return this.setInvalid(t('component::invalidUrl'));
     }
       
     return this.setValid();

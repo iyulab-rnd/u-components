@@ -1,12 +1,11 @@
 import { css, html } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
-import { localized, msg } from "@lit/localize";
+import { t } from "../../localization/ULocalizer";
 
 import { UEmailInputModel } from "./UEmailInput.model";
 import { UBaseInput } from "../input-parts/UBaseInput";
 import "./USelectInput";
 
-@localized()
 @customElement('u-email-input')
 export class UEmailInput extends UBaseInput implements UEmailInputModel {
   private static readonly pattern: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/u;
@@ -76,10 +75,10 @@ export class UEmailInput extends UBaseInput implements UEmailInputModel {
 
   public async validate() {
     if(this.required && !this.value) {
-      return this.setInvalid(msg('이 입력란은 필수입니다.'));
+      return this.setInvalid(t('component::requiredField'));
     }
     if(this.value && !UEmailInput.pattern.test(this.value)) {
-      return this.setInvalid(msg('유효한 이메일 주소를 입력해주세요.'));
+      return this.setInvalid(t('component::invalidEmail'));
     }
     return this.setValid();
   }

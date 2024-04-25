@@ -1,12 +1,11 @@
 import { css, html } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
-import { localized, msg } from "@lit/localize";
 
 import { UTextInputModel } from "./UTextInput.model";
 import { UBaseInput } from "../input-parts/UBaseInput";
+import { t } from "../../localization/ULocalizer";
 
-@localized()
 @customElement('u-text-input')
 export class UTextInput extends UBaseInput implements UTextInputModel {
   
@@ -57,7 +56,7 @@ export class UTextInput extends UBaseInput implements UTextInputModel {
     if(this.inputEl.validity.valid) {
       return this.setValid();
     } else if(this.inputEl.validity.patternMismatch) {
-      return this.setInvalid(this.invalidMessage || msg('입력 형식이 올바르지 않습니다.'));
+      return this.setInvalid(this.invalidMessage || t("component::invalidPattern"));
     } else {
       return this.setInvalid(this.inputEl.validationMessage);
     }

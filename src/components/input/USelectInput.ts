@@ -3,7 +3,7 @@ import { customElement, property, queryAll } from "lit/decorators.js";
 
 import { USelectInputModel, type USelectOption } from "./USelectInput.model";
 import { UBaseInput } from "../input-parts/UBaseInput";
-import { msg } from "@lit/localize";
+import { t } from "../../localization/ULocalizer";
 
 @customElement('u-select-input')
 export class USelectInput extends UBaseInput implements USelectInputModel {
@@ -49,7 +49,7 @@ export class USelectInput extends UBaseInput implements USelectInputModel {
 
   public async validate() {
     if (this.required && !this.value) {
-      return this.setInvalid(msg('이 입력란은 필수입니다.'));
+      return this.setInvalid(t("component::requiredField"));
     } else {
       return this.setValid();
     }

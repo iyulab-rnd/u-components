@@ -112,7 +112,7 @@ export abstract class UBaseInput extends LitElement implements UBaseInputModel {
    * Set error message and return false
    * @param error 
    */
-  protected setInvalid(error: string): false {
+  protected setInvalid(error: any): false {
     this.error = error;
     return false;
   }

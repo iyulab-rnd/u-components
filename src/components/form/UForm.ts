@@ -1,8 +1,8 @@
 import { LitElement, css, html } from "lit";
 import { unsafeStatic, html as staticHtml } from 'lit/static-html.js';
 import { customElement, property, queryAll, state } from 'lit/decorators.js';
-import { localized, msg } from "@lit/localize";
 
+import { t } from "../../localization/ULocalizer";
 import { UFormModel } from "./UForm.model";
 import { getPropertyMeta, type PropertyMetaData } from "../../decorators";
 import type { LabelPosition } from '../input-parts/UInputContainer.model';
@@ -11,7 +11,6 @@ import type { UButtonSize } from "../button/UButton.model";
 import "../input";
 import "../button/UButton";
 
-@localized()
 @customElement('u-form')
 export class UForm extends LitElement implements UFormModel {
 
@@ -107,13 +106,13 @@ export class UForm extends LitElement implements UFormModel {
           theme="default"
           .size=${this.buttonSize || 'small'}
           @click=${this.handleCancel}
-        >${msg('취소')}</u-button>
+        >${t('component::cancel')}</u-button>
         <u-button
           theme="primary"
           .size=${this.buttonSize || 'small'}
           .loading=${this.loading || false}
           @click=${this.handleSubmit}
-        >${msg('확인')}</u-button>
+        >${t('component::confirm')}</u-button>
       </div>
     `;
   }
