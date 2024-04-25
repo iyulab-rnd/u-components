@@ -3,9 +3,10 @@
     // 기본 컴파일러 옵션
     "target": "ESNext",
     "module": "ESNext",
-    "lib": ["ESNext","DOM","DOM.Iterable"],
+    "lib": ["ESNext","ES2020","DOM","DOM.Iterable"],
     "moduleResolution": "Bundler",
     "types": ["vite/client"],
+    "jsx": "react-jsx",
 
     // 엄격한 타입 체킹
     "strict": true,
@@ -41,9 +42,12 @@
     "preserveSymlinks": true
   },
   "include": [
-    "src/**/*",
-    "app.ts",
+    "vite.config.ts",
     "vite-env.d.ts",
-    "vite.config.ts"
+    "src/**/*",
+
+    // Test files
+    "app.ts",
+    "react.tsx",
   ]
 }

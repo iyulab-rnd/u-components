@@ -5,7 +5,22 @@ import './src';
 import { propertyMeta } from "./src/decorators";
 import { SystemIcon } from "./src/components/icon/UIcon.resource";
 import { UAlertController } from "./src/components/alert/UAlertController";
-import { ULocalizer } from "./src";
+import { getLocale, t, setLocale, setup } from "./src/localize";
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { ReactComponent } from "./react";
+
+setup({
+  en: {
+    hello: 'Hello',
+    world: 'World'
+  },
+  ko: {
+    hello: '안녕하세요',
+    world: '이 세상아'
+  }
+})
 
 export class TestContext {
 
@@ -42,10 +57,31 @@ export class PreviewApp extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
-    ULocalizer.getLocale();
   }
 
   render() {
+    return html`
+      <u-button
+        @click=${() => {
+          setLocale(getLocale() === 'en' ? 'ko' : 'en');
+        }}
+      >
+        Change Language
+      </u-button>
+
+      i18next: ${t('hello')}
+
+      
+      <!-- ${this.wizardTest()} -->
+      <!-- ${this.renderSystemIcons()} -->
+      <!-- ${this.buttonTest()} -->
+      <!-- ${this.inputTest()} -->
+      <!-- ${this.contextTest()} -->
+      <!-- ${this.formTest()} -->
+    `;
+  }
+
+  wizardTest() {
     return html`
       <u-wizard>
         <u-wizard-step content="step1">Step1</u-wizard-step>
@@ -55,12 +91,6 @@ export class PreviewApp extends LitElement {
         <u-wizard-content name="step2">Step2</u-wizard-content>
         <u-wizard-content name="step3">Step3</u-wizard-content>
       </u-wizard>
-
-      <!-- ${this.renderSystemIcons()} -->
-      <!-- ${this.buttonTest()} -->
-      <!-- ${this.inputTest()} -->
-      <!-- ${this.contextTest()} -->
-      <!-- ${this.formTest()} -->
     `;
   }
 
@@ -193,4 +223,10 @@ export class PreviewApp extends LitElement {
       }
     }
   `;
+}
+
+
+const root = document.body.querySelector('#root');
+if (root) {
+  ReactDOM.render(React.createElement(ReactComponent), root);
 }

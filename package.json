@@ -12,7 +12,7 @@
   "module": "./src/index.js",
   "types": "./src/index.d.ts",
   "scripts": {
-    "test": "vite",
+    "test": "vite --force",
     "demo": "storybook dev -p 6006",
     "build": "iyulab build -d dist -b vite",
     "build:demo": "storybook build -o docs",
@@ -74,11 +74,14 @@
     }
   },
   "dependencies": {
-    "@lit/localize": "^0.12.1",
     "@lit/react": "^1.0.4",
+    "i18next": "^23.11.2",
+    "i18next-browser-languagedetector": "^7.2.1",
     "lit": "^3.1.2",
+    "lit-i18n": "^4.1.0",
     "mobx": "^6.12.3",
     "react": "^18.2.0",
+    "react-i18next": "^14.1.1",
     "reflect-metadata": "^0.2.2"
   },
   "devDependencies": {
@@ -93,6 +96,7 @@
     "monaco-editor": "^0.47.0",
     "postcss": "^8.4.38",
     "postcss-nesting": "^12.1.1",
+    "react-dom": "^18.2.0",
     "sass": "^1.74.1",
     "sass-loader": "^14.1.1",
     "storybook": "^8.0.5",
