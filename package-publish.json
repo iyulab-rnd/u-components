@@ -17,9 +17,19 @@
       "import": "./styles/*.css"
     },
     "./decorators": {
-      "require": "./decorators/index.cjs.js",
-      "import": "./decorators/index.es.js",
+      "require": "./decorators/index.js",
+      "import": "./decorators/index.js",
       "types": "./decorators/index.d.ts"
+    },
+    "./localization": {
+      "require": "./localization/index.js",
+      "import": "./localization/index.js",
+      "types": "./localization/index.d.ts"
+    },
+    "./utils": {
+      "require": "./utils/index.js",
+      "import": "./utils/index.js",
+      "types": "./utils/index.d.ts"
     },
     "./components/*": {
       "require": "./components/*/index.cjs.js",

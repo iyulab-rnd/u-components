@@ -5,34 +5,7 @@ import './src';
 import { propertyMeta } from "./src/decorators";
 import { SystemIcon } from "./src/components/icon/UIcon.resource";
 import { UAlertController } from "./src/components/alert/UAlertController";
-import { getLocale, t, setLocale, setup } from "./src/localization";
-
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { ReactComponent } from "./react";
-
-setup({
-  en: {
-    hello: {
-      one: 'Hello',
-      two: 'World',
-    },
-    world: {
-      one: 'Hello',
-      two: 'World',
-    }
-  },
-  ko: {
-    hello: {
-      one: '안녕',
-      two: '세계',
-    },
-    world: {
-      one: '안녕',
-      two: '세계',
-    }
-  }
-})
+import { getLocale, t, setLocale, init } from "./src/localization";
 
 export class TestContext {
 
@@ -69,6 +42,7 @@ export class PreviewApp extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
+    init();
   }
 
   render() {
@@ -80,8 +54,8 @@ export class PreviewApp extends LitElement {
       >
         Change Language
       </u-button>
-
-      i18next: ${t('ss')}
+      <h1>i18next:</h1>
+      ${t('bye')}
 
       <!-- ${this.wizardTest()} -->
       <!-- ${this.renderSystemIcons()} -->
@@ -234,10 +208,4 @@ export class PreviewApp extends LitElement {
       }
     }
   `;
-}
-
-
-const root = document.body.querySelector('#root');
-if (root) {
-  ReactDOM.render(React.createElement(ReactComponent), root);
 }

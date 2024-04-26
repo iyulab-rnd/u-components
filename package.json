@@ -13,7 +13,7 @@
   "types": "./src/index.d.ts",
   "scripts": {
     "test": "vite --force",
-    "locale": "i18next -c i18next.config.js",
+    "scan": "i18next -c i18next.config.js",
     "demo": "storybook dev -p 6006",
     "build": "iyulab build -d dist -b vite",
     "build:demo": "storybook build -o docs",
@@ -37,6 +37,16 @@
       "require": "./src/decorators/index.js",
       "import": "./src/decorators/index.js",
       "types": "./src/decorators/index.d.ts"
+    },
+    "./localization": {
+      "require": "./src/localization/index.js",
+      "import": "./src/localization/index.js",
+      "types": "./src/localization/index.d.ts"
+    },
+    "./utils": {
+      "require": "./src/utils/index.js",
+      "import": "./src/utils/index.js",
+      "types": "./src/utils/index.d.ts"
     },
     "./components/*": {
       "require": "./src/components/*/index.js",
@@ -92,6 +102,7 @@
     "@types/node": "^20.12.4",
     "i18next": "^23.11.2",
     "i18next-browser-languagedetector": "^7.2.1",
+    "i18next-http-backend": "^2.5.1",
     "i18next-parser": "^8.13.0",
     "lit-i18n": "^4.1.0",
     "monaco-editor": "^0.47.0",

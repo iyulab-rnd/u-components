@@ -28,7 +28,7 @@ export class UProgressRing extends LitElement implements UProgressRingModel {
     return html`
       <sl-progress-ring
         .value=${this.value || 0}>
-        ${`${this.value}%`}
+        ${this.value} %
       </sl-progress-ring>
     `;
   }

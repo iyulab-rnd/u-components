@@ -1,24 +1,18 @@
-import type { 
-  UCheckboxInputModel,
-  UDatetimeInputModel,
-  UEmailInputModel,
-  UFileInputModel,
-  UNumberInputModel,
-  UPasswordInputModel,
-  URangeInputModel,
-  USelectInputModel,
-  UTelInputModel,
-  UTextInputModel,
-  UTextareaInputModel,
-  UUrlInputModel
-} from '../components/input';
-import type { 
-  UObjectInputModel, 
-  URestURLInputModel,
-} from '../components/input-extension';
-import type { 
-  UEditorInputModel,
-} from '../components/input-advanced';
+import type { UCheckboxInputModel } from '../components/input/UCheckboxInput.model';
+import type { UDatetimeInputModel } from '../components/input/UDatetimeInput.model';
+import type { UEmailInputModel } from '../components/input/UEmailInput.model';
+import type { UFileInputModel } from '../components/input/UFileInput.model';
+import type { UNumberInputModel } from '../components/input/UNumberInput.model';
+import type { UPasswordInputModel } from '../components/input/UPasswordInput.model';
+import type { URangeInputModel } from '../components/input/URangeInput.model';
+import type { USelectInputModel } from '../components/input/USelectInput.model';
+import type { UTelInputModel } from '../components/input/UTelInput.model';
+import type { UTextInputModel } from '../components/input/UTextInput.model';
+import type { UTextareaInputModel } from '../components/input/UTextareaInput.model';
+import type { UUrlInputModel } from '../components/input/UUrlInput.model';
+import type { UObjectInputModel } from '../components/input-extension/UObjectInput.model';
+import type { URestURLInputModel } from '../components/input-extension/URestURLInput.model';
+import type { UEditorInputModel } from '../components/input-advanced/UEditorInput.model';
 
 export type PropertyMetaType = (
   'text' | 'textarea' | 'number' | 'checkbox' | 
