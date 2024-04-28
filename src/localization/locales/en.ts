@@ -11,6 +11,8 @@ export const en = {
     "invalidUrl": "Please enter a valid URL",
     "invalidEmail": "Please enter a valid email address",
     "requiredField": "This field is required",
-    "requiredCheckField": "Please check this box to proceed"
+    "requiredCheckField": "Please check this box to proceed",
+    "messageTitle": "Message",
+    "inputTitle": "Please enter a value",
   }
 }

@@ -38,4 +38,8 @@ export interface UInputModel {
    */
   name?: string;
 
+  /**
+   * 입력 필드의 값입니다.
+   */
+  value?: any;
 }

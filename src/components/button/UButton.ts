@@ -8,11 +8,11 @@ SlButton.define('sl-button');
 import type { UTooltipPosition } from '../tooltip/UTooltip.model';
 import type { CommandModel } from '../../patterns/CommandPattern';
 import type { UButtonModel, UButtonTheme, UButtonSize, UButtonTarget } from './UButton.model';
-
+import { convertReact } from '../../utils';
 import '../tooltip/UTooltip';
 
 @customElement('u-button')
-export class UButton extends LitElement implements UButtonModel {
+export class UButtonElement extends LitElement implements UButtonModel {
 
   @property({ type: String }) theme: UButtonTheme = 'default';
   @property({ type: Boolean }) outline: boolean = false;
@@ -114,3 +114,11 @@ export class UButton extends LitElement implements UButtonModel {
   `;
 
 }
+
+export const UButton = convertReact({
+  elementClass: UButtonElement,
+  tagName: 'u-button',
+  events: {
+    onClick: 'click'
+  }
+});

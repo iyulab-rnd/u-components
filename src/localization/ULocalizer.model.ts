@@ -31,6 +31,11 @@ export interface ULocalizerConfig {
    * @default 'translation'
    */
   defaultNS?: string;
+
+  /**
+   * 추가로 사용할 네임스페이스입니다.
+   */
+  namespace?: string[];
   
   /**
    * 파일시스템을 사용하지 않고, 로컬라이제이션을 구성 하기위한 추가 리소스입니다.

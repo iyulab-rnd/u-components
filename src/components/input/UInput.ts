@@ -26,6 +26,7 @@ export class UInput extends LitElement implements UInputModel {
   @property({ type: String }) type?: PropertyMetaType;
   @property({ type: Object }) context?: any;
   @property({ type: String }) name?: string;
+  @property({ type: Object }) value?: any;
 
   protected async updated(changedProperties: any) {
     super.updated(changedProperties);
@@ -53,12 +54,21 @@ export class UInput extends LitElement implements UInputModel {
         .context=${this.context}
         .name=${this.name}
         .meta=${this.meta}
+        .value=${this.value}
+        @change=${this.onChange}
       ></${unsafeStatic(this.tag)}>
     `;
   }
 
   public async validate() {
     return await this.input.validate();
+  }
+
+  private onChange = (e: any) => {
+    this.value = e.target?.value;
+    this.dispatchEvent(new CustomEvent('change', { 
+      detail: this.value 
+    }));
   }
 
   static styles = css`

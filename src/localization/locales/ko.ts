@@ -11,6 +11,8 @@ export const ko = {
     "invalidUrl": "올바른 URL 주소를 입력해주세요",
     "invalidEmail": "올바른 이메일 주소를 입력해주세요",
     "requiredField": "이 항목은 필수 입력입니다",
-    "requiredCheckField": "이 확인란을 체크해주세요"
+    "requiredCheckField": "이 확인란을 체크해주세요",
+    "messageTitle": "메시지",
+    "inputTitle": "값을 입력해주세요",
   }
 }

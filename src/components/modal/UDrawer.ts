@@ -47,16 +47,16 @@ export class UDrawer extends LitElement implements UDrawerModel {
     `;
   }
 
-  public async showAsync(content?: UModalContent) : Promise<UModalResult> {
+  public async showAsync<T>(content?: UModalContent) : Promise<UModalResult<T>> {
     this.label = content?.label ?? undefined;
     this.content = content ?? this.content;
     await this.updateComplete;
     await this.drawer.show();
 
-    return new Promise<UModalResult>((resolve) => {
+    return new Promise<UModalResult<T>>((resolve) => {
       if (this.content instanceof UModalContent) {
         this.content.addEventListener('confirm', (e: any) => {
-          resolve({ success: true, value: e.detail });
+          resolve({ success: true, value: e.detail as T });
           this.drawer.hide();
         });
         this.content.addEventListener('cancel', (e: any) => {

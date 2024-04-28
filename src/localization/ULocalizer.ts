@@ -16,6 +16,7 @@ export async function init(config?: ULocalizerConfig) {
   const debug = config?.debug || false;
   const basepath = config?.basepath?.replace(/^\/|\/$/g, '') || 'locales';
   const defaultNS = config?.defaultNS || 'translation';
+  const namespace = config?.namespace || [];
   const resources = config?.resources;
 
   // i18next 초기화
@@ -34,7 +35,7 @@ export async function init(config?: ULocalizerConfig) {
       supportedLngs: languages,
       fallbackLng: 'en',
       defaultNS: defaultNS,
-      ns: [ defaultNS ],
+      ns: [ defaultNS, ...namespace ],
       nsSeparator: '::',
       interpolation: {
         escapeValue: false,
@@ -76,8 +77,9 @@ export function getLocale(): Languages {
  * 언어를 설정합니다.
  * @param locale 설정할 언어
  */
-export function setLocale(locale: Languages) {
-  return i18next.changeLanguage(locale);
+export async function setLocale(locale: Languages) {
+  await i18next.changeLanguage(locale);
+  window.dispatchEvent(new CustomEvent('locale-change', { detail: locale }));
 }
 
 /**

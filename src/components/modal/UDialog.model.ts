@@ -1,3 +1,5 @@
+import type { DirectiveResult } from "lit/async-directive.js";
+
 /**
  * Represents the model for the UDialog component.
  */
@@ -17,5 +19,5 @@ export interface UDialogModel {
   /**
    * The label for the dialog.
    */
-  label?: string;
+  label?: string | DirectiveResult;
 }

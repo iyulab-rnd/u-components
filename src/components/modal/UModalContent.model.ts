@@ -1,7 +1,7 @@
 /**
  * Represents the result of a modal operation.
  */
-export interface UModalResult {
+export interface UModalResult<T> {
   /**
    * Indicates whether the modal operation was successful.
    */
@@ -10,7 +10,7 @@ export interface UModalResult {
   /**
    * The value returned by the modal operation.
    */
-  value?: any;
+  value?: T;
 
   /**
    * The error that occurred during the modal operation.
