@@ -12,7 +12,7 @@ import "../button/UButton";
 @customElement("u-input-dialog")
 export class UInputDialog extends LitElement implements UInputDialogModel {
   private resolveHandler?: (value: UInputDialogResult) => void;
-  
+
   @property({ type: Boolean }) open?: boolean;
   @property({ type: String }) label?: string;
   @property({ type: String }) type?: PropertyMetaType;
@@ -45,7 +45,7 @@ export class UInputDialog extends LitElement implements UInputDialogModel {
     `;
   }
 
-  public async showAsync(): Promise<UInputDialogResult> {
+  public async showAsync() {
     this.open = true;
     await this.updateComplete;
     return new Promise<UInputDialogResult>((resolve) => {
@@ -56,27 +56,22 @@ export class UInputDialog extends LitElement implements UInputDialogModel {
   public async hideAsync() {
     this.open = false;
     await this.updateComplete;
-    this.resolveHandler = undefined;
   }
 
-  private handleConfirm = () => {
+  public handleConfirm = async () => {
     if (this.resolveHandler) {
-      this.resolveHandler({
-        confirmed: true,
-        value: this.value
-      });
+      this.resolveHandler({ confirmed: true, value: this.value });
     }
-    this.hideAsync();
+    await this.hideAsync();
+    this.resolveHandler = undefined;
   };
 
-  private handleCancel = () => {
+  public handleCancel = async () => {
     if (this.resolveHandler) {
-      this.resolveHandler({
-        confirmed: false,
-        value: this.value
-      });
+      this.resolveHandler({ confirmed: false, value: this.value });
     }
-    this.hideAsync();
+    await this.hideAsync();
+    this.resolveHandler = undefined;
   };
 
   private handleChangeValue = (e: any) => {

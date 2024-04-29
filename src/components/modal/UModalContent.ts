@@ -4,12 +4,11 @@ import { property } from "lit/decorators.js";
 import { UModalContentModel } from "./UModalContent.model";
 
 /**
- * u-dialog 및 u-drawer 컴포넌트의 컨텐츠를 정의하는 추상 클래스입니다.
+ * u-dialog 및 u-drawer 컴포넌트의 컨텐츠를 정의하는 클래스입니다.
  * requestConfirm, requestCancle 메서드를 사용하여 컨텐츠에서 다이얼로그나 드로어에 value를 전달하고, 닫을 수 있습니다.
  * @example
  * import { UModalContent } from '@iyulab/u-components';
  * 
- * .@customElement('u-modal-content-element')
  * export class UModalContentElement extends UModalContent {
  *  render() {
  *     return html`
@@ -29,18 +28,7 @@ import { UModalContentModel } from "./UModalContent.model";
  */
 export class UModalContent extends LitElement implements UModalContentModel {
 
-  @property({ type: String }) label?: string
-
-  protected async updated(changedProperties: any) {
-    super.updated(changedProperties);
-    await this.updateComplete;
-    
-    if (changedProperties.has('label')) {
-      this.dispatchEvent(new CustomEvent('label', {
-        detail: this.label
-      }));
-    }
-  }
+  @property({ type: String }) label?: string;
 
   public requestConfirm(value?: any) {
     this.dispatchEvent(new CustomEvent('confirm', {

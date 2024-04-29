@@ -10,43 +10,69 @@ import { UInputDialog } from "./UInputDialog";
 
 export class UModalController {
   
+  /**
+   * 메시지 다이얼로그를 표시합니다.
+   * @param message 메시지
+   * @param option 다이얼로그 옵션
+   */
   public static async showMessageDialogAsync(message: string, option?: UMessageDialogModel) {
     const dialog = new UMessageDialog();
     dialog.message = message;    
-    dialog.label = option?.label;
-    dialog.color = option?.color;
-    dialog.size = option?.size;
-    dialog.weight = option?.weight;
+    Object.assign(dialog, option);
     document.body.appendChild(dialog);
+    dialog.addEventListener('sl-hide', () => {
+      dialog.handleCancel();
+    });
     const result = await dialog.showAsync();
     dialog.remove();
     return result;
   }
 
+  /**
+   * 입력 다이얼로그를 표시합니다.
+   * @param type 입력 타입
+   * @param option 다이얼로그 옵션
+   */
   public static async showInputDialogAsync(type?: PropertyMetaType, option?: UInputDialogModel) {
     const dialog = new UInputDialog();
     dialog.type = type;
-    dialog.label = option?.label;
-    dialog.meta = option?.meta;
-    dialog.value = option?.value;
+    Object.assign(dialog, option);
     document.body.appendChild(dialog);
+    dialog.addEventListener('sl-hide', () => {
+      dialog.handleCancel();
+    });
     const result = await dialog.showAsync();
     dialog.remove();
     return result;
   }
 
+  /**
+   * 다이얼로그를 표시합니다.
+   * @param content {@link UModalContent} 상속 다이얼로그 컨텐츠
+   */
   public static async showDialogAsync<T>(content: UModalContent) {
     const dialog = new UDialog();
     document.body.appendChild(dialog);
+    dialog.addEventListener('sl-hide', () => {
+      dialog.handleCancel();
+    });
     const result = await dialog.showAsync<T>(content);
     dialog.remove();
     return result;
   }
 
+  /**
+   * 드로어를 표시합니다.
+   * @param content {@link UModalContent} 상속 다이얼로그 컨텐츠
+   * @param position 드로어 위치, 기본값은 "end"
+   */
   public static async showDrawerAsync<T>(content: UModalContent, position?: DrawerPosition) {
     const drawer = new UDrawer();
     drawer.position = position || "end";
     document.body.appendChild(drawer);
+    drawer.addEventListener('sl-hide', () => {
+      drawer.handleCancel();
+    });
     const result = await drawer.showAsync<T>(content);
     drawer.remove();
     return result;

@@ -3,19 +3,14 @@
  */
 export interface UModalResult<T> {
   /**
-   * Indicates whether the modal operation was successful.
+   * Indicates whether the modal operation was confirmed.
    */
-  success: boolean;
+  confirmed: boolean;
 
   /**
    * The value returned by the modal operation.
    */
   value?: T;
-
-  /**
-   * The error that occurred during the modal operation.
-   */
-  error?: any;
 }
 
 /**
@@ -26,16 +21,6 @@ export interface UModalContentModel {
    * The label for the modal content.
    */
   label?: string;
-  
-  /**
-   * The value to be passed when the confirm button is clicked.
-   */
-  confirmValue?: any;
-  
-  /**
-   * The value to be passed when the cancel button is clicked.
-   */
-  cancelValue?: any;
   
   /**
    * Callback function to be called when the confirm button is clicked.

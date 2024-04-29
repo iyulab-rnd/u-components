@@ -17,7 +17,7 @@ export interface UIconModel {
 
   /**
    * 렌더링할 아이콘의 이름입니다.
-   * - default: icons/{name}.svg
+   * - default: /assets/icons/{name}.svg
    * - system: SystemIcon 객체의 키값
    */
   name?: string;

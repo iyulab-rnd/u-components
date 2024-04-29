@@ -1,11 +1,11 @@
 import { LitElement, css, html, nothing } from "lit";
 import { customElement, property, } from "lit/decorators.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
+import { until } from "lit/directives/until.js";
 
 import { UIconModel, type UIconType } from "./UIcon.model";
 import { UIconController } from "./UIconController";
 import { SystemIcon } from "./UIcon.resource";
-import { until } from "lit/directives/until.js";
 
 @customElement('u-icon')
 export class UIcon extends LitElement implements UIconModel {

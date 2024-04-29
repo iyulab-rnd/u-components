@@ -91,8 +91,9 @@ export async function setLocale(locale: Languages) {
  * 
  * html`<div>${t('hello')}</div>`
  * html`<div>${t('namespace::bye')}</div>`
+ * ```
  */
-export function t(key: string) {
+export function t(key: string) { 
   return translate(key);
 }
 
@@ -105,6 +106,7 @@ export function t(key: string) {
  * const { t } = useT();
  * return <div>{t('hello')}</div>
  * return <div>{t('namespace::bye')}</div>
+ * ```
  */
 export function useT() {
   return useTranslation();
@@ -115,6 +117,4 @@ export const ULocalizer = {
   addResources,
   getLocale,
   setLocale,
-  t,
-  useT,
 };

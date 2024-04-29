@@ -10,7 +10,8 @@ import type { UModalResult } from "./UModalContent.model";
 
 @customElement('u-drawer')
 export class UDrawer extends LitElement implements UDrawerModel {
-  
+  private resolveHandler?: (value: UModalResult<any>) => void;
+
   @query("sl-drawer") drawer!: SlDrawer;
 
   @state() content?: UModalContent;
@@ -20,17 +21,6 @@ export class UDrawer extends LitElement implements UDrawerModel {
   @property({ type: Boolean }) contained: boolean = false;
   @property({ type: String }) position: DrawerPosition = "end";
   @property({ type: String }) label?: string;
-  
-  protected async updated(changedProperties: any) {
-    super.updated(changedProperties);
-    await this.updateComplete;
-
-    if (changedProperties.has('content') && this.content) {
-      this.content.addEventListener('label', (e: any) => {
-        this.label = e.detail;
-      });
-    }
-  }
 
   render() {
     return html`
@@ -47,7 +37,7 @@ export class UDrawer extends LitElement implements UDrawerModel {
     `;
   }
 
-  public async showAsync<T>(content?: UModalContent) : Promise<UModalResult<T>> {
+  public async showAsync<T>(content?: UModalContent) {
     this.label = content?.label ?? undefined;
     this.content = content ?? this.content;
     await this.updateComplete;
@@ -55,22 +45,37 @@ export class UDrawer extends LitElement implements UDrawerModel {
 
     return new Promise<UModalResult<T>>((resolve) => {
       if (this.content instanceof UModalContent) {
-        this.content.addEventListener('confirm', (e: any) => {
-          resolve({ success: true, value: e.detail as T });
-          this.drawer.hide();
-        });
-        this.content.addEventListener('cancel', (e: any) => {
-          resolve({ success: false, value: e.detail });
-          this.drawer.hide();
-        });
+        this.resolveHandler = resolve;
+        this.content.addEventListener('confirm', this.handleConfirm);
+        this.content.addEventListener('cancel', this.handleCancel);
       } else {
-        resolve({ success: true, value: undefined });
+        resolve({ confirmed: false });
       }
     });
   }
 
   public async hideAsync() {
     await this.drawer.hide();
+  }
+
+  public handleConfirm = async (event?: any) => {
+    const value = event?.detail;
+    if (this.resolveHandler) {
+      this.resolveHandler({ confirmed: true, value });
+    }
+    await this.drawer.hide();
+    this.resolveHandler = undefined;
+    this.content = undefined;
+  }
+
+  public handleCancel = async (event?: any) => {
+    const value = event?.detail;
+    if (this.resolveHandler) {
+      this.resolveHandler({ confirmed: false, value });
+    }
+    await this.drawer.hide();
+    this.resolveHandler = undefined;
+    this.content = undefined;
   }
 
   static styles = css`

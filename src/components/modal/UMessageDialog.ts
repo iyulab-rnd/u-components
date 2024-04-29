@@ -41,9 +41,9 @@ export class UMessageDialog extends LitElement implements UMessageDialogModel {
         ?open=${this.open}
         .label=${this.label || t("component::messageTitle")}
       >
-        <div class="message">
+        <p class="message">
           ${this.message}
-        </div>
+        </p>
         <u-button-group gap="10px">
           <u-button
             theme="default"
@@ -69,29 +69,32 @@ export class UMessageDialog extends LitElement implements UMessageDialogModel {
   public async hideAsync() {
     this.open = false;
     await this.updateComplete;
-    this.resolveHandler = undefined;
   }
 
-  private handleConfirm = () => {
+  public handleConfirm = async () => {
     if (this.resolveHandler) {
       this.resolveHandler(true);
     }
-    this.hideAsync();
+    await this.hideAsync();
+    this.resolveHandler = undefined;
   };
 
-  private handleCancel = () => {
+  public handleCancel = async () => {
     if (this.resolveHandler) {
       this.resolveHandler(false);
     }
-    this.hideAsync();
+    await this.hideAsync();
+    this.resolveHandler = undefined;
   };
 
   static styles = css`
     .message {
+      margin: 0;
       margin-bottom: 20px;
-      font-size: 16px;
+      font-size: 14px;
       line-height: 1;
       font-weight: 300;
+      font-family: var(--sl-font-sans);
     }
   `;
   
