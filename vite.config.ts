@@ -20,7 +20,9 @@ export default () => {
   return defineConfig({
     publicDir: resolve(__dirname, 'static'),
     build: {
-      minify: false,
+      target: 'esnext',
+      copyPublicDir: true,
+      emptyOutDir: true,
       outDir: 'dist',
       lib: {
         entry: entries,
