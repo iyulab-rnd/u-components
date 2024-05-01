@@ -44,7 +44,7 @@ export class UProgressRing extends LitElement implements UProgressRingModel {
     sl-progress-ring {
       --size: var(--ring-size);
       --track-width: var(--ring-thickness);
-      --indicator-width: var(--ring-thickness);
+      --indicator-width: calc(var(--ring-thickness) + 1px);
     }
   `;
 }
