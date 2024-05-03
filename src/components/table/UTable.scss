@@ -71,7 +71,7 @@
 
   /* 테이블 헤더 스타일 */
   .header {
-    background-color: var(--sl-color-gray-200);
+    // background-color: var(--sl-color-gray-200);
     user-select: none;
     border-top: 1px solid var(--sl-color-gray-200);
     border-bottom: 1px solid var(--sl-color-gray-200);
@@ -243,7 +243,7 @@
 
   /* 테이블 바디 스타일 */
   .body {
-    background-color: var(--sl-color-gray-200);
+    // background-color: var(--sl-color-gray-200);
 
     /* 테이블 바디 로우 스타일 */
     .body-row {
