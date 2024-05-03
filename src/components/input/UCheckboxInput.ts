@@ -34,7 +34,10 @@ export class UCheckboxInput extends UBaseInput implements UCheckboxInputModel {
 
   public async validate() {
     if(this.requiredCheck && !this.value) {
-      return this.setInvalid(t("component::requiredCheckField"));
+      return this.setInvalid(t("requiredCheckField", {
+        ns: "component",
+        defaultValue: "This field is required."
+      }));
     } else {
       return this.setValid();
     }

@@ -8,6 +8,8 @@
   "invalidEmail": "Please enter a valid email address",
   "invalidPattern": "Please enter a valid pattern",
   "invalidUrl": "Please enter a valid URL",
+  "inputTitle": "Please enter a value",
+  "messageTitle": "Message",
   "previous": "Previous",
   "next": "Next",
   "done": "Done"

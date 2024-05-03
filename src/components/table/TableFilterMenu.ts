@@ -173,8 +173,8 @@ export class TableFilterMenu extends UFlyout {
       margin-top: 10px;
       display: flex;
       flex-direction: column;
-      background-color: var(--surface-card);
-      border: 1px solid var(--ui-outline);
+      background-color: var(--sl-color-neutral-0);
+      border: 1px solid var(--sl-color-gray-200);
       overflow: hidden;
     }
 

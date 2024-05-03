@@ -55,8 +55,8 @@ export class TableSortMenu extends UFlyout {
       .container {
         margin-top: 13px;
         width: 80px;
-        background-color: var(--surface-card);
-        border: 1px solid var(--ui-outline);
+        background-color: var(--sl-color-neutral-0);
+        border: 1px solid var(--sl-color-gray-200);
       }
 
       .row {
@@ -66,11 +66,11 @@ export class TableSortMenu extends UFlyout {
         cursor: pointer;
 
         &:hover {
-          background-color: var(--ui-subtle-hover);
+          background-color: var(--sl-color-gray-100);
         }
 
         &.selected {
-          background-color: var(--ui-subtle-active);
+          background-color: var(--sl-color-gray-200);
         }
       }
     `;

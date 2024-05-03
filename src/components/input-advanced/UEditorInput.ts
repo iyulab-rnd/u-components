@@ -32,7 +32,10 @@ export class UEditorInput extends UBaseInput implements UEditorInputModel {
 
   public async validate() {
     if (this.required && !this.value) {
-      return this.setInvalid(t('component::requiredField'));
+      return this.setInvalid(t('requiredField', {
+        ns: 'component',
+        defaultValue: 'This field is required'
+      }));
     } else {
       return this.setValid();
     }

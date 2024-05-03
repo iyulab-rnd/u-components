@@ -1,8 +1,7 @@
 import type { UModalContent } from "./UModalContent";
 import type { DrawerPosition } from "./UDrawer.model";
 import type { UMessageDialogModel } from "./UMessageDialog.model";
-import type { UInputDialogModel } from "./UInputDialog.model";
-import type { PropertyMetaType } from "../../decorators/PropertyMeta.model";
+import type { UInputDialogConfig } from "./UInputDialog.model";
 import { UDrawer } from "./UDrawer";
 import { UDialog } from "./UDialog";
 import { UMessageDialog } from "./UMessageDialog";
@@ -30,12 +29,11 @@ export class UModalController {
 
   /**
    * 입력 다이얼로그를 표시합니다.
-   * @param type 입력 타입
    * @param option 다이얼로그 옵션
    */
-  public static async showInputDialogAsync(type?: PropertyMetaType, option?: UInputDialogModel) {
+  public static async showInputDialogAsync(option?: UInputDialogConfig) {
     const dialog = new UInputDialog();
-    dialog.type = type;
+    dialog.config = option || { type: 'text' };
     Object.assign(dialog, option);
     document.body.appendChild(dialog);
     dialog.addEventListener('sl-hide', () => {

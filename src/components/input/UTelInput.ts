@@ -80,7 +80,10 @@ export class UTelInput extends UBaseInput implements UTelInputModel {
 
   public async validate() {
     if(this.required && this.totalLength !== this.value?.length) {
-      return this.setInvalid(t('component::requiredField'));
+      return this.setInvalid(t('requiredField', {
+        ns: 'component',
+        defaultValue: 'This field is required.'
+      }));
     } else {
       return this.setValid();
     }

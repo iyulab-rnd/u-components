@@ -2,8 +2,8 @@ import { LitElement, css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { t } from "../../localization/ULocalizer";
 
-import type { PropertyMetaData, PropertyMetaType } from "../../decorators/PropertyMeta.model";
-import { UInputDialogModel, UInputDialogResult } from './UInputDialog.model';
+import type { PropertyMetaData } from "../../decorators/PropertyMeta.model";
+import type { UInputDialogModel, UInputDialogResult, UInputDialogConfig } from './UInputDialog.model';
 import "./UDialog";
 import "../input/UInput";
 import "../button/UButtonGroup";
@@ -15,31 +15,44 @@ export class UInputDialog extends LitElement implements UInputDialogModel {
 
   @property({ type: Boolean }) open?: boolean;
   @property({ type: String }) label?: string;
-  @property({ type: String }) type?: PropertyMetaType;
-  @property({ type: Object }) meta?: PropertyMetaData;
   @property({ attribute: false }) value?: any;
+  @property({ type: Object }) meta?: PropertyMetaData;
+
+  @property({ type: Object }) config?: UInputDialogConfig;
+
+  protected async updated(changedProperties: any) {
+    super.updated(changedProperties);
+    await this.updateComplete;
+
+    if (changedProperties.has("config") && this.config) {
+      const { title, ...meta } = this.config;
+      this.label = title;
+      this.meta = meta;
+    }
+  }
 
   render() {
     return html`
       <u-dialog
         ?open=${this.open}
-        .label=${this.label || t("component::inputTitle")}
+        .label=${this.label || t("inputTitle", {
+          ns: "component",
+          defaultValue: "Please enter a value"
+        })}
       >
         <u-input
-          .type=${this.type || "text"}
           .meta=${this.meta}
-          .value=${this.value}
           @change=${this.handleChangeValue}
         ></u-input>
         <u-button-group gap="10px">
           <u-button
             theme="default"
             @click=${this.handleCancel}
-          >${t("component::cancel")}</u-button>
+          >${t("cancel", { ns: 'component', defaultValue: "Cancel" })}</u-button>
           <u-button
             theme="primary"
             @click=${this.handleConfirm}
-          >${t("component::confirm")}</u-button>
+          >${t("confirm", { ns: 'component', defaultValue: "Confirm" })}</u-button>
         </u-button-group>
       </u-dialog>
     `;

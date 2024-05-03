@@ -26,7 +26,9 @@ export class UCopyButton extends LitElement implements UCopyButtonModel {
     return html`
       <u-tooltip 
         position="bottom"
-        .content=${this.copied ? t('component::copied') : t('component::copy')}
+        .content=${this.copied 
+          ? t('copied', { ns: 'component', defaultValue: 'Copied to clipboard' }) 
+          : t('copy', { ns: 'component', defaultValue: 'Copy to clipboard' })}
       >
         <u-icon
           type="system"

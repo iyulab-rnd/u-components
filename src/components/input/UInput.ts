@@ -36,7 +36,7 @@ export class UInput extends LitElement implements UInputModel {
       this.meta = getPropertyMeta(this.context, this.name);
     }
     if (changedProperties.has('meta') && this.meta) {
-      this.type = this.meta.type;
+      this.type = this.meta.type || 'text';
     }
     if (changedProperties.has('type') && this.type) {
       this.tag = `u-${this.type}-input`;

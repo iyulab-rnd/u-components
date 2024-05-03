@@ -56,7 +56,10 @@ export class UTextInput extends UBaseInput implements UTextInputModel {
     if(this.inputEl.validity.valid) {
       return this.setValid();
     } else if(this.inputEl.validity.patternMismatch) {
-      return this.setInvalid(this.invalidMessage || t("component::invalidPattern"));
+      return this.setInvalid(this.invalidMessage || t("invalidPattern", {
+        ns: "component",
+        defaultValue: "Please enter a valid pattern"
+      }));
     } else {
       return this.setInvalid(this.inputEl.validationMessage);
     }

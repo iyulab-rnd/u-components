@@ -1,5 +1,12 @@
 import type { PropertyMetaData } from "../../decorators/PropertyMeta.model";
 
+export type UInputDialogConfig = PropertyMetaData & {
+  /**
+   * 입력 대화 상자의 타이틀입니다.
+   */
+  title?: string;
+}
+
 /**
  * UInputDialog 컴포넌트의 모델을 나타냅니다.
  */
@@ -10,9 +17,9 @@ export interface UInputDialogModel {
   label?: string;
 
   /**
-   * 입력 대화 상자에 대한 추가 메타데이터입니다.
+   * 입력 대화 상자의 타입정보입니다.
    */
-  meta?: PropertyMetaData;
+  config?: UInputDialogConfig;
 
   /**
    * 입력 대화 상자의 값입니다.

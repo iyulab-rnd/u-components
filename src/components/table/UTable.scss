@@ -44,14 +44,14 @@
       padding: 6px;
       border: 1px solid #ddd;
       border-radius: 5px;
-      background-color: var(--surface-card);
+      background-color: var(--sl-color-neutral-0);
       transition: background-color 0.3s ease;
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
       cursor: pointer;
       fill-rule: evenodd;
 
       &:hover {
-        background-color: var(--ui-subtle-hover);
+        background-color: var(--sl-color-gray-100);
         transform: scale(1.05);
       }
 
@@ -71,10 +71,10 @@
 
   /* 테이블 헤더 스타일 */
   .header {
-    background-color: var(--gray-2);
+    background-color: var(--sl-color-gray-200);
     user-select: none;
-    border-top: 1px solid var(--ui-outline);
-    border-bottom: 1px solid var(--ui-outline);
+    border-top: 1px solid var(--sl-color-gray-200);
+    border-bottom: 1px solid var(--sl-color-gray-200);
 
     /* 테이블 헤더 로우 스타일 */
     .header-row {
@@ -175,7 +175,7 @@
             }
 
             path {
-              fill: var(--primary-text);
+              fill: currentColor;
               fill-rule: evenodd;
             }
           }
@@ -200,7 +200,7 @@
             }
 
             path {
-              fill: var(--primary-text);
+              fill: currentColor;
               fill-rule: evenodd;
             }
           }
@@ -233,7 +233,7 @@
             left: 3px;
             width: 2px;
             height: 100%;
-            background-color: var(--ui-divider);
+            background-color: var(--sl-color-gray-200);
           }
         }
 
@@ -243,16 +243,16 @@
 
   /* 테이블 바디 스타일 */
   .body {
-    background-color: var(--gray-2);
+    background-color: var(--sl-color-gray-200);
 
     /* 테이블 바디 로우 스타일 */
     .body-row {
       position: relative;
       height: 40px;
-      border-bottom: 1px solid var(--ui-outline);
+      border-bottom: 1px solid var(--sl-color-gray-200);
 
       &:hover {
-        background-color: var(--ui-subtle-hover);
+        background-color: var(--sl-color-gray-100);
 
         .body-content {
           .button-cell {
@@ -262,7 +262,7 @@
       }
 
       &.select {
-        background-color: var(--ui-subtle-active);
+        background-color: var(--sl-color-gray-200);
 
         &::after {
           content: "";
@@ -368,7 +368,7 @@
         height: 200px;
         text-align: center;
         vertical-align: middle;
-        border-bottom: 1px solid var(--ui-outline);
+        border-bottom: 1px solid var(--sl-color-gray-200);
 
         .not-found {
           display: flex;
@@ -380,7 +380,7 @@
           .icon {
             width: 48px;
             height: 48px;
-            fill: var(--primary-text);
+            fill: currentColor;
             fill-rule: evenodd;
           }
         }
@@ -412,7 +412,7 @@
           top: 5px;
           width: 100%;
           height: 2px;
-          background-color: var(--ui-divider);
+          background-color: var(--sl-color-gray-200);
         }
       }
     }
@@ -461,7 +461,7 @@
         width: 20px;
         height: 20px;
         cursor: pointer;
-        fill: var(--primary-text);
+        fill: currentColor;
         fill-rule: evenodd;
 
         &:hover {
@@ -474,7 +474,7 @@
         cursor: pointer;
         width: 20px;
         height: 20px;
-        fill: var(--primary-text);
+        fill: currentColor;
         fill-rule: evenodd;
 
         &:hover {
@@ -489,7 +489,7 @@
       display: flex;
       flex-direction: row;
       align-items: center;
-      border: 1px solid var(--ui-outline);
+      border: 1px solid var(--sl-color-gray-200);
       border-radius: 5px;
 
       .page-input {
@@ -499,7 +499,7 @@
         outline: none;
         background-color: transparent;
         text-align: center;
-        color: var(--primary-text);
+        color: currentColor;
         appearance: none;
         -moz-appearance: textfield;
 
@@ -514,7 +514,7 @@
         justify-content: center;
         width: 15px;
         height: 30px;
-        border-left: 1px solid var(--ui-outline);
+        border-left: 1px solid var(--sl-color-gray-200);
         cursor: pointer;
 
         &:hover {

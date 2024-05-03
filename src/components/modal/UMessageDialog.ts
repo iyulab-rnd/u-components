@@ -39,7 +39,10 @@ export class UMessageDialog extends LitElement implements UMessageDialogModel {
     return html`
       <u-dialog
         ?open=${this.open}
-        .label=${this.label || t("component::messageTitle")}
+        .label=${this.label || t("messageTitle", {
+          ns: "component",
+          defaultValue: "Message"
+        })}
       >
         <p class="message">
           ${this.message}
@@ -48,11 +51,11 @@ export class UMessageDialog extends LitElement implements UMessageDialogModel {
           <u-button
             theme="default"
             @click=${this.handleCancel}
-          >${t("component::cancel")}</u-button>
+          >${t("cancel", { ns: 'component', defaultValue: "Cancel" })}</u-button>
           <u-button
             theme="primary"
             @click=${this.handleConfirm}
-          >${t("component::confirm")}</u-button>
+          >${t("confirm", { ns: 'component', defaultValue: "Confirm" })}</u-button>
         </u-button-group>
       </u-dialog>
     `;

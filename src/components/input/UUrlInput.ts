@@ -61,10 +61,16 @@ export class UUrlInput extends UBaseInput implements UUrlInputModel {
 
   public async validate() {
     if(this.required && !this.value) {
-      return this.setInvalid(t('component::requiredField'));
+      return this.setInvalid(t('requiredField', {
+        ns: 'component',
+        defaultValue: 'This field is required'
+      }));
     }
     if(this.value && !UUrlInput.pattern.test(this.value)) {
-      return this.setInvalid(t('component::invalidUrl'));
+      return this.setInvalid(t('invalidUrl', {
+        ns: 'component',
+        defaultValue: 'Please enter a valid URL'
+      }));
     }
       
     return this.setValid();

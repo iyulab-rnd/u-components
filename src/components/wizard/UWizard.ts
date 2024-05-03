@@ -62,15 +62,15 @@ export class UWizard extends LitElement {
     return html`
       <u-button theme="default"
         @click=${this.previous}>
-        ${t('component::previous')}
+        ${t('previous', {ns: 'component', defaultValue: 'Previous'})}
       </u-button>
       <u-button theme="primary"
         @click=${this.next}>
-        ${t('component::next')}
+        ${t('next', {ns: 'component', defaultValue: 'Next'})}
       </u-button>
       <u-button theme="success"
         @click=${this.done}>
-        ${t('component::done')}
+        ${t('done', {ns: 'component', defaultValue: 'Done'})}
       </u-button>
     `;
   }

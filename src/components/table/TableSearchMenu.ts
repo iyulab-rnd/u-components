@@ -212,8 +212,8 @@ export class TableSearchMenu extends UFlyout {
     .container {
       margin-top: 5px;
       width: 600px;
-      background-color: var(--surface-card);
-      border: 1px solid var(--ui-outline);
+      background-color: var(--sl-color-neutral-0);
+      border: 1px solid var(--sl-color-gray-200);
       border-radius: 5px;
       user-select: none;
     }

@@ -93,8 +93,8 @@ export async function setLocale(locale: Languages) {
  * html`<div>${t('namespace::bye')}</div>`
  * ```
  */
-export function t(key: string) { 
-  return translate(key);
+export function t(key: string | string[], options?: any) { 
+  return translate(key, options);
 }
 
 /**
