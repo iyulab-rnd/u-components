@@ -1,12 +1,13 @@
 import { css, html, nothing } from "lit";
 import { customElement, property, queryAll, state } from "lit/decorators.js";
+import { convertReact } from "../../utils";
 
 import { UTelInputModel } from "./UTelInput.model";
 import { UBaseInput } from "../input-parts/UBaseInput";
 import { t } from "../../localization/ULocalizer";
 
 @customElement('u-tel-input')
-export class UTelInput extends UBaseInput implements UTelInputModel {
+export class UTelInputElement extends UBaseInput implements UTelInputModel {
   
   @queryAll('input') inputElList!: NodeListOf<HTMLInputElement>;
 
@@ -177,3 +178,12 @@ export class UTelInput extends UBaseInput implements UTelInputModel {
     }
   `;
 }
+
+export const UTelInput = convertReact({
+  elementClass: UTelInputElement,
+  tagName: 'u-tel-input',
+  events: {
+    onInput: 'input',
+    onChange: 'change'
+  }
+});

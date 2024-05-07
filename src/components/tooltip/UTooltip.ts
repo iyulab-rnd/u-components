@@ -1,6 +1,7 @@
 import { LitElement, css, html } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
+import { convertReact } from "../../utils";
 
 import SlTooltip from '@shoelace-style/shoelace/dist/components/tooltip/tooltip.component.js';
 SlTooltip.define('sl-tooltip');
@@ -8,7 +9,7 @@ SlTooltip.define('sl-tooltip');
 import type { UTooltipModel, UTooltipPosition } from "./UTooltip.model";
 
 @customElement('u-tooltip')
-export class UTooltip extends LitElement implements UTooltipModel {
+export class UTooltipElement extends LitElement implements UTooltipModel {
 
   @query("sl-tooltip") tooltip!: SlTooltip;
 
@@ -61,3 +62,8 @@ export class UTooltip extends LitElement implements UTooltipModel {
   `;
 
 }
+
+export const UTooltip = convertReact({
+  elementClass: UTooltipElement,
+  tagName: 'u-tooltip',
+})

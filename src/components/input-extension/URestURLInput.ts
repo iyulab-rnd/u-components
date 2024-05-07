@@ -3,9 +3,10 @@ import { customElement, property, query, state } from "lit/decorators.js";
 
 import { URestURLInputModel, type RestMethod, type RestURLValue } from "./URestURLInput.model";
 import { UBaseInput } from "../input-parts/UBaseInput";
+import { convertReact } from "../../utils";
 
 @customElement('u-rest-url-input')
-export class URestURLInput extends UBaseInput implements URestURLInputModel {
+export class URestURLInputElement extends UBaseInput implements URestURLInputModel {
   
   @query('input') input!: HTMLInputElement;
 
@@ -159,3 +160,12 @@ export class URestURLInput extends UBaseInput implements URestURLInputModel {
     }
   `;
 }
+
+export const URestURLInput = convertReact({
+  elementClass: URestURLInputElement,
+  tagName: 'u-rest-url-input',
+  events: {
+    onInput: 'input',
+    onChange: 'change'
+  }
+});

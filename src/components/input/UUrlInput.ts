@@ -1,6 +1,7 @@
 import { css, html } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
+import { convertReact } from "../../utils";
 
 import { t } from "../../localization/ULocalizer";
 import { UUrlInputModel } from "./UUrlInput.model";
@@ -8,7 +9,7 @@ import { UBaseInput } from "../input-parts/UBaseInput";
 import "./USelectInput";
 
 @customElement('u-url-input')
-export class UUrlInput extends UBaseInput implements UUrlInputModel {
+export class UUrlInputElement extends UBaseInput implements UUrlInputModel {
   private static readonly pattern: RegExp = /^[a-zA-Z][a-zA-Z\d+\-.]*:(\/\/)?[\S]+$/;
 
   @query('input') inputEl!: HTMLInputElement;
@@ -66,7 +67,7 @@ export class UUrlInput extends UBaseInput implements UUrlInputModel {
         defaultValue: 'This field is required'
       }));
     }
-    if(this.value && !UUrlInput.pattern.test(this.value)) {
+    if(this.value && !UUrlInputElement.pattern.test(this.value)) {
       return this.setInvalid(t('invalidUrl', {
         ns: 'component',
         defaultValue: 'Please enter a valid URL'
@@ -143,3 +144,12 @@ export class UUrlInput extends UBaseInput implements UUrlInputModel {
     }
   `;
 }
+
+export const UUrlInput = convertReact({
+  elementClass: UUrlInputElement,
+  tagName: 'u-url-input',
+  events: {
+    onInput: 'input',
+    onChange: 'change'
+  }
+});

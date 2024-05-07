@@ -1,13 +1,14 @@
 import { css, html } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
+import { convertReact } from "../../utils";
 
 import { UTextInputModel } from "./UTextInput.model";
 import { UBaseInput } from "../input-parts/UBaseInput";
 import { t } from "../../localization/ULocalizer";
 
 @customElement('u-text-input')
-export class UTextInput extends UBaseInput implements UTextInputModel {
+export class UTextInputElement extends UBaseInput implements UTextInputModel {
   
   @query('input') inputEl!: HTMLInputElement;
 
@@ -119,3 +120,12 @@ export class UTextInput extends UBaseInput implements UTextInputModel {
     }
   `;
 }
+
+export const UTextInput = convertReact({
+  elementClass: UTextInputElement,
+  tagName: 'u-text-input',
+  events: {
+    onInput: 'input',
+    onChange: 'change'
+  }
+});

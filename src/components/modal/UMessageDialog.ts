@@ -1,5 +1,6 @@
 import { LitElement, css, html } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
+import { convertReact } from "../../utils";
 import { t } from "../../localization/ULocalizer";
 
 import { UMessageDialogModel } from './UMessageDialog.model';
@@ -8,7 +9,7 @@ import "../button/UButtonGroup";
 import "../button/UButton";
 
 @customElement("u-message-dialog")
-export class UMessageDialog extends LitElement implements UMessageDialogModel {
+export class UMessageDialogElement extends LitElement implements UMessageDialogModel {
   private resolveHandler?: (value: boolean) => void;
   
   @query(".message") messageEl!: HTMLDivElement;
@@ -102,3 +103,8 @@ export class UMessageDialog extends LitElement implements UMessageDialogModel {
   `;
   
 }
+
+export const UMessageDialog = convertReact({
+  elementClass: UMessageDialogElement,
+  tagName: 'u-message-dialog',
+});

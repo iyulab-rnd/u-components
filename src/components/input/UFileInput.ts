@@ -1,14 +1,15 @@
 import { css, html } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
+import { convertReact } from "../../utils";
 
 import { UBaseInput } from "../input-parts/UBaseInput";
 import { UFileInputModel, type FileMetaValue } from "./UFileInput.model";
-import { UFileItem, UploadResponse } from "../files";
+import { UFileItemElement, UploadResponse } from "../files";
 import { SystemIcon } from "../icon/UIcon.resource";
 
 // TODO: UFileItem과 함께 구조정리 재설계 필요
 @customElement('u-file-input')
-export class UFileInput extends UBaseInput implements UFileInputModel {
+export class UFileInputElement extends UBaseInput implements UFileInputModel {
 
   @query('input') inputEl!: HTMLInputElement;
   @query('.overlay') overlay!: HTMLElement;
@@ -112,7 +113,7 @@ export class UFileInput extends UBaseInput implements UFileInputModel {
   }
 
   private onUpload = (event: CustomEvent) => {
-    const target = event.target as UFileItem;
+    const target = event.target as UFileItemElement;
     const file = target.file;
     if(!file) return;
     const response = event.detail as UploadResponse;
@@ -128,7 +129,7 @@ export class UFileInput extends UBaseInput implements UFileInputModel {
 
   private onRemove = (event: CustomEvent) => {
     console.log('remove:', event.target);
-    const target = event.target as UFileItem;
+    const target = event.target as UFileItemElement;
     const file = target.file;
     const value = target.value;
     if(file) {
@@ -278,3 +279,8 @@ export class UFileInput extends UBaseInput implements UFileInputModel {
     }
   `;
 }
+
+export const UFileInput = convertReact({
+  elementClass: UFileInputElement,
+  tagName: 'u-file-input',
+});

@@ -1,10 +1,11 @@
 import { LitElement, css, html } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
+import { convertReact } from "../../utils";
 
 import { UContextModel } from './UContext.model';
 
 @customElement("u-context")
-export class UContext extends LitElement implements UContextModel {
+export class UContextElement extends LitElement implements UContextModel {
   
   @state() posX?: number;
   @state() posY?: number;
@@ -111,3 +112,8 @@ export class UContext extends LitElement implements UContextModel {
     }
   `;
 }
+
+export const UContext = convertReact({
+  elementClass: UContextElement,
+  tagName: 'u-context',
+});

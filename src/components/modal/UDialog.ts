@@ -2,6 +2,7 @@ import { css, html, LitElement } from 'lit'
 import { customElement, property, query, state } from 'lit/decorators.js'
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { DirectiveResult } from 'lit/async-directive.js';
+import { convertReact } from '../../utils';
 
 import SlDialog from '@shoelace-style/shoelace/dist/components/dialog/dialog.component.js';
 SlDialog.define('sl-dialog');
@@ -11,7 +12,7 @@ import { UModalContent } from './UModalContent';
 import type { UModalResult } from './UModalContent.model';
 
 @customElement('u-dialog')
-export class UDialog extends LitElement implements UDialogModel {
+export class UDialogElement extends LitElement implements UDialogModel {
   private resolveHandler?: (value: UModalResult<any>) => void;
   
   @query("sl-dialog") dialog!: SlDialog;
@@ -85,3 +86,8 @@ export class UDialog extends LitElement implements UDialogModel {
   `;
 
 }
+
+export const UDialog = convertReact({
+  elementClass: UDialogElement,
+  tagName: 'u-dialog',
+})

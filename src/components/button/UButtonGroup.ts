@@ -1,14 +1,11 @@
 import { css, html, LitElement } from 'lit'
 import { customElement, property, queryAssignedElements, state } from 'lit/decorators.js'
+import { convertReact } from '../../utils';
 
-import { 
-  UButtonGroupModel, 
-  type GroupOrientation, 
-  type GroupPosition 
-} from './UButtonGroup.model';
+import type { UButtonGroupModel, GroupOrientation, GroupPosition } from './UButtonGroup.model';
 
 @customElement('u-button-group')
-export class UButtonGroup extends LitElement implements UButtonGroupModel {
+export class UButtonGroupElement extends LitElement implements UButtonGroupModel {
   private readonly observer = new ResizeObserver(() => {
     this.checkOverflow();
   });
@@ -103,3 +100,8 @@ export class UButtonGroup extends LitElement implements UButtonGroupModel {
   `;
 
 }
+
+export const UButtonGroup = convertReact({
+  elementClass: UButtonGroupElement,
+  tagName: 'u-button-group',
+});

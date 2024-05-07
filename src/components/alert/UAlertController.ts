@@ -1,15 +1,15 @@
 import type { ToastOption, ToastPosition } from "./UAlert.model";
-import { UAlert } from "./UAlert";
+import { UAlertElement } from "./UAlert";
 
 export class UAlertController {
   private static readonly container: Map<ToastPosition, HTMLDivElement> = new Map();
-  private static readonly alerts: Map<string, UAlert> = new Map();
+  private static readonly alerts: Map<string, UAlertElement> = new Map();
 
   public static async toastAsync(option: ToastOption): Promise<void> {
     const duration = (option.duration && option.duration > 0) ? option.duration : 3000;
 
     // 토스트 알림을 생성합니다.
-    const alert = new UAlert();
+    const alert = new UAlertElement();
     const alertId = window.crypto.randomUUID();
     alert.type = option.type;
     alert.content = option.content;

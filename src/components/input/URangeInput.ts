@@ -1,5 +1,7 @@
 import { css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
+import { convertReact } from "../../utils";
+
 import SlRange from "@shoelace-style/shoelace/dist/components/range/range.component.js";
 SlRange.define('sl-range');
 
@@ -8,7 +10,7 @@ import { URangeInputModel } from "./URangeInput.model";
 import { UBaseInput } from "../input-parts/UBaseInput";
 
 @customElement('u-range-input')
-export class URangeInput extends UBaseInput implements URangeInputModel {
+export class URangeInputElement extends UBaseInput implements URangeInputModel {
 
   @property({ type: Number }) min: number = 0;
   @property({ type: Number }) max: number = 100;
@@ -95,3 +97,11 @@ export class URangeInput extends UBaseInput implements URangeInputModel {
     }
   `;
 }
+
+export const URangeInput = convertReact({
+  elementClass: URangeInputElement,
+  tagName: 'u-range-input',
+  events: {
+    onChange: 'change'
+  }
+});

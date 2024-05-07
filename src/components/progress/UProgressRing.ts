@@ -1,5 +1,6 @@
 import { LitElement, css, html, } from "lit";
 import { customElement, property } from "lit/decorators.js";
+import { convertReact } from "../../utils";
 
 import SlProgressRing from '@shoelace-style/shoelace/dist/components/progress-ring/progress-ring.component.js';
 SlProgressRing.define('sl-progress-ring');
@@ -7,7 +8,7 @@ SlProgressRing.define('sl-progress-ring');
 import { UProgressRingModel } from './UProgressRing.model';
 
 @customElement('u-progress-ring')
-export class UProgressRing extends LitElement implements UProgressRingModel {
+export class UProgressRingElement extends LitElement implements UProgressRingModel {
 
   @property({ type: Number }) value?: number;
   @property({ type: String }) size?: string;
@@ -48,3 +49,8 @@ export class UProgressRing extends LitElement implements UProgressRingModel {
     }
   `;
 }
+
+export const UProgressRing = convertReact({
+  elementClass: UProgressRingElement,
+  tagName: 'u-progress-ring'
+});

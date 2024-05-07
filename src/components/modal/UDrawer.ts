@@ -1,5 +1,6 @@
 import { LitElement, css, html } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
+import { convertReact } from "../../utils";
 
 import SlDrawer from '@shoelace-style/shoelace/dist/components/drawer/drawer.component.js';
 SlDrawer.define('sl-drawer');
@@ -9,7 +10,7 @@ import { UModalContent } from "./UModalContent";
 import type { UModalResult } from "./UModalContent.model";
 
 @customElement('u-drawer')
-export class UDrawer extends LitElement implements UDrawerModel {
+export class UDrawerElement extends LitElement implements UDrawerModel {
   private resolveHandler?: (value: UModalResult<any>) => void;
 
   @query("sl-drawer") drawer!: SlDrawer;
@@ -87,3 +88,8 @@ export class UDrawer extends LitElement implements UDrawerModel {
   `;
 
 }
+
+export const UDrawer = convertReact({
+  elementClass: UDrawerElement,
+  tagName: 'u-drawer',
+})

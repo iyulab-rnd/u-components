@@ -1,6 +1,7 @@
 import { css, html, LitElement, TemplateResult } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { convertReact } from '../../utils';
 
 import type { UIconType } from '../icon/UIcon.model';
 import type { UTooltipPosition } from '../tooltip/UTooltip.model';
@@ -13,7 +14,7 @@ import '../tooltip/UTooltip';
 import '../icon/UIcon';
 
 @customElement('u-icon-button')
-export class UIconButton extends LitElement implements UIconButtonModel {
+export class UIconButtonElement extends LitElement implements UIconButtonModel {
 
   @property({ type: String }) type: UIconType = 'default';
   @property({ type: String }) name?: string;
@@ -137,3 +138,11 @@ export class UIconButton extends LitElement implements UIconButtonModel {
   `;
 
 }
+
+export const UIconButton = convertReact({
+  elementClass: UIconButtonElement,
+  tagName: 'u-icon-button',
+  events: {
+    onClick: 'click'
+  }
+});

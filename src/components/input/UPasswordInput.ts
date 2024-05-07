@@ -1,13 +1,14 @@
 import { css, html } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
+import { convertReact } from "../../utils";
 import { t } from "../../localization/ULocalizer";
 
 import { UPasswordInputModel } from "./UPasswordInput.model";
 import { UBaseInput } from "../input-parts/UBaseInput";
 
 @customElement('u-password-input')
-export class UPasswordInput extends UBaseInput implements UPasswordInputModel {
+export class UPasswordInputElement extends UBaseInput implements UPasswordInputModel {
   
   @query('input') inputEl!: HTMLInputElement;
 
@@ -139,3 +140,12 @@ export class UPasswordInput extends UBaseInput implements UPasswordInputModel {
     }
   `;
 }
+
+export const UPasswordInput = convertReact({
+  elementClass: UPasswordInputElement,
+  tagName: 'u-password-input',
+  events: {
+    onInput: 'input',
+    onChange: 'change'
+  }
+});

@@ -1,10 +1,11 @@
 import { LitElement, css } from "lit";
 import { customElement, property } from "lit/decorators.js";
+import { convertReact } from "../../utils";
 
 import type { UDividerModel } from "./UDivider.model";
 
 @customElement('u-divider')
-export class UDivider extends LitElement implements UDividerModel {
+export class UDividerElement extends LitElement implements UDividerModel {
 
   @property({ type: Boolean }) vertical: boolean = false;
   @property({ type: String }) color?: string;
@@ -50,3 +51,8 @@ export class UDivider extends LitElement implements UDividerModel {
   
   `;
 }
+
+export const UDivider = convertReact({
+  elementClass: UDividerElement,
+  tagName: 'u-divider',
+});

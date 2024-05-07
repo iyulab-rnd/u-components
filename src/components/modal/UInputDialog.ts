@@ -1,5 +1,6 @@
 import { LitElement, css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
+import { convertReact } from "../../utils";
 import { t } from "../../localization/ULocalizer";
 
 import type { PropertyMetaData } from "../../decorators/PropertyMeta.model";
@@ -10,7 +11,7 @@ import "../button/UButtonGroup";
 import "../button/UButton";
 
 @customElement("u-input-dialog")
-export class UInputDialog extends LitElement implements UInputDialogModel {
+export class UInputDialogElement extends LitElement implements UInputDialogModel {
   private resolveHandler?: (value: UInputDialogResult) => void;
 
   @property({ type: Boolean }) open?: boolean;
@@ -98,3 +99,8 @@ export class UInputDialog extends LitElement implements UInputDialogModel {
   `;
   
 }
+
+export const UInputDialog = convertReact({
+  elementClass: UInputDialogElement,
+  tagName: 'u-input-dialog',
+})

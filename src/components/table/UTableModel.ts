@@ -7,6 +7,7 @@ export interface UTableModel {
   option?: TableOption;
   columns: ColumnDefinition[],
   buttons: ButtonDefinition[];
+  loadDataAsync: () => Promise<void>;
 }
 
 export interface TableOption {

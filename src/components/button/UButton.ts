@@ -1,6 +1,7 @@
 import { css, html, LitElement } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { convertReact } from '../../utils';
 
 import SlButton from '@shoelace-style/shoelace/dist/components/button/button.component.js';
 SlButton.define('sl-button');
@@ -8,7 +9,7 @@ SlButton.define('sl-button');
 import type { UTooltipPosition } from '../tooltip/UTooltip.model';
 import type { CommandModel } from '../../patterns/CommandPattern';
 import type { UButtonModel, UButtonTheme, UButtonSize, UButtonTarget } from './UButton.model';
-import { convertReact } from '../../utils';
+
 import '../tooltip/UTooltip';
 
 @customElement('u-button')

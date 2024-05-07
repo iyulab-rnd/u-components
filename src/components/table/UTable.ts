@@ -1,5 +1,6 @@
 import { LitElement, TemplateResult, html, unsafeCSS } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
+import { convertReact } from "../../utils";
 
 import { TableTooltip } from "./TableTooltip";
 import { TableSearchMenu } from "./TableSearchMenu";
@@ -30,7 +31,7 @@ filter: 필터 이벤트(검색, 범위, 선택)
 sort: 정렬 이벤트(오름차순, 내림차순)
 */
 @customElement("u-table")
-export class UTable extends LitElement implements UTableModel {
+export class UTableElement extends LitElement implements UTableModel {
   static styles = unsafeCSS(styles);
 
   private tooltip = new TableTooltip();
@@ -91,7 +92,7 @@ export class UTable extends LitElement implements UTableModel {
     super.disconnectedCallback();
   }
 
-  async firstUpdated(_changedProperties: any) {
+  protected async firstUpdated(_changedProperties: any) {
     super.firstUpdated(_changedProperties);
     await this.updateComplete;
 
@@ -129,7 +130,7 @@ export class UTable extends LitElement implements UTableModel {
     }
   }
 
-  async updated(_changedProperties: any) {
+  protected async updated(_changedProperties: any) {
     super.updated(_changedProperties);
     await this.updateComplete;
 
@@ -780,3 +781,8 @@ export class UTable extends LitElement implements UTableModel {
     document.addEventListener('mouseup', handleMouseUp);
   }
 }
+
+export const UTable = convertReact({
+  elementClass: UTableElement,
+  tagName: 'u-table',
+});

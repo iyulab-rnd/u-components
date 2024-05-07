@@ -1,11 +1,12 @@
 import { css, html } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
+import { convertReact } from "../../utils";
 
 import { UDatetimeInputModel, type DatetimeInputFormat } from "./UDatetimeInput.model";
 import { UBaseInput } from "../input-parts/UBaseInput";
 
 @customElement('u-datetime-input')
-export class UDatetimeInput extends UBaseInput implements UDatetimeInputModel {
+export class UDatetimeInputElement extends UBaseInput implements UDatetimeInputModel {
   
   @query('input') inputEl!: HTMLInputElement;
 
@@ -106,3 +107,12 @@ export class UDatetimeInput extends UBaseInput implements UDatetimeInputModel {
     }
   `;
 }
+
+export const UDatetimeInput = convertReact({
+  elementClass: UDatetimeInputElement,
+  tagName: 'u-datetime-input',
+  events: {
+    onInput: 'input',
+    onChange: 'change'
+  }
+});

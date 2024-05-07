@@ -1,5 +1,6 @@
 import { LitElement, css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
+import { convertReact } from "../../utils";
 import { t } from "../../localization/ULocalizer";
 
 import { UCopyButtonModel } from "./UCopyButton.model";
@@ -7,7 +8,7 @@ import "../tooltip/UTooltip";
 import "../icon/UIcon";
 
 @customElement('u-copy-button')
-export class UCopyButton extends LitElement implements UCopyButtonModel {
+export class UCopyButtonElement extends LitElement implements UCopyButtonModel {
 
   @property({ type: Boolean, reflect: true }) copied: boolean = false;
   @property({ type: String }) size: string = '16px';
@@ -63,3 +64,8 @@ export class UCopyButton extends LitElement implements UCopyButtonModel {
     }
   `;
 }
+
+export const UCopyButton = convertReact({
+  elementClass: UCopyButtonElement,
+  tagName: 'u-copy-button',
+});

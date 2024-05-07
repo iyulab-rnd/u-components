@@ -1,5 +1,6 @@
 import { css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
+import { convertReact } from "../../utils";
 
 import { t } from '../../localization/ULocalizer';
 import { UEditorInputModel } from "./UEditorInput.model";
@@ -7,7 +8,7 @@ import { UBaseInput } from "../input-parts/UBaseInput";
 import "../editor/MonacoEditor";
 
 @customElement('u-editor-input')
-export class UEditorInput extends UBaseInput implements UEditorInputModel {
+export class UEditorInputElement extends UBaseInput implements UEditorInputModel {
 
   @property({ type: String }) language?: string;
   @property({ type: Number }) fontSize?: number;
@@ -61,3 +62,11 @@ export class UEditorInput extends UBaseInput implements UEditorInputModel {
 
   `;
 }
+
+export const UEditorInput = convertReact({
+  elementClass: UEditorInputElement,
+  tagName: 'u-editor-input',
+  events: {
+    onChange: 'change'
+  }
+})

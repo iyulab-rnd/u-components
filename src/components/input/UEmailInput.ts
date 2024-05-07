@@ -1,5 +1,6 @@
 import { css, html } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
+import { convertReact } from "../../utils";
 import { t } from "../../localization/ULocalizer";
 
 import { UEmailInputModel } from "./UEmailInput.model";
@@ -7,7 +8,7 @@ import { UBaseInput } from "../input-parts/UBaseInput";
 import "./USelectInput";
 
 @customElement('u-email-input')
-export class UEmailInput extends UBaseInput implements UEmailInputModel {
+export class UEmailInputElement extends UBaseInput implements UEmailInputModel {
   private static readonly pattern: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/u;
 
   @query('.username') nameInputEl!: HTMLInputElement;
@@ -80,7 +81,7 @@ export class UEmailInput extends UBaseInput implements UEmailInputModel {
         defaultValue: 'This field is required.'
       }));
     }
-    if(this.value && !UEmailInput.pattern.test(this.value)) {
+    if(this.value && !UEmailInputElement.pattern.test(this.value)) {
       return this.setInvalid(t('invalidEmail', {
         ns: 'component',
         defaultValue: 'Please enter a valid email address.'
@@ -195,3 +196,12 @@ export class UEmailInput extends UBaseInput implements UEmailInputModel {
     }
   `;
 }
+
+export const UEmailInput = convertReact({
+  elementClass: UEmailInputElement,
+  tagName: 'u-email-input',
+  events: {
+    onInput: 'input',
+    onChange: 'change'
+  }
+});

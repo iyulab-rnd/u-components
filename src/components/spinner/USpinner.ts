@@ -1,5 +1,6 @@
 import { LitElement, css, html } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
+import { convertReact } from "../../utils";
 
 import SlSpinner from "@shoelace-style/shoelace/dist/components/spinner/spinner.component.js";
 SlSpinner.define('sl-spinner');
@@ -7,7 +8,7 @@ SlSpinner.define('sl-spinner');
 import type { USpinnerModel } from "./USpinner.model";
 
 @customElement('u-spinner')
-export class USpinner extends LitElement implements USpinnerModel {
+export class USpinnerElement extends LitElement implements USpinnerModel {
 
   @query('sl-spinner') spinner!: SlSpinner;
 
@@ -52,3 +53,8 @@ export class USpinner extends LitElement implements USpinnerModel {
   `;
 
 }
+
+export const USpinner = convertReact({
+  elementClass: USpinnerElement,
+  tagName: 'u-spinner',
+})

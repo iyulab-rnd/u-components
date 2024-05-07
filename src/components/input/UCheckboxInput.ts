@@ -1,12 +1,13 @@
 import { css, html } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
+import { convertReact } from "../../utils";
 import { t } from "../../localization/ULocalizer";
 
 import { UCheckboxInputModel } from "./UCheckboxInput.model";
 import { UBaseInput } from "../input-parts/UBaseInput";
 
 @customElement('u-checkbox-input')
-export class UCheckboxInput extends UBaseInput implements UCheckboxInputModel {
+export class UCheckboxInputElement extends UBaseInput implements UCheckboxInputModel {
   
   @query('input') inputEl!: HTMLInputElement;
 
@@ -86,3 +87,11 @@ export class UCheckboxInput extends UBaseInput implements UCheckboxInputModel {
     }
   `;
 }
+
+export const UCheckboxInput = convertReact({
+  elementClass: UCheckboxInputElement,
+  tagName: 'u-checkbox-input',
+  events: {
+    onChange: 'change'
+  }
+});

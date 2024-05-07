@@ -1,6 +1,7 @@
 import { LitElement, css, html } from "lit";
 import { unsafeStatic, html as staticHtml } from 'lit/static-html.js';
 import { customElement, property, queryAll, state } from 'lit/decorators.js';
+import { convertReact } from "../../utils";
 
 import { t } from "../../localization/ULocalizer";
 import { UFormModel } from "./UForm.model";
@@ -12,7 +13,7 @@ import "../input";
 import "../button/UButton";
 
 @customElement('u-form')
-export class UForm extends LitElement implements UFormModel {
+export class UFormElement extends LitElement implements UFormModel {
 
   @queryAll('.input') inputs!: NodeListOf<UBaseInput>;
   
@@ -196,3 +197,12 @@ export class UForm extends LitElement implements UFormModel {
   `;
 
 }
+
+export const UForm = convertReact({
+  elementClass: UFormElement,
+  tagName: 'u-form',
+  events: {
+    onSubmit: 'submit',
+    onCancel: 'cancel'
+  }
+});

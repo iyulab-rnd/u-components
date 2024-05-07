@@ -1,6 +1,7 @@
 import { LitElement, css, html } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
+import { convertReact } from "../../utils";
 
 import SlRadio from "@shoelace-style/shoelace/dist/components/radio/radio.component.js";
 import SlRadioButton from "@shoelace-style/shoelace/dist/components/radio-button/radio-button.component.js";
@@ -17,7 +18,7 @@ import type {
 } from "./URadio.model";
 
 @customElement('u-radio')
-export class URadio extends LitElement implements URadioModel {
+export class URadioElement extends LitElement implements URadioModel {
   
   @query('sl-radio-group') radio!: SlRadioGroup;
 
@@ -77,3 +78,11 @@ export class URadio extends LitElement implements URadioModel {
     
   `;
 }
+
+export const URadio = convertReact({
+  elementClass: URadioElement,
+  tagName: 'u-radio',
+  events: {
+    onChange: 'change'
+  }
+});

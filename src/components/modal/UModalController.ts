@@ -2,10 +2,10 @@ import type { UModalContent } from "./UModalContent";
 import type { DrawerPosition } from "./UDrawer.model";
 import type { UMessageDialogModel } from "./UMessageDialog.model";
 import type { UInputDialogConfig } from "./UInputDialog.model";
-import { UDrawer } from "./UDrawer";
-import { UDialog } from "./UDialog";
-import { UMessageDialog } from "./UMessageDialog";
-import { UInputDialog } from "./UInputDialog";
+import { UDrawerElement } from "./UDrawer";
+import { UDialogElement } from "./UDialog";
+import { UMessageDialogElement } from "./UMessageDialog";
+import { UInputDialogElement } from "./UInputDialog";
 
 export class UModalController {
   
@@ -15,7 +15,7 @@ export class UModalController {
    * @param option 다이얼로그 옵션
    */
   public static async showMessageDialogAsync(message: string, option?: UMessageDialogModel) {
-    const dialog = new UMessageDialog();
+    const dialog = new UMessageDialogElement();
     dialog.message = message;    
     Object.assign(dialog, option);
     document.body.appendChild(dialog);
@@ -32,7 +32,7 @@ export class UModalController {
    * @param option 다이얼로그 옵션
    */
   public static async showInputDialogAsync(option?: UInputDialogConfig) {
-    const dialog = new UInputDialog();
+    const dialog = new UInputDialogElement();
     dialog.config = option || { type: 'text' };
     Object.assign(dialog, option);
     document.body.appendChild(dialog);
@@ -49,7 +49,7 @@ export class UModalController {
    * @param content {@link UModalContent} 상속 다이얼로그 컨텐츠
    */
   public static async showDialogAsync<T>(content: UModalContent) {
-    const dialog = new UDialog();
+    const dialog = new UDialogElement();
     document.body.appendChild(dialog);
     dialog.addEventListener('sl-hide', () => {
       dialog.handleCancel();
@@ -65,7 +65,7 @@ export class UModalController {
    * @param position 드로어 위치, 기본값은 "end"
    */
   public static async showDrawerAsync<T>(content: UModalContent, position?: DrawerPosition) {
-    const drawer = new UDrawer();
+    const drawer = new UDrawerElement();
     drawer.position = position || "end";
     document.body.appendChild(drawer);
     drawer.addEventListener('sl-hide', () => {

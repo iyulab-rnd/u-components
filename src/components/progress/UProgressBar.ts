@@ -1,5 +1,6 @@
 import { LitElement, css, html, nothing } from "lit";
 import { customElement, property } from "lit/decorators.js";
+import { convertReact } from "../../utils";
 
 import SlProgressBar from '@shoelace-style/shoelace/dist/components/progress-bar/progress-bar.component.js';
 SlProgressBar.define('sl-progress-bar');
@@ -7,7 +8,7 @@ SlProgressBar.define('sl-progress-bar');
 import { UProgressBarModel } from './UProgressBar.model';
 
 @customElement('u-progress-bar')
-export class UProgressBar extends LitElement implements UProgressBarModel {
+export class UProgressBarElement extends LitElement implements UProgressBarModel {
 
   @property({ type: Number }) value?: number;
   @property({ type: Boolean }) infinite: boolean = false;
@@ -45,3 +46,8 @@ export class UProgressBar extends LitElement implements UProgressBarModel {
     }
   `;
 }
+
+export const UProgressBar = convertReact({
+  elementClass: UProgressBarElement,
+  tagName: 'u-progress-bar'
+});

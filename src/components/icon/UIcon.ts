@@ -2,13 +2,14 @@ import { LitElement, css, html, nothing } from "lit";
 import { customElement, property, } from "lit/decorators.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { until } from "lit/directives/until.js";
+import { convertReact } from "../../utils";
 
 import { UIconModel, type UIconType } from "./UIcon.model";
 import { UIconController } from "./UIconController";
 import { SystemIcon } from "./UIcon.resource";
 
 @customElement('u-icon')
-export class UIcon extends LitElement implements UIconModel {
+export class UIconElement extends LitElement implements UIconModel {
 
   @property({ type: String }) type: UIconType = 'default';
   @property({ type: String }) name?: string;
@@ -74,3 +75,8 @@ export class UIcon extends LitElement implements UIconModel {
   `;
 
 }
+
+export const UIcon = convertReact({
+  elementClass: UIconElement,
+  tagName: 'u-icon',
+});

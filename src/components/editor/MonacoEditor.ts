@@ -1,6 +1,7 @@
 import { css, html, LitElement, nothing, unsafeCSS } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { createRef, Ref, ref } from "lit/directives/ref.js";
+import { convertReact } from "../../utils";
 
 import SlCopyButton from "@shoelace-style/shoelace/dist/components/copy-button/copy-button.component.js";
 SlCopyButton.define('sl-copy-button');
@@ -12,7 +13,7 @@ import styles from "monaco-editor/min/vs/editor/editor.main.css?inline";
 import { MonacoEditorModel, type EditorTheme } from "./MonacoEditor.model";
 
 @customElement("monaco-editor")
-export class MonacoEditor extends LitElement implements MonacoEditorModel {
+export class MonacoEditorElement extends LitElement implements MonacoEditorModel {
   private container: Ref<HTMLElement> = createRef();
   private editor!: monaco.editor.IStandaloneCodeEditor;
   private observer: MutationObserver = new MutationObserver(() => {
@@ -157,3 +158,11 @@ export class MonacoEditor extends LitElement implements MonacoEditorModel {
   `];
   
 }
+
+export const MonacoEditor = convertReact({
+  elementClass: MonacoEditorElement,
+  tagName: "monaco-editor",
+  events: {
+    onChange: "change",
+  }
+});

@@ -1,12 +1,13 @@
 import { css, html } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
+import { convertReact } from "../../utils";
 
 import { UNumberInputModel, type NumberInputFormat } from "./UNumberInput.model";
 import { UBaseInput } from "../input-parts/UBaseInput";
 
 @customElement('u-number-input')
-export class UNumberInput extends UBaseInput implements UNumberInputModel {
+export class UNumberInputElement extends UBaseInput implements UNumberInputModel {
   
   @query('input') inputEl!: HTMLInputElement;
 
@@ -131,3 +132,12 @@ export class UNumberInput extends UBaseInput implements UNumberInputModel {
     }
   `;
 }
+
+export const UNumberInput = convertReact({
+  elementClass: UNumberInputElement,
+  tagName: 'u-number-input',
+  events: {
+    onInput: 'input',
+    onChange: 'change'
+  }
+});

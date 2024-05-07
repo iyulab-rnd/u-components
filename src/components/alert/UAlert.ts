@@ -1,5 +1,6 @@
 import { LitElement, html, nothing } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
+import { convertReact } from "../../utils";
 
 import SlAlert from "@shoelace-style/shoelace/dist/components/alert/alert.component.js";
 SlAlert.define('sl-alert');
@@ -8,7 +9,7 @@ import type { UAlertModel, AlertType, AlertContent } from "./UAlert.model";
 import '../icon/UIcon';
 
 @customElement('u-alert')
-export class UAlert extends LitElement implements UAlertModel {
+export class UAlertElement extends LitElement implements UAlertModel {
   
   @query('sl-alert') alert!: SlAlert;
 
@@ -44,3 +45,8 @@ export class UAlert extends LitElement implements UAlertModel {
   }
 
 }
+
+export const UAlert = convertReact({
+  elementClass: UAlertElement,
+  tagName: 'u-alert',
+});

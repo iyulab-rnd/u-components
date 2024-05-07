@@ -1,6 +1,7 @@
 import { LitElement, css, nothing } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { unsafeStatic, html } from 'lit/static-html.js';
+import { convertReact } from "../../utils";
 
 import "./index";
 import { UInputModel } from './UInput.model';
@@ -13,7 +14,7 @@ import {
 } from "../../decorators";
 
 @customElement('u-input')
-export class UInput extends LitElement implements UInputModel {
+export class UInputElement extends LitElement implements UInputModel {
 
   @query('.input') input!: UBaseInput;
 
@@ -78,3 +79,11 @@ export class UInput extends LitElement implements UInputModel {
     }
   `
 }
+
+export const UInput = convertReact({
+  elementClass: UInputElement,
+  tagName: 'u-input',
+  events: {
+    onChange: 'change'
+  }
+});

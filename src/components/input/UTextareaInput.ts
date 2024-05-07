@@ -1,11 +1,12 @@
 import { css, html } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
+import { convertReact } from "../../utils";
 
 import { UTextareaInputModel } from "./UTextareaInput.model";
 import { UBaseInput } from "../input-parts/UBaseInput";
 
 @customElement('u-textarea-input')
-export class UTextareaInput extends UBaseInput implements UTextareaInputModel {
+export class UTextareaInputElement extends UBaseInput implements UTextareaInputModel {
   
   @query('textarea') inputEl!: HTMLTextAreaElement;
 
@@ -134,3 +135,12 @@ export class UTextareaInput extends UBaseInput implements UTextareaInputModel {
     }
   `;
 }
+
+export const UTextareaInput = convertReact({
+  elementClass: UTextareaInputElement,
+  tagName: 'u-textarea-input',
+  events: {
+    onInput: 'input',
+    onChange: 'change'
+  }
+});

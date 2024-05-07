@@ -1,12 +1,13 @@
 import { css, html, nothing } from "lit";
 import { customElement, property, queryAll } from "lit/decorators.js";
+import { convertReact } from "../../utils";
 
 import { USelectInputModel, type USelectOption } from "./USelectInput.model";
 import { UBaseInput } from "../input-parts/UBaseInput";
 import { t } from "../../localization/ULocalizer";
 
 @customElement('u-select-input')
-export class USelectInput extends UBaseInput implements USelectInputModel {
+export class USelectInputElement extends UBaseInput implements USelectInputModel {
 
   @queryAll('.option') optionEl!: NodeListOf<HTMLDivElement>;
 
@@ -250,3 +251,11 @@ export class USelectInput extends UBaseInput implements USelectInputModel {
     }
   `;
 }
+
+export const USelectInput = convertReact({
+  elementClass: USelectInputElement,
+  tagName: 'u-select-input',
+  events: {
+    onChange: 'change'
+  }
+});

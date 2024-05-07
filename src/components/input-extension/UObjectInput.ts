@@ -1,15 +1,16 @@
 import { css, html } from "lit";
 import { customElement, property, queryAll } from "lit/decorators.js";
 import { repeat } from 'lit/directives/repeat.js';
+import { convertReact } from "../../utils";
 
+import type { UTextInputElement } from "../input/UTextInput";
 import { UObjectInputModel } from "./UObjectInput.model";
 import { UBaseInput } from "../input-parts/UBaseInput";
-import { UTextInput } from "../input/UTextInput";
 
 @customElement('u-object-input')
-export class UObjectInput extends UBaseInput implements UObjectInputModel {
+export class UObjectInputElement extends UBaseInput implements UObjectInputModel {
 
-  @queryAll('u-text-input') inputs!: NodeListOf<UTextInput>;
+  @queryAll('u-text-input') inputs!: NodeListOf<UTextInputElement>;
 
   @property({ type: Object }) value?: object;
 
@@ -160,3 +161,11 @@ export class UObjectInput extends UBaseInput implements UObjectInputModel {
     }
   `;
 }
+
+export const UObjectInput = convertReact({
+  elementClass: UObjectInputElement,
+  tagName: 'u-object-input',
+  events: {
+    onChange: 'change',
+  }
+});
