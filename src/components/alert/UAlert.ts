@@ -30,7 +30,7 @@ export class UAlertElement extends LitElement implements UAlertModel {
           type="system" 
           name=${`alert-${this.type}`}
         ></u-icon>
-        ${this.label ? html`<strong>${this.label}</strong>` : nothing}
+        ${this.label ? html`<strong>${this.label}</strong><br>` : nothing}
         ${this.content || html`<slot></slot>`}
       </sl-alert>
     `;

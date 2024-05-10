@@ -2,12 +2,10 @@ import React from 'react';
 import { createComponent } from '@lit/react';
 
 type Constructor<T> = { new (): T };
-
 type EventName<T extends Event = Event> = string & { __eventType: T };
-
 type EventNames = Record<string, EventName | string>;
 
-interface LitOptions<I extends HTMLElement, E extends EventNames = {}> { // eslint-disable-line
+interface Options<I extends HTMLElement, E extends EventNames = {}> { // eslint-disable-line
   tagName: string;
   elementClass: Constructor<I>;
   events?: E;
@@ -19,12 +17,12 @@ interface LitOptions<I extends HTMLElement, E extends EventNames = {}> { // esli
  * @returns The converted React Component.
  */
 export function convertReact<I extends HTMLElement, E extends EventNames = {}> // eslint-disable-line
-  (option: LitOptions<I, E>) 
+  (option: Options<I, E>) 
 {
   return createComponent({
     react: React,
     elementClass: option.elementClass,
     tagName: option.tagName,
-    events: option.events || {},
+    events: option.events,
   });
 }

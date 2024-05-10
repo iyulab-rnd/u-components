@@ -79,6 +79,7 @@ export class UDialogElement extends LitElement implements UDialogModel {
 
   static styles = css`
     sl-dialog {
+      --width: "auto";
       --header-spacing: var(--sl-spacing-medium);
       --body-spacing: var(--sl-spacing-medium);
       --footer-spacing: var(--sl-spacing-medium);

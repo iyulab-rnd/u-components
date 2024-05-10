@@ -11,6 +11,7 @@ export class UAlertController {
     // 토스트 알림을 생성합니다.
     const alert = new UAlertElement();
     const alertId = window.crypto.randomUUID();
+    alert.label = option.label;
     alert.type = option.type;
     alert.content = option.content;
     this.alerts.set(alertId, alert);
