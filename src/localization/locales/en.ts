@@ -10,6 +10,7 @@ export const en = {
     "invalidPattern": "Please enter a valid pattern",
     "invalidUrl": "Please enter a valid URL",
     "invalidEmail": "Please enter a valid email address",
+    "missingField": "Please fill in all fields",
     "requiredField": "This field is required",
     "requiredCheckField": "Please check this box to proceed",
     "messageTitle": "Message",
