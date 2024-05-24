@@ -19,7 +19,7 @@ export type PropertyMetaType = (
   'text' | 'textarea' | 'number' | 'checkbox' | 
   'password' | 'tel' | 'email' | 'url' | 'datetime' |
   'file' | 'range' | 'select' | 
-  'object' | 'rest-url' | 
+  'object' | 'rest-url' | 'array' |
   'editor'
 );
 
