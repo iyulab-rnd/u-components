@@ -3,18 +3,17 @@ import { UAlertElement } from "./UAlert";
 
 export class UAlertController {
   private static readonly container: Map<ToastPosition, HTMLDivElement> = new Map();
-  private static readonly alerts: Map<string, UAlertElement> = new Map();
+  private static readonly alerts: Set<UAlertElement> = new Set();
 
   public static async toastAsync(option: ToastOption): Promise<void> {
     const duration = (option.duration && option.duration > 0) ? option.duration : 3000;
 
     // 토스트 알림을 생성합니다.
     const alert = new UAlertElement();
-    const alertId = window.crypto.randomUUID();
     alert.label = option.label;
     alert.type = option.type;
     alert.content = option.content;
-    this.alerts.set(alertId, alert);
+    this.alerts.add(alert);
     
     // 토스트 알림을 컨테이너에 추가합니다.
     const position = option.position || 'top-right';
@@ -27,7 +26,7 @@ export class UAlertController {
       // duration 시간이 지나면 알림을 닫습니다.
       await alert.hideAsync();
       alert.remove();
-      this.alerts.delete(alertId);
+      this.alerts.delete(alert);
 
       // 컨테이너에 자식이 없으면 컨테이너를 제거합니다.
       if (!container.hasChildNodes()) {
