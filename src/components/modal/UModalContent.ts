@@ -1,4 +1,4 @@
-import { LitElement } from "lit";
+import { LitElement, css, html } from "lit";
 import { property } from "lit/decorators.js";
 
 import { UModalContentModel } from "./UModalContent.model";
@@ -42,4 +42,9 @@ export class UModalContent extends LitElement implements UModalContentModel {
     }));
   }
 
+  render() {
+    return html`
+      <slot></slot>
+    `;
+  }
 }

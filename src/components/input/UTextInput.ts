@@ -89,6 +89,7 @@ export class UTextInputElement extends UBaseInput implements UTextInputModel {
 
   static styles = css`
     :host {
+      display: block;
       width: 100%;
       font-size: 14px;
     }

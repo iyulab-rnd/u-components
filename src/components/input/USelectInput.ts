@@ -193,6 +193,7 @@ export class USelectInputElement extends UBaseInput implements USelectInputModel
       font-size: inherit;
       height: 1.5em;
       cursor: pointer;
+      overflow: hidden;
 
       u-icon {
         font-size: inherit;
