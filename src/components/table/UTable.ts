@@ -372,7 +372,8 @@ export class UTableElement extends LitElement implements UTableModel {
       return data.map((item: any, index: number) => {
         const selected = this.selectedItems.includes(item);
         return html`
-          <tr class="body-row ${selected ? 'select' : ''}">
+          <tr class="body-row ${selected ? 'select' : ''}"
+              @click=${(e: Event) => this.handleRowClick(e, item)}>
             ${this.option?.useCheckbox ? html`
               <td class="body-content">
                   <input class="body-checkbox" type="checkbox" 
@@ -663,6 +664,26 @@ export class UTableElement extends LitElement implements UTableModel {
       this.headerCheckbox.indeterminate = true;
       this.headerCheckbox.checked = false;
     }
+  }
+
+  // Row 클릭 이벤트 처리
+  private async handleRowClick(event: Event, item: any) {
+    
+    const target = event.target as HTMLElement;
+    if (target.tagName != 'DIV') {
+      // 버튼이나 아이콘이 클릭된 경우 다른 이벤트 처리를 위해 중단
+      return; 
+    }
+    
+    // DIV 태그가 클릭된 경우만 선택 이벤트 발생
+    this.dispatchEvent(new CustomEvent('select', {
+      detail: { 
+        selectedItem: item, 
+        selectedItems: this.selectedItems 
+      },
+      bubbles: true,
+      composed: true,
+    }));
   }
 
   // 컬럼 조절기 선택(컬럼 너비 조절)
