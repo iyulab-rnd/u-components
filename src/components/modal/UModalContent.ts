@@ -1,4 +1,4 @@
-import { LitElement, css, html } from "lit";
+import { LitElement, html } from "lit";
 import { property } from "lit/decorators.js";
 
 import { UModalContentModel } from "./UModalContent.model";
