@@ -40,49 +40,24 @@ export class UFormElement extends LitElement implements UFormModel {
     if (changedProperties.has('size') && this.size) {
       this.style.fontSize = this.size;
     }
-    
     if (changedProperties.has('context')) {
       this.updateContext();
     }
-
     if (changedProperties.has('meta')) {
       this.updateMetaKeys();
-    }
-
-    if (changedProperties.has('include')) {
-      this.filterKeysByInclude();
-    }
-
-    if (changedProperties.has('exclude')) {
-      this.filterKeysByExclude();
     }
   }
 
   private updateContext() {
-    if (this.context) {
-      const keys = Object.keys(this.context);
-      this.keys = [...new Set([...this.keys, ...keys])];
-    } else {
-      this.context = {};
-    }
+    this.context ||= {};
+    const keys = Object.keys(this.context);
+    this.keys = [...new Set([...this.keys, ...keys])];
     this.meta = getPropertyMeta(this.context) || this.meta;
   }
 
   private updateMetaKeys() {
     const names = this.meta?.filter(m => m.name != undefined).map(m => m.name!) || [];
     this.keys = [...new Set([...this.keys, ...names])];
-  }
-
-  private filterKeysByInclude() {
-    if (this.include && this.include.length > 0) {
-      this.keys = this.keys.filter(key => this.include?.includes(key));
-    }
-  }
-
-  private filterKeysByExclude() {
-    if (this.exclude && this.exclude.length > 0) {
-      this.keys = this.keys.filter(key => !this.exclude?.includes(key));
-    }
   }
 
   private handleSlotChange() {
@@ -107,9 +82,10 @@ export class UFormElement extends LitElement implements UFormModel {
   }
 
   private renderForm() {
+    const keys = this.filterKeys(this.keys);
     return html`
       <div class="form">
-        ${this.keys.map(key => this.renderInput(key))}
+        ${keys.map(key => this.renderInput(key))}
       </div>
     `;
   }
@@ -165,6 +141,16 @@ export class UFormElement extends LitElement implements UFormModel {
       inputs.map(input => input.validate())
     );
     return results.every(result => result);
+  }
+
+  private filterKeys(keys: string[]) {
+    if (this.include && this.include.length > 0) {
+      keys = keys.filter(key => this.include?.includes(key));
+    }
+    if (this.exclude && this.exclude.length > 0) {
+      keys = keys.filter(key => !this.exclude?.includes(key));
+    }
+    return keys;
   }
 
   private handleSubmit = async () => {
