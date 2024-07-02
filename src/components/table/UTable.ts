@@ -438,7 +438,7 @@ export class UTableElement extends LitElement implements UTableModel {
         @mouseenter=${column.tooltip
         ? (e:any) => this.tooltip.hoverData(e, item, column.tooltip)
         : undefined}>
-        ${content}
+        ${typeof content === 'object' ? JSON.stringify(content,null,2) : content}
       </span>
     `;
   }
