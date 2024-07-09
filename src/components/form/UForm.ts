@@ -202,6 +202,8 @@ export class UFormElement extends LitElement implements UFormModel {
       width: 100%;
       display: flex;
       flex-direction: column;
+      flex-grow: 1;
+      overflow-y: auto;
       gap: var(--form-gap);
       padding: var(--form-padding);
       box-sizing: border-box;
