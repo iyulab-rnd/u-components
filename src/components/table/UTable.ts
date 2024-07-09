@@ -425,23 +425,25 @@ export class UTableElement extends LitElement implements UTableModel {
     }
   }
 
-  // 테이블 바디 기본 셀 렌더링
-  private renderBasicCell(column: BasicColumn, item: any) {
-    let value;
-    if (column.name in item) value = item[column.name];
-    else value = undefined;
+// 테이블 바디 기본 셀 렌더링
+private renderBasicCell(column: BasicColumn, item: any) {
+  let value;
+  if (column.name in item) value = item[column.name];
+  else value = undefined;
 
-    const content = column.render ? column.render(item) : value;
-    return html`
-      <span class="basic-cell ${column.action ? 'action' : ''}"
-        @click=${column.action ? () => column.action?.(item) : undefined}
-        @mouseenter=${column.tooltip
+  const content = column.render ? column.render(item) : value;
+  return html`
+    <span class="basic-cell ${column.action ? 'action' : ''}"
+      @click=${column.action ? () => column.action?.(item) : undefined}
+      @mouseenter=${column.tooltip
         ? (e:any) => this.tooltip.hoverData(e, item, column.tooltip)
         : undefined}>
-        ${typeof content === 'object' ? JSON.stringify(content,null,2) : content}
-      </span>
-    `;
-  }
+      ${typeof content === 'object' && content instanceof HTMLElement
+        ? content // DOM 요소 그대로 렌더링
+        : typeof content === 'object' ? JSON.stringify(content,null,2) : content}
+    </span>
+  `;
+}
 
   // 테이블 바디 배지 셀 렌더링
   private renderBadgeCell(column: BadgeColumn, item: any) {
