@@ -47,7 +47,9 @@ export function getPropertyMeta(target: Constructor, propertyKey?: string): Prop
       return Reflect.getMetadata(propertyMetaKey, target, propertyKey);
     } else {
       const keys = Object.getOwnPropertyNames(target) || [];
-      return keys.map((key) => Reflect.getMetadata(propertyMetaKey, target, key));
+      const metaDataList = keys.map((key) => Reflect.getMetadata(propertyMetaKey, target, key))
+        .filter((meta) => meta !== undefined) || [];
+      return metaDataList;
     }
   } catch (e) {
     return undefined;
