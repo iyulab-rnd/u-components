@@ -7,38 +7,31 @@ import { SystemIcon } from "./src/components/icon/UIcon.resource";
 import { UAlertController } from "./src/components/alert/UAlertController";
 import { getLocale, t, setLocale, init } from "./src/localization";
 
-export class TestContext {
+export class T {
+  @propertyMeta({ type:"text", label:"테스트1" })
+  테스트1: string = '';
+}
 
-  @propertyMeta({ type:"text", label: 'Name', required: true })
-  name: string = '';
+export class TA extends T {
+  @propertyMeta({ type:"text", label:"테스트2" })
+  테스트2: number = 0;
+}
 
-  @propertyMeta({ type:"email", label: 'Email', required: true })
-  email: string = '';
+export class TB extends T {
+  @propertyMeta({ type:"text", label:"테스트3" })
+  테스트3: string = '';
+}
 
-  @propertyMeta({ type:"url", label: 'Url', required: true })
-  url: string = '';
-
-  @propertyMeta({ type:"password", label: 'Password', required: true })
-  password: string = 'asdas';
-
-  @propertyMeta({ type:"tel", label: 'Phone', required: true })
-  phone: string = '01038089235';
-
-  @propertyMeta({ type:"datetime", label: 'Date', required: true })
-  date: string = '';
-
-  @propertyMeta({ type:"number", label: 'Age', required: true })
-  age: number = 0;
-
-  @propertyMeta({ type:"checkbox", label: '동의?', requiredCheck: true })
-  agree: boolean = false;
+export class TAA extends TA {
+  @propertyMeta({ type:"text", label:"테스트4" })
+  테스트4: string = '';
 }
 
 @customElement('preview-app')
 export class PreviewApp extends LitElement {
 
   @query("u-button") button!: any;
-  @state() context: object = new TestContext();
+  @state() context: object = new TAA();
 
   connectedCallback() {
     super.connectedCallback();
@@ -47,7 +40,7 @@ export class PreviewApp extends LitElement {
 
   render() {
     return html`
-      <u-button
+      <!-- <u-button
         @click=${() => {
           setLocale(getLocale() === 'en' ? 'ko' : 'en');
         }}
@@ -55,14 +48,14 @@ export class PreviewApp extends LitElement {
         Change Language
       </u-button>
       <h1>i18next:</h1>
-      ${t('bye')}
+      ${t('bye')} -->
 
       <!-- ${this.wizardTest()} -->
       <!-- ${this.renderSystemIcons()} -->
       <!-- ${this.buttonTest()} -->
       <!-- ${this.inputTest()} -->
       <!-- ${this.contextTest()} -->
-      <!-- ${this.formTest()} -->
+      ${this.formTest()}
     `;
   }
 
@@ -169,7 +162,7 @@ export class PreviewApp extends LitElement {
       <u-divider></u-divider>
       <u-form
         label="Register"
-        .context=${new TestContext()}
+        .context=${this.context}
         .onSubmit=${() => {throw new Error('Not implemented')}}
       ></u-form>
     `;

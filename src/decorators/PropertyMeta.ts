@@ -22,9 +22,8 @@ export function propertyMeta(metadata: PropertyMetaData) {
  * @param metadata - 속성에 대한 메타데이터입니다.
  */
 export function setPropertyMeta(target: any, propertyKey: string, metadata: PropertyMetaData): void {
-  const metaList: PropertyMetaData[] = Reflect.getMetadata(propertyMetaKey, target) || [];
-  metaList.push({ name: propertyKey, ...metadata });
-  Reflect.defineMetadata(propertyMetaKey, metaList, target);
+  metadata.name = propertyKey;
+  Reflect.defineMetadata(propertyMetaKey, metadata, target, propertyKey);
 }
 
 /**
@@ -44,11 +43,12 @@ export function getPropertyMeta(target: Constructor, propertyKey: string): Prope
 export function getPropertyMeta(target: Constructor, propertyKey?: string): PropertyMetaData[] | PropertyMetaData | undefined {
   try{
     target = target.prototype ? target.prototype : target;
-    const metaList: PropertyMetaData[] | undefined = Reflect.getMetadata(propertyMetaKey, target);
-    // propertyKey가 존재하면 해당 속성에 대한 메타데이터를 반환합니다.
-    return propertyKey 
-    ? metaList?.find((meta: PropertyMetaData) => meta.name === propertyKey) 
-    : metaList;
+    if (propertyKey) {
+      return Reflect.getMetadata(propertyMetaKey, target, propertyKey);
+    } else {
+      const keys = Object.getOwnPropertyNames(target) || [];
+      return keys.map((key) => Reflect.getMetadata(propertyMetaKey, target, key));
+    }
   } catch (e) {
     return undefined;
   }
