@@ -36,7 +36,7 @@ export class UInputElement extends LitElement implements UInputModel {
         && this.context && this.name) {
       this.meta = getPropertyMeta(this.context, this.name);
     }
-    if (changedProperties.has('meta') && this.meta) {
+    if (this.type == null && changedProperties.has('meta') && this.meta) {
       this.type = this.meta.type || 'text';
     }
     if (changedProperties.has('type') && this.type) {
@@ -46,7 +46,7 @@ export class UInputElement extends LitElement implements UInputModel {
 
   render() {
     if (!this.tag) return nothing;
-      
+    
     return html`
       <${unsafeStatic(this.tag)} 
         class="input"

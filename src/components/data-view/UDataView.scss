@@ -3,6 +3,11 @@
   width: 100%;
 }
 
+// Image size variables
+$image-size-list: 128px;
+$image-size-table: 64px;
+$image-size-grid: 128px;
+
 .u-data-view-container {
   width: 100%;
 }
@@ -56,11 +61,14 @@
     display: flex;
     align-items: flex-start;
 
-    .default-image {
-      width: 150px;
-      height: 150px;
+    .default-image,
+    .placeholder-image {
+      width: $image-size-list;
+      height: $image-size-list;
+      min-width: $image-size-list;
       margin-right: 1rem;
       margin-bottom: 0;
+      object-fit: cover;
     }
 
     .default-fields {
@@ -71,10 +79,30 @@
 
 .default-image {
   width: 100%;
-  height: 200px;
+  height: $image-size-grid;
   object-fit: cover;
   margin-bottom: 1rem;
   border-radius: 4px;
+
+  &.list-image {
+    width: $image-size-list;
+    height: $image-size-list;
+  }
+
+  &.table-image {
+    width: $image-size-table;
+    height: $image-size-table;
+    margin-bottom: 0;
+  }
+
+  &.placeholder-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
 }
 
 .default-fields {
@@ -83,8 +111,15 @@
     display: flex;
     align-items: center;
 
-    strong {
+    .field-title {
+      color: var(--sl-color-neutral-500);
       margin-right: 0.5rem;
+      flex: 0 0 30%;
+    }
+
+    .field-value {
+      font-weight: bold;
+      flex: 1;
     }
   }
 }
@@ -107,18 +142,22 @@
   }
 
   .image-cell {
-    width: 60px;
-    height: 60px;
+    width: $image-size-table;
+    height: $image-size-table;
     padding: 0;
     position: relative;
 
-    img {
+    img, .placeholder-image {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
+    }
+
+    .placeholder-image {
+      font-size: 1.5rem;
     }
   }
 
@@ -185,7 +224,7 @@ u-skeleton {
   &.list {
     .skeleton-image {
       width: 100%;
-      height: 200px;
+      height: $image-size-grid;
       margin-bottom: 1rem;
     }
   }
@@ -195,8 +234,8 @@ u-skeleton {
     align-items: flex-start;
 
     .skeleton-image {
-      width: 150px;
-      height: 150px;
+      width: $image-size-list;
+      height: $image-size-list;
       margin-right: 1rem;
       margin-bottom: 0;
     }
@@ -239,8 +278,8 @@ u-skeleton {
       margin-right: 0.5em;
 
       &:first-child {
-        width: 50px;
-        height: 50px;
+        width: $image-size-table;
+        height: $image-size-table;
         flex: none;
       }
     }

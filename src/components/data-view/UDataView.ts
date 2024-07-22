@@ -1,9 +1,16 @@
 import { LitElement, html, css, unsafeCSS } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
+import { styleMap } from 'lit/directives/style-map.js';
+
 import { convertReact } from "../../utils";
 import '../icon/UIcon'; 
 import type { DataViewColumnDefinition, UDataViewModel } from "./UDataView.model";
 import styles from './UDataView.scss?inline';
+
+// 이미지 사이즈 변수 정의
+const IMAGE_SIZE_LIST = 128;
+const IMAGE_SIZE_TABLE = 64;
+const IMAGE_SIZE_GRID = 128;
 
 @customElement("u-data-view")
 export class UDataViewElement extends LitElement implements UDataViewModel {
@@ -25,7 +32,8 @@ export class UDataViewElement extends LitElement implements UDataViewModel {
   @state() private currentLayout: "list" | "grid" | "table" = "grid";
   @state() private loading: boolean = true;
   @state() private imageLoadErrors: Set<string> = new Set();
-
+  @state() private randomColors: Map<string, string> = new Map();
+  
   connectedCallback() {
     super.connectedCallback();
     // 데이터 로딩 시뮬레이션
@@ -54,7 +62,7 @@ export class UDataViewElement extends LitElement implements UDataViewModel {
           ${this.loading 
             ? Array(5).fill(0).map(() => html`
                 <tr>
-                  <td><u-skeleton effect="sheen" width="50px" height="50px"></u-skeleton></td>
+                  <td><u-skeleton effect="sheen" width="64px" height="64px"></u-skeleton></td>
                   ${columns.map(() => html`
                     <td><u-skeleton effect="sheen" width="80%" height="1em"></u-skeleton></td>
                   `)}
@@ -65,9 +73,9 @@ export class UDataViewElement extends LitElement implements UDataViewModel {
                     @click=${() => this.handleItemClick(item)}
                     @dblclick=${() => this.handleItemDoubleClick(item)}>
                   <td class="image-cell">
-                    ${this.defaultRenderImage(item)}
+                    ${this.defaultRenderImage(item, 'table')}
                   </td>
-                  ${columns.map(column => html`<td>${item[column.name]}</td>`)}
+                  ${columns.map(column => html`<td>${this.formatValue(item[column.name])}</td>`)}
                 </tr>
               `)
           }
@@ -97,35 +105,104 @@ export class UDataViewElement extends LitElement implements UDataViewModel {
       .join('');
   }
 
+  private formatValue(value: any): string {
+    if (value instanceof Date) {
+      const pad = (num: number) => num.toString().padStart(2, '0');
+      return `${value.getFullYear()}-${pad(value.getMonth() + 1)}-${pad(value.getDate())} ${pad(value.getHours())}:${pad(value.getMinutes())}`;
+    }
+    return value;
+  }
+
   private defaultRenderFields(item: any) {
     const columns = this.columns || this.getDefaultColumns();
     return html`
       <div class="default-fields">
         ${columns.map(column => html`
           <div class="field">
-            <strong>${this.getDisplayName(column)}:</strong>
             ${this.loading 
-              ? html`<u-skeleton effect="sheen" width="60%" height="1em" style="margin-left: 0.5em;"></u-skeleton>`
-              : html`<span style="margin-left: 0.5em;">${item[column.name]}</span>`}
+              ? html`
+                  <u-skeleton effect="sheen" width="30%" height="1em" class="field-title"></u-skeleton>
+                  <u-skeleton effect="sheen" width="60%" height="1em" class="field-value"></u-skeleton>
+                `
+              : html`
+                  <span class="field-title">${this.getDisplayName(column)}:</span>
+                  <span class="field-value">${this.formatValue(item[column.name])}</span>
+                `
+            }
           </div>
         `)}
       </div>
     `;
   }
-
-  private defaultRenderImage(item: any) {
-    if (this.loading || this.imageLoadErrors.has(item[this.imageField])) {
-      return html`<u-skeleton effect="sheen" width="100%" height="200px" style="margin-bottom: 1em;"></u-skeleton>`;
+  
+  private getRandomColor(key: string): string {
+    if (!this.randomColors.has(key)) {
+      const hue = Math.floor(Math.random() * 360);
+      const saturation = 70 + Math.floor(Math.random() * 30);
+      const lightness = 60 + Math.floor(Math.random() * 20);
+      this.randomColors.set(key, `hsl(${hue}, ${saturation}%, ${lightness}%)`);
     }
-    return html`
-      <img 
-        src=${item[this.imageField]} 
-        alt="Item image" 
-        class="default-image" 
-        @error=${() => this.handleImageError(item)}
-        style="margin-bottom: 1em;"
-      />
-    `;
+    return this.randomColors.get(key)!;
+  }
+
+  private defaultRenderImage(item: any, viewType: 'grid' | 'list' | 'table' = 'grid') {
+    if (this.loading) {
+      const skeletonSize = viewType === 'table' ? `${IMAGE_SIZE_TABLE}px` : 
+                           viewType === 'list' ? `${IMAGE_SIZE_LIST}px` : 
+                           `${IMAGE_SIZE_GRID}px`;
+      return html`<u-skeleton effect="sheen" width=${skeletonSize} height=${skeletonSize} style="margin-bottom: 1em;"></u-skeleton>`;
+    }
+  
+    const imageSrc = item[this.imageField];
+    const imageClass = `default-image ${viewType}-image`;
+    if (imageSrc && !this.imageLoadErrors.has(imageSrc)) {
+      return html`
+        <img 
+          src=${imageSrc} 
+          alt="Item image" 
+          class=${imageClass}
+          @error=${() => this.handleImageError(item)}
+          style=${viewType !== 'grid' ? "" : "margin-bottom: 1em;"}
+        />
+      `;
+    } else {
+      const backgroundColor = this.getRandomColor(item.id || JSON.stringify(item));
+      const textColor = this.getContrastColor(backgroundColor);
+      const styles = {
+        backgroundColor,
+        color: textColor,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: viewType === 'table' ? '1.5rem' : '2rem',
+        fontWeight: 'bold',
+        width: viewType === 'table' ? `${IMAGE_SIZE_TABLE}px` : 
+               viewType === 'list' ? `${IMAGE_SIZE_LIST}px` : '100%',
+        height: viewType === 'table' ? `${IMAGE_SIZE_TABLE}px` : 
+                viewType === 'list' ? `${IMAGE_SIZE_LIST}px` : `${IMAGE_SIZE_GRID}px`,
+      };
+      
+      return html`
+        <div class=${`${imageClass} placeholder-image`} style=${styleMap(styles)}>
+          ${item.name ? item.name.charAt(0).toUpperCase() : 'N/A'}
+        </div>
+      `;
+    }
+  }
+
+  private getContrastColor(backgroundColor: string): string {
+    const rgb = this.hexToRgb(backgroundColor);
+    const brightness = (rgb.r * 299 + rgb.g * 587 + rgb.b * 114) / 1000;
+    return brightness > 128 ? '#000000' : '#FFFFFF';
+  }
+
+  private hexToRgb(hex: string): { r: number, g: number, b: number } {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+    } : { r: 0, g: 0, b: 0 };
   }
 
   protected render() {
@@ -159,7 +236,7 @@ export class UDataViewElement extends LitElement implements UDataViewModel {
     if (this.loading) {
       return Array(5).fill(0).map(() => html`
         <div class="default-item" style="padding: 1em; border: 1px solid #eee; border-radius: 4px;">
-          <u-skeleton effect="sheen" width="100%" height="200px" style="margin-bottom: 1em;"></u-skeleton>
+          <u-skeleton effect="sheen" width="100%" height="${IMAGE_SIZE_GRID}px" style="margin-bottom: 1em;"></u-skeleton>
           <div class="default-fields">
             ${Array(3).fill(0).map(() => html`
               <div class="field" style="margin-bottom: 0.5em;">
@@ -179,7 +256,7 @@ export class UDataViewElement extends LitElement implements UDataViewModel {
             <div class="default-item ${this.selectedItem === item ? 'selected' : ''}"
                  @click=${() => this.handleItemClick(item)}
                  @dblclick=${() => this.handleItemDoubleClick(item)}>
-              ${this.renderImage ? this.renderImage(item) : this.defaultRenderImage(item)}
+              ${this.renderImage ? this.renderImage(item) : this.defaultRenderImage(item, this.currentLayout as 'grid' | 'list' | 'table')}
               ${this.renderFields ? this.renderFields(item) : this.defaultRenderFields(item)}
             </div>
           `
