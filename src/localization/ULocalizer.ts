@@ -19,7 +19,7 @@ export async function init(config?: ULocalizerConfig) {
   const namespace = config?.namespace || [];
   const resources = config?.resources;
 
-  // i18next 초기화
+  // i18next 초기화 - Updated for i18next v24
   await i18next
     .use(HttpBackend)
     .use(BrowserDetector)
@@ -31,7 +31,10 @@ export async function init(config?: ULocalizerConfig) {
       backend: {
         loadPath: `/${basepath}/{{lng}}/{{ns}}.json`,
       },
-      detection: { order: ['navigator'] },
+      detection: { 
+        order: ['navigator'],
+        caches: [] // Updated for newer version
+      },
       supportedLngs: languages,
       fallbackLng: 'en',
       defaultNS: defaultNS,
@@ -55,7 +58,7 @@ export async function init(config?: ULocalizerConfig) {
 export function addResources(resources: Resources) {
   for (const lang of languages) {
     for (const ns in resources[lang]) {
-      i18next.addResources(lang, ns, resources[lang][ns]);
+      i18next.addResourceBundle(lang, ns, resources[lang][ns], true, true);
     }
   }
 }
@@ -93,8 +96,10 @@ export async function setLocale(locale: Languages) {
  * html`<div>${t('namespace::bye')}</div>`
  * ```
  */
-export function t(key: string | string[], options?: any) { 
-  return translate(key, options);
+// 수정: 타입 오류 해결을 위해 translate 함수를 사용하는 방식 변경
+export function t(key: string | string[], options?: any): string {
+  // 타입 어설션(as any)을 사용하여 타입 오류 방지
+  return translate(key, options) as any;
 }
 
 /**

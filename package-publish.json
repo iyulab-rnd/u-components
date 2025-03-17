@@ -4,67 +4,67 @@
   "types": "index.d.ts",
   "exports": {
     ".": {
-      "require": "./index.cjs.js",
+      "types": "./index.d.ts",
       "import": "./index.es.js",
-      "types": "./index.d.ts"
+      "require": "./index.cjs.js"
     },
     "./*": {
-      "require": "./*/index.cjs.js",
+      "types": "./*/index.d.ts",
       "import": "./*/index.es.js",
-      "types": "./*/index.d.ts"
+      "require": "./*/index.cjs.js"
     },
     "./styles/*": {
       "import": "./styles/*.css"
     },
     "./decorators": {
-      "require": "./decorators/index.js",
+      "types": "./decorators/index.d.ts",
       "import": "./decorators/index.js",
-      "types": "./decorators/index.d.ts"
+      "require": "./decorators/index.js"
     },
     "./localization": {
-      "require": "./localization/index.js",
+      "types": "./localization/index.d.ts",
       "import": "./localization/index.js",
-      "types": "./localization/index.d.ts"
+      "require": "./localization/index.js"
     },
     "./utils": {
-      "require": "./utils/index.js",
+      "types": "./utils/index.d.ts",
       "import": "./utils/index.js",
-      "types": "./utils/index.d.ts"
+      "require": "./utils/index.js"
     },
     "./components/*": {
-      "require": "./components/*/index.cjs.js",
+      "types": "./components/*/index.d.ts",
       "import": "./components/*/index.es.js",
-      "types": "./components/*/index.d.ts"
+      "require": "./components/*/index.cjs.js"
     },
     "./components/modal/*": {
-      "require": "./components/modal/*.js",
+      "types": "./components/modal/*.d.ts",
       "import": "./components/modal/*.js",
-      "types": "./components/modal/*.d.ts"
+      "require": "./components/modal/*.js"
     },
     "./components/button/*": {
-      "require": "./components/button/*.cjs.js",
+      "types": "./components/button/*.d.ts",
       "import": "./components/button/*.es.js",
-      "types": "./components/button/*.d.ts"
+      "require": "./components/button/*.cjs.js"
     },
     "./components/input/*": {
-      "require": "./components/input/*.cjs.js",
+      "types": "./components/input/*.d.ts",
       "import": "./components/input/*.es.js",
-      "types": "./components/input/*.d.ts"
+      "require": "./components/input/*.cjs.js"
     },
     "./components/input-parts/*": {
-      "require": "./components/input-parts/*.cjs.js",
+      "types": "./components/input-parts/*.d.ts",
       "import": "./components/input-parts/*.es.js",
-      "types": "./components/input-parts/*.d.ts"
+      "require": "./components/input-parts/*.cjs.js"
     },
     "./components/input-extension/*": {
-      "require": "./components/input-extension/*.cjs.js",
+      "types": "./components/input-extension/*.d.ts",
       "import": "./components/input-extension/*.es.js",
-      "types": "./components/input-extension/*.d.ts"
+      "require": "./components/input-extension/*.cjs.js"
     },
     "./components/input-advanced/*": {
+      "types": "./components/input-advanced/*.d.ts",
       "require": "./components/input-advanced/*.cjs.js",
-      "import": "./components/input-advanced/*.es.js",
-      "types": "./components/input-advanced/*.d.ts"
+      "import": "./components/input-advanced/*.es.js"
     }
   }
 }

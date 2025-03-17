@@ -45,7 +45,7 @@ export class MonacoEditorElement extends LitElement implements MonacoEditorModel
   async firstUpdated(changedProperties: any) {
     super.firstUpdated(changedProperties);
     await this.updateComplete;
-    
+      
     this.editor = monaco.editor.create(this.container.value!, {
       language: this.language,
       theme: this.theme === "light" ? "vs-light" : "vs-dark",
@@ -56,6 +56,11 @@ export class MonacoEditorElement extends LitElement implements MonacoEditorModel
       lineDecorationsWidth: 1,
       readOnly: this.readOnly,
       value: this.value,
+      // Updated options for newer Monaco
+      scrollBeyondLastLine: false,
+      scrollbar: {
+        alwaysConsumeMouseWheel: false
+      }
     });
 
     this.editor.onDidChangeModelContent(() => {
@@ -156,7 +161,6 @@ export class MonacoEditorElement extends LitElement implements MonacoEditorModel
       }
     }
   `];
-  
 }
 
 export const MonacoEditor = convertReact({

@@ -2,8 +2,8 @@ import { LitElement, html, nothing } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import { convertReact } from "../../utils";
 
-import SlAlert from "@shoelace-style/shoelace/dist/components/alert/alert.component.js";
-SlAlert.define('sl-alert');
+// Updated import method for Shoelace v2.20+
+import '@shoelace-style/shoelace/dist/components/alert/alert.js';
 
 import type { UAlertModel, AlertType, AlertContent } from "./UAlert.model";
 import '../icon/UIcon';
@@ -11,7 +11,7 @@ import '../icon/UIcon';
 @customElement('u-alert')
 export class UAlertElement extends LitElement implements UAlertModel {
   
-  @query('sl-alert') alert!: SlAlert;
+  @query('sl-alert') alert!: HTMLElement;
 
   @property({ type: Boolean }) open: boolean = false;
   @property({ type: Boolean }) closable: boolean = true;
@@ -37,13 +37,14 @@ export class UAlertElement extends LitElement implements UAlertModel {
   }
 
   public async showAsync () {
-    await this.alert.show();
+    // alert.show()에 타입 캐스팅 추가
+    await (this.alert as any).show();
   }
 
   public async hideAsync () {
-    await this.alert.hide();
+    // alert.hide()에 타입 캐스팅 추가
+    await (this.alert as any).hide();
   }
-
 }
 
 export const UAlert = convertReact({

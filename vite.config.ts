@@ -3,8 +3,8 @@ import dts from "vite-plugin-dts";
 import { resolve } from 'path';
 import glob from "fast-glob";
 
-const entries = {} as any;
-glob.sync(['src/**/*.ts']).map(path => {
+const entries = {} as Record<string, string>;
+glob.sync(['src/**/*.ts']).map((path: string) => {
   // console.log(path);
   /**
    * ex)

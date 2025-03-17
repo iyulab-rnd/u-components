@@ -3,8 +3,7 @@ import { customElement, property } from 'lit/decorators.js'
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { convertReact } from '../../utils';
 
-import SlButton from '@shoelace-style/shoelace/dist/components/button/button.component.js';
-SlButton.define('sl-button');
+import '@shoelace-style/shoelace/dist/components/button/button.js';
 
 import type { UTooltipPosition } from '../tooltip/UTooltip.model';
 import type { CommandModel } from '../../patterns/CommandPattern';
@@ -113,7 +112,6 @@ export class UButtonElement extends LitElement implements UButtonModel {
       width: inherit;
     }
   `;
-
 }
 
 export const UButton = convertReact({

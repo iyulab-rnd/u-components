@@ -1,7 +1,7 @@
 {
   "name": "@iyulab/u-components",
   "description": "iyulab ui components",
-  "version": "0.0.64",
+  "version": "0.1.1",
   "author": {
     "name": "iyulab",
     "url": "https://www.iyulab.com"
@@ -21,99 +21,100 @@
   },
   "exports": {
     ".": {
-      "require": "./src/index.js",
+      "types": "./src/index.d.ts",
       "import": "./src/index.js",
-      "types": "./src/index.d.ts"
+      "require": "./src/index.js"
     },
     "./*": {
-      "require": "./src/*/index.js",
+      "types": "./src/*/index.d.ts",
       "import": "./src/*/index.js",
-      "types": "./src/*/index.d.ts"
+      "require": "./src/*/index.js"
     },
     "./styles/*": {
       "import": "./static/styles/*.css"
     },
     "./decorators": {
-      "require": "./src/decorators/index.js",
+      "types": "./src/decorators/index.d.ts",
       "import": "./src/decorators/index.js",
-      "types": "./src/decorators/index.d.ts"
+      "require": "./src/decorators/index.js"
     },
     "./localization": {
-      "require": "./src/localization/index.js",
+      "types": "./src/localization/index.d.ts",
       "import": "./src/localization/index.js",
-      "types": "./src/localization/index.d.ts"
+      "require": "./src/localization/index.js"
     },
     "./utils": {
-      "require": "./src/utils/index.js",
+      "types": "./src/utils/index.d.ts",
       "import": "./src/utils/index.js",
-      "types": "./src/utils/index.d.ts"
+      "require": "./src/utils/index.js"
     },
     "./components/*": {
-      "require": "./src/components/*/index.js",
+      "types": "./src/components/*/index.d.ts",
       "import": "./src/components/*/index.js",
-      "types": "./src/components/*/index.d.ts"
+      "require": "./src/components/*/index.js"
     },
     "./components/modal/*": {
-      "require": "./src/components/modal/*.js",
+      "types": "./src/components/modal/*.d.ts",
       "import": "./src/components/modal/*.js",
-      "types": "./src/components/modal/*.d.ts"
+      "require": "./src/components/modal/*.js"
     },
     "./components/button/*": {
-      "require": "./src/components/button/*.js",
+      "types": "./src/components/button/*.d.ts",
       "import": "./src/components/button/*.js",
-      "types": "./src/components/button/*.d.ts"
+      "require": "./src/components/button/*.js"
     },
     "./components/input/*": {
-      "require": "./src/components/input/*.js",
+      "types": "./src/components/input/*.d.ts",
       "import": "./src/components/input/*.js",
-      "types": "./src/components/input/*.d.ts"
+      "require": "./src/components/input/*.js"
     },
     "./components/input-parts/*": {
-      "require": "./src/components/input-parts/*.js",
+      "types": "./src/components/input-parts/*.d.ts",
       "import": "./src/components/input-parts/*.js",
-      "types": "./src/components/input-parts/*.d.ts"
+      "require": "./src/components/input-parts/*.js"
     },
     "./components/input-extension/*": {
-      "require": "./src/components/input-extension/*.js",
+      "types": "./src/components/input-extension/*.d.ts",
       "import": "./src/components/input-extension/*.js",
-      "types": "./src/components/input-extension/*.d.ts"
+      "require": "./src/components/input-extension/*.js"
     },
     "./components/input-advanced/*": {
-      "require": "./src/components/input-advanced/*.js",
+      "types": "./src/components/input-advanced/*.d.ts",
       "import": "./src/components/input-advanced/*.js",
-      "types": "./src/components/input-advanced/*.d.ts"
+      "require": "./src/components/input-advanced/*.js"
     }
   },
   "dependencies": {
-    "@lit/react": "^1.0.5",
-    "lit": "^3.1.4",
-    "mobx": "^6.13.0",
-    "react": "^18.3.1",
+    "@lit/react": "^1.0.7",
+    "lit": "^3.2.1",
+    "mobx": "^6.13.7",
+    "react": "^19.0.0",
     "reflect-metadata": "^0.2.2"
   },
   "devDependencies": {
     "@iyulab/utils": "^0.0.8",
-    "@shoelace-style/shoelace": "^2.15.1",
-    "@storybook/addon-essentials": "^8.1.11",
-    "@storybook/addon-links": "^8.1.11",
-    "@storybook/blocks": "^8.1.11",
-    "@storybook/web-components": "^8.1.11",
-    "@storybook/web-components-vite": "^8.1.11",
-    "@types/node": "^20.14.10",
-    "i18next": "^23.11.5",
-    "i18next-browser-languagedetector": "^8.0.0",
-    "i18next-http-backend": "^2.5.2",
-    "i18next-parser": "^9.0.0",
+    "@shoelace-style/shoelace": "^2.20.1",
+    "@storybook/addon-essentials": "^8.6.7",
+    "@storybook/addon-links": "^8.6.7",
+    "@storybook/blocks": "^8.6.7",
+    "@storybook/web-components": "^8.6.7",
+    "@storybook/web-components-vite": "^8.6.7",
+    "@types/node": "^22.13.10",
+    "fast-glob": "^3.3.3",
+    "i18next": "^24.2.3",
+    "i18next-browser-languagedetector": "^8.0.4",
+    "i18next-http-backend": "^3.0.2",
+    "i18next-parser": "^9.3.0",
     "lit-i18n": "^4.1.0",
-    "monaco-editor": "^0.50.0",
-    "postcss": "^8.4.39",
-    "postcss-nesting": "^12.1.5",
-    "react-i18next": "^14.1.2",
-    "sass": "^1.77.6",
-    "sass-loader": "^14.2.1",
-    "storybook": "^8.1.11",
-    "typescript": "^5.5.3",
-    "vite": "^5.3.3",
-    "vite-plugin-dts": "^3.9.1"
+    "monaco-editor": "^0.52.2",
+    "postcss": "^8.5.3",
+    "postcss-nesting": "^13.0.1",
+    "react-i18next": "^15.4.1",
+    "sass": "^1.86.0",
+    "sass-loader": "^16.0.5",
+    "storybook": "^8.6.7",
+    "typescript": "^5.8.2",
+    "vite": "^6.2.2",
+    "vite-plugin-dts": "^4.5.3"
   }
 }
